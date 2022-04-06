@@ -11157,7 +11157,7 @@ jQuery(document).ready(function ($) {
                     })
                 })
             },
-			getQueryString: function (name) {
+            getQueryString: function (name) {
                 var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
                 var r = window.location.search.substr(1).match(reg)
                 if (r != null) return unescape(r[2])
@@ -11165,7 +11165,7 @@ jQuery(document).ready(function ($) {
             },
             // 预览预请求
             previewInit(data) {
-                return new Promise((resolve ) => {
+                return new Promise((resolve) => {
                     $.ajax({
                         cache: true,
                         type: 'POST',
@@ -11173,7 +11173,7 @@ jQuery(document).ready(function ($) {
                         data,
                         async: false,
                         success: function (res) {
-                            resolve(res.data)
+                            resolve(res)
                         },
                         error: function () {
                             console.log('预览请求错误')
@@ -11181,9 +11181,9 @@ jQuery(document).ready(function ($) {
                     })
                 })
             },
-			// 如果设计图为空
-			isDesign(d){
-				return new Promise((resolve) => {
+            // 如果设计图为空
+            isDesign(data) {
+                return new Promise((resolve) => {
                     $.ajax({
                         cache: true,
                         type: 'POST',
@@ -11198,7 +11198,7 @@ jQuery(document).ready(function ($) {
                         },
                     })
                 })
-			},
+            },
             process_files: function (files, callback, saveas) {
                 var tmpl = '',
                     file,
@@ -18000,9 +18000,7 @@ jQuery(document).ready(function ($) {
                 // TODO 预览
                 $('#lumise-cart-action1').on('click', function (e) {
                     function preview() {
-
-
-						function createPreview(arr) {
+                        function createPreview(arr) {
                             function createEle(baseArr) {
                                 const make = document.createElement('div')
                                 make.className = 'make'
@@ -18116,26 +18114,54 @@ jQuery(document).ready(function ($) {
                             closeBtn.addEventListener('click', closeMake)
                         }
 
-						Object.keys(lumise.data.stages).map(function (s, i) {
-                            if (lumise.data.stages[s].canvas) {
-								lumise.fn.previewInit({
-									product_id: lumise.fn.getQueryString('product_base'),
-									is_child:  lumise.fn.getQueryString('is_child'),
-									this_id:s,
-									user_id:lumise.data.user_id
-								}).then(({state,data})=>{
-									if (state === 1 && data != '[]') {
-										createPreview(data)	
-									}
-									console.log(r);
+                        Object.keys(lumise.data.stages).map(function (s, i) {
+
+							const arr = []
+							lumise.fn
+							.previewInit({
+								product_id:
+									lumise.fn.getQueryString(
+										'product_base'
+									),
+								is_child:
+									lumise.fn.getQueryString(
+										'is_child'
+									),
+								this_id: s,
+								user_id: lumise.data.user_id,
+							})
+							.then((r) => {
+
+								console.log(r)
+								// console.log(state, data, design);
+								// if (state === 1 && data != '[]') {
+								// 	createPreview(data)
+								// }
+								r.design.forEach(i=>{
+									arr.push(i)
 								})
+							})
+
+                            if (lumise.data.stages[s].canvas) {
+
+
+                            } else {
+								arr.forEach(i=>{
+									console.log(i)
+									if (s === i.stage[0]) {
+										console.log(i)
+									}
+								})
+								console.log(lumise.data.stages[s]);
+                                // lumise.fn
+                                //     .isDesign({
+                                //         psdUrl: '',
+                                //         psdLayer: [],
+                                //         imageUrls: [],
+                                //     })
+                                //     .then((r) => {})
                             }
                         })
-
-
-
-
-
 
                         // const base64Arr = {
                         //     product_id: lumise.fn.getQueryString('product_base'),
@@ -18161,8 +18187,6 @@ jQuery(document).ready(function ($) {
                         //         base64Arr.this_id.push(s)
                         //     }
                         // })
-
-                     
 
                         // console.log(base64Arr)
                         // $.ajax({

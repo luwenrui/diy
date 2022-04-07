@@ -11188,10 +11188,10 @@ jQuery(document).ready(function ($) {
                         cache: true,
                         type: 'POST',
                         url: 'http://42.192.45.188/api/psd/replace',
-                        data:JSON.stringify(data),
+                        data: JSON.stringify(data),
                         async: false,
-                        dataType:"JSON",
-                        contentType:"application/json",
+                        dataType: 'JSON',
+                        contentType: 'application/json',
                         success: function (res) {
                             resolve(res)
                         },
@@ -18240,22 +18240,19 @@ jQuery(document).ready(function ($) {
                             let cur = 0
 
                             function clearZindex() {
+                                const node = document.querySelectorAll('.b1')
                                 for (let i = 0; i < node.length; i++) {
                                     const ele = node[i]
                                     ele.style.display = 'none'
                                 }
                             }
                             function initZindex() {
-
-                                console.log(node[0]);
+                                const node = document.querySelectorAll('.b1')
                                 node[0].style.display = 'block'
+                                console.log()
                             }
                             clearZindex()
-
-                            setTimeout(()=>{
-                                initZindex()
-                            },1000)
-                            
+                            initZindex()
                             function lfMove() {
                                 if (cur <= 0) return
                                 cur--
@@ -18276,7 +18273,6 @@ jQuery(document).ready(function ($) {
                             rightBnt.addEventListener('click', rgMove)
 
                             function closeMake() {
-                                console.log(121)
                                 document.querySelector(
                                     '.make-content'
                                 ).style.display = 'none'
@@ -18333,27 +18329,31 @@ jQuery(document).ready(function ($) {
                                         tpObj[s] = tp
                                     })
                                 })
+                                const previewImg = []
+                              
 
                                 r.design.forEach((c) => {
                                     const tpa = []
                                     c.stage.forEach((i) => {
                                         tpa.push(tpObj[i][0])
                                     })
-
-                                    console.log(tpa)
                                     lumise.fn
                                         .isDesign({
                                             psdUrl: c.upload,
                                             psdLayer: c.psdLayer,
                                             imageUrls: tpa,
                                         })
-                                        .then((r) => {})
-
-                                    createPreview([
-                                        'http://dummyimage.com/332x176.png/691370/285d50',
-                                        'http://dummyimage.com/332x176.png/691370/285d50',
-                                    ])
+                                        .then((resp) => {
+                                            console.log(resp)
+                                            previewImg.push(resp.data)
+                                        })
                                 })
+                                return previewImg
+                            }).then(r=>{
+
+                                console.log(r);
+                                // if (previewImg.length <= 0) return
+                                // createPreview(previewImg)
                             })
                     }
                     preview()

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .make {
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1000000;
+            }
+            .make-content {
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                z-index: 1000001;
+            }
+            .white-bg-content {
+                width: 500px;
+                background-color: white;
+                border-radius: 8px;
+            }
+            .white-bg-content .close {
+                display: flex;
+                justify-content: center;
+                margin-top: 80px;
+            }
+            .white-bg-content .close img {
+                position: relative;
+                width: 50px;
+                height: 50px;
+                z-index: 1000002;
+            }
+            .wrap {
+                width: 500px;
+                height: 500px;
+
+                perspective: 500px;
+                position: relative;
+            }
+            .wrap img {
+                transition: all 1s ease 0s;
+                width: 500px;
+                display: inline-block;
+            }
+            .wrap .cc img {
+                opacity: 1;
+            }
+            .wrap #wrap-ul {
+                width: 500px;
+                height: 280px;
+                list-style: none;
+                position: relative;
+            }
+            .wrap #wrap-ul li {
+                width: 500px;
+                height: 280px;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+            .wrap span {
+                width: 40px;
+                height: 70px;
+                background-color: rgba(0, 0, 255, 0.5);
+                color: white;
+                text-align: center;
+                font-size: 50px;
+                position: absolute;
+                left: -60px;
+                top: 40%;
+                z-index: 11;
+                cursor: pointer;
+                opacity: 0.4;
+                transition: all 0.5s ease 0s;
+            }
+            .wrap span:hover {
+                opacity: 1;
+            }
+            .wrap #right-btn1 {
+                right: -60px;
+                left: auto;
+            }
+        </style>
+    </head>
+    <body></body>
+    <script>
+        function createPreview(arr) {
+            console.log(arr)
+            function createEle(baseArr) {
+                const make = document.createElement('div')
+                make.className = 'make'
+                document.querySelector('body').appendChild(make)
+
+                const makeContent = document.createElement('div')
+                makeContent.className = 'make-content'
+                document.querySelector('body').appendChild(makeContent)
+
+                const whiteBgContent = document.createElement('div')
+                whiteBgContent.className = 'white-bg-content'
+                makeContent.appendChild(whiteBgContent)
+
+                const wrap = document.createElement('div')
+                wrap.className = 'wrap'
+                whiteBgContent.appendChild(wrap)
+
+                const wrapUl = document.createElement('ul')
+                wrapUl.className = 'wrap-ul'
+                wrapUl.id = 'wrap-ul'
+                wrap.appendChild(wrapUl)
+
+                for (let i = 0; i < baseArr.length; i++) {
+                    const b1 = document.createElement('li')
+                    b1.className = 'b1'
+                    wrapUl.appendChild(b1)
+                    const img = document.createElement('img')
+                    img.src = baseArr[i]
+                    b1.appendChild(img)
+                }
+
+                const close = document.createElement('div')
+                close.className = 'close close-my-btn-l'
+
+                const closeImg = document.createElement('img')
+                closeImg.src = 'https://i.postimg.cc/XYffBpxq/304.png'
+                close.appendChild(closeImg)
+
+                const lf = document.createElement('span')
+                lf.id = 'toleft1'
+                lf.innerHTML = '&lt;'
+
+                const rg = document.createElement('span')
+                rg.id = 'right-btn1'
+                rg.innerHTML = '&gt;'
+
+                wrap.appendChild(lf)
+                wrap.appendChild(rg)
+                whiteBgContent.appendChild(close)
+            }
+
+            createEle(arr)
+
+            const rightBnt = document.querySelector('#right-btn1')
+            const lfBnt = document.querySelector('#toleft1')
+
+            const node = document.querySelectorAll('.b1')
+            let cur = 0
+
+            function clearZindex() {
+                const node = document.querySelectorAll('.b1')
+                for (let i = 0; i < node.length; i++) {
+                    const ele = node[i]
+                    ele.style.display = 'none'
+                }
+            }
+            function initZindex() {
+                const node = document.querySelectorAll('.b1')
+                node[0].style.display = 'block'
+                console.log()
+            }
+            clearZindex()
+            initZindex()
+            function lfMove() {
+                if (cur <= 0) return
+                cur--
+
+                clearZindex()
+                node[cur].style.display = 'block'
+            }
+            function rgMove() {
+                console.log(cur)
+                if (cur >= node.length - 1) return
+                cur++
+
+                clearZindex()
+                node[cur].style.display = 'block'
+            }
+
+            lfBnt.addEventListener('click', lfMove)
+            rightBnt.addEventListener('click', rgMove)
+
+            function closeMake() {
+                document.querySelector('.make-content').style.display = 'none'
+                document.querySelector('.make').style.display = 'none'
+
+                document.querySelector('.make-content').remove()
+                document.querySelector('.make').remove()
+            }
+
+            const closeBtn = document.querySelector('.close-my-btn-l')
+            closeBtn.addEventListener('click', closeMake)
+        }
+        createPreview([
+            'https://www.keaidian.com/uploads/allimg/190424/24110307_8.jpg',
+            'https://www.keaidian.com/uploads/allimg/190424/24110307_19.jpg',
+        ])
+    </script>
+</html>

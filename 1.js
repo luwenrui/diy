@@ -18001,42 +18001,49 @@ jQuery(document).ready(function ($) {
 
                 $('#lumise-cart-action1').on('click', function (e) {
                     const baseImg = {}
+                    const ops = {
+                        height: 4595,
+                        include_base: false,
+                        orien: 'portrait',
+                        type: 'png',
+                        width: 4200,
+                    }
 
                     function down(canvas, ops, stage) {
                         var type = ops.type,
                             include_base = ops.include_base,
                             stage = stage,
-                            canvas = canvas,
-                            wcf =
-                                'menubar=0,status=0,titlebar=0,toolbar=0,location=0,directories=0',
-                            ex = {
-                                format: 'png',
-                                multiplier: 2 /**(2/window.devicePixelRatio)*/,
-                                width: stage.product.width,
-                                height: stage.product.height,
-                                top:
-                                    stage.product.top -
-                                    stage.product.height / 2,
-                                left:
-                                    stage.product.left -
-                                    stage.product.width / 2,
-                            }
+                            canvas = canvas
+                            // wcf =
+                            //     'menubar=0,status=0,titlebar=0,toolbar=0,location=0,directories=0',
+                            // ex = {
+                            //     format: 'png',
+                            //     multiplier: 2 /**(2/window.devicePixelRatio)*/,
+                            //     width: stage.product.width,
+                            //     height: stage.product.height,
+                            //     top:
+                            //         stage.product.top -
+                            //         stage.product.height / 2,
+                            //     left:
+                            //         stage.product.left -
+                            //         stage.product.width / 2,
+                            // }
 
                         switch (type) {
-                            case 'svg':
-                                var svg_obj = lumise.fn.export_svg(include_base)
+                            // case 'svg':
+                            //     var svg_obj = lumise.fn.export_svg(include_base)
 
-                                if (svg_obj !== null) {
-                                    lumise.fn.download(
-                                        'data:image/svg+xml;base64,' +
-                                            btoa(svg_obj),
-                                        name + '.svg'
-                                    )
+                            //     if (svg_obj !== null) {
+                            //         lumise.fn.download(
+                            //             'data:image/svg+xml;base64,' +
+                            //                 btoa(svg_obj),
+                            //             name + '.svg'
+                            //         )
 
-                                    delete svg_obj
-                                } else lumise.fn.notice('Error on render SVG', 'error')
+                            //         delete svg_obj
+                            //     } else lumise.fn.notice('Error on render SVG', 'error')
 
-                                break
+                            //     break
                             case 'png':
                                 var h = ops.height,
                                     w = ops.width
@@ -18105,208 +18112,209 @@ jQuery(document).ready(function ($) {
                                         delete ctx
                                     }
                                     baseImg[stage.name] = data
-                                } else {
-                                    multiplier =
-                                        w / stage.limit_zone.width < 33
-                                            ? h / stage.limit_zone.width
-                                            : 33
+                                } 
+                                // else {
+                                //     multiplier =
+                                //         w / stage.limit_zone.width < 33
+                                //             ? h / stage.limit_zone.width
+                                //             : 33
 
-                                    var data = lumise.tools.toImage({
-                                        stage: stage,
-                                        width: stage.limit_zone.width,
-                                        left: stage.limit_zone.left,
-                                        multiplier: mp,
-                                        is_bg:
-                                            include_base === true
-                                                ? 'full'
-                                                : false,
-                                    })
+                                //     var data = lumise.tools.toImage({
+                                //         stage: stage,
+                                //         width: stage.limit_zone.width,
+                                //         left: stage.limit_zone.left,
+                                //         multiplier: mp,
+                                //         is_bg:
+                                //             include_base === true
+                                //                 ? 'full'
+                                //                 : false,
+                                //     })
 
-                                    _canvas.width = w
-                                    _canvas.height = h
+                                //     _canvas.width = w
+                                //     _canvas.height = h
 
-                                    img.onload = function () {
-                                        ctx.translate(
-                                            _canvas.width / 2,
-                                            _canvas.height / 2
-                                        )
-                                        ctx.rotate(Math.PI / 2)
+                                //     img.onload = function () {
+                                //         ctx.translate(
+                                //             _canvas.width / 2,
+                                //             _canvas.height / 2
+                                //         )
+                                //         ctx.rotate(Math.PI / 2)
 
-                                        var ih = w,
-                                            iw = w * (this.width / this.height)
-                                        if (iw > w) {
-                                            ih = ih * (w / iw)
-                                            iw = w
-                                        }
+                                //         var ih = w,
+                                //             iw = w * (this.width / this.height)
+                                //         if (iw > w) {
+                                //             ih = ih * (w / iw)
+                                //             iw = w
+                                //         }
 
-                                        if (ih > h) {
-                                            iw = iw * (h / ih)
-                                            ih = h
-                                        }
+                                //         if (ih > h) {
+                                //             iw = iw * (h / ih)
+                                //             ih = h
+                                //         }
 
-                                        ctx.drawImage(
-                                            this,
-                                            -iw / 2,
-                                            -ih / 2,
-                                            iw,
-                                            ih
-                                        )
+                                //         ctx.drawImage(
+                                //             this,
+                                //             -iw / 2,
+                                //             -ih / 2,
+                                //             iw,
+                                //             ih
+                                //         )
 
-                                        ctx.rotate(-Math.PI / 2)
-                                        ctx.translate(
-                                            -_canvas.width / 2,
-                                            -_canvas.height / 2
-                                        )
+                                //         ctx.rotate(-Math.PI / 2)
+                                //         ctx.translate(
+                                //             -_canvas.width / 2,
+                                //             -_canvas.height / 2
+                                //         )
 
-                                        lumise.f('false')
-                                        ops.callback(_canvas.toDataURL())
+                                //         lumise.f('false')
+                                //         ops.callback(_canvas.toDataURL())
 
-                                        delete _canvas
-                                        delete ctx
-                                    }
-                                    img.src = data
-                                    base64Arr.img.push({ data })
-                                }
+                                //         delete _canvas
+                                //         delete ctx
+                                //     }
+                                //     img.src = data
+                                //     base64Arr.img.push({ data })
+                                // }
                                 break
                         }
                     }
 
-                    function preview() {
-                        function createPreview(arr) {
-                            console.log(arr)
-                            function createEle(baseArr) {
-                                const make = document.createElement('div')
-                                make.className = 'make'
-                                document.querySelector('body').appendChild(make)
+                    Object.keys(lumise.data.stages).map(function (s, i) {
+                        down(
+                            lumise.data.stages[s].canvas,
+                            ops,
+                            lumise.data.stages[s]
+                        )
+                    })
 
-                                const makeContent =
-                                    document.createElement('div')
-                                makeContent.className = 'make-content'
-                                document
-                                    .querySelector('body')
-                                    .appendChild(makeContent)
+                    function createPreviewNode(arr) {
+                        function createEle(baseArr) {
+                            const make = document.createElement('div')
+                            make.className = 'make'
+                            document.querySelector('body').appendChild(make)
 
-                                const whiteBgContent =
-                                    document.createElement('div')
-                                whiteBgContent.className = 'white-bg-content'
-                                makeContent.appendChild(whiteBgContent)
+                            const makeContent = document.createElement('div')
+                            makeContent.className = 'make-content'
+                            document
+                                .querySelector('body')
+                                .appendChild(makeContent)
 
-                                const wrap = document.createElement('div')
-                                wrap.className = 'wrap'
-                                whiteBgContent.appendChild(wrap)
+                            const whiteBgContent = document.createElement('div')
+                            whiteBgContent.className = 'white-bg-content'
+                            makeContent.appendChild(whiteBgContent)
 
-                                const wrapUl = document.createElement('ul')
-                                wrapUl.className = 'wrap-ul'
-                                wrapUl.id = 'wrap-ul'
-                                wrap.appendChild(wrapUl)
+                            const wrap = document.createElement('div')
+                            wrap.className = 'wrap'
+                            whiteBgContent.appendChild(wrap)
 
-                                for (let i = 0; i < baseArr.length; i++) {
-                                    const b1 = document.createElement('li')
-                                    b1.className = 'b1'
-                                    wrapUl.appendChild(b1)
-                                    const img = document.createElement('img')
-                                    img.src = baseArr[i]
-                                    b1.appendChild(img)
-                                }
+                            const wrapUl = document.createElement('ul')
+                            wrapUl.className = 'wrap-ul'
+                            wrapUl.id = 'wrap-ul'
+                            wrap.appendChild(wrapUl)
 
-                                const close = document.createElement('div')
-                                close.className = 'close close-my-btn-l'
-
-                                const closeImg = document.createElement('img')
-                                closeImg.src =
-                                    'https://i.postimg.cc/XYffBpxq/304.png'
-                                close.appendChild(closeImg)
-
-                                const lf = document.createElement('span')
-                                lf.id = 'toleft1'
-                                lf.innerHTML = '&lt;'
-
-                                const rg = document.createElement('span')
-                                rg.id = 'right-btn1'
-                                rg.innerHTML = '&gt;'
-
-                                wrap.appendChild(lf)
-                                wrap.appendChild(rg)
-                                whiteBgContent.appendChild(close)
+                            for (let i = 0; i < baseArr.length; i++) {
+                                const b1 = document.createElement('li')
+                                b1.className = 'b1'
+                                wrapUl.appendChild(b1)
+                                const img = document.createElement('img')
+                                img.src = baseArr[i]
+                                b1.appendChild(img)
                             }
 
-                            createEle(arr)
+                            const close = document.createElement('div')
+                            close.className = 'close close-my-btn-l'
 
-                            const rightBnt =
-                                document.querySelector('#right-btn1')
-                            const lfBnt = document.querySelector('#toleft1')
+                            const closeImg = document.createElement('img')
+                            closeImg.src =
+                                'https://i.postimg.cc/XYffBpxq/304.png'
+                            close.appendChild(closeImg)
 
+                            const lf = document.createElement('span')
+                            lf.id = 'toleft1'
+                            lf.innerHTML = '&lt;'
+
+                            const rg = document.createElement('span')
+                            rg.id = 'right-btn1'
+                            rg.innerHTML = '&gt;'
+
+                            wrap.appendChild(lf)
+                            wrap.appendChild(rg)
+                            whiteBgContent.appendChild(close)
+                        }
+
+                        createEle(arr)
+
+                        const rightBnt = document.querySelector('#right-btn1')
+                        const lfBnt = document.querySelector('#toleft1')
+
+                        const node = document.querySelectorAll('.b1')
+                        let cur = 0
+
+                        function clearZindex() {
                             const node = document.querySelectorAll('.b1')
-                            let cur = 0
+                            for (let i = 0; i < node.length; i++) {
+                                const ele = node[i]
+                                ele.style.display = 'none'
+                            }
+                        }
+                        function initZindex() {
+                            const node = document.querySelectorAll('.b1')
+                            node[0].style.display = 'block'
+                            console.log()
+                        }
+                        clearZindex()
+                        initZindex()
+                        function lfMove() {
+                            if (cur <= 0) return
+                            cur--
 
-                            function clearZindex() {
-                                const node = document.querySelectorAll('.b1')
-                                for (let i = 0; i < node.length; i++) {
-                                    const ele = node[i]
-                                    ele.style.display = 'none'
-                                }
-                            }
-                            function initZindex() {
-                                const node = document.querySelectorAll('.b1')
-                                node[0].style.display = 'block'
-                                console.log()
-                            }
                             clearZindex()
-                            initZindex()
-                            function lfMove() {
-                                if (cur <= 0) return
-                                cur--
+                            node[cur].style.display = 'block'
+                        }
+                        function rgMove() {
+                            console.log(cur)
+                            if (cur >= node.length - 1) return
+                            cur++
 
-                                clearZindex()
-                                node[cur].style.display = 'block'
-                            }
-                            function rgMove() {
-                                console.log(cur)
-                                if (cur >= node.length - 1) return
-                                cur++
-
-                                clearZindex()
-                                node[cur].style.display = 'block'
-                            }
-
-                            lfBnt.addEventListener('click', lfMove)
-                            rightBnt.addEventListener('click', rgMove)
-
-                            function closeMake() {
-                                document.querySelector(
-                                    '.make-content'
-                                ).style.display = 'none'
-                                document.querySelector('.make').style.display =
-                                    'none'
-
-                                document.querySelector('.make-content').remove()
-                                document.querySelector('.make').remove()
-                            }
-
-                            const closeBtn =
-                                document.querySelector('.close-my-btn-l')
-                            closeBtn.addEventListener('click', closeMake)
+                            clearZindex()
+                            node[cur].style.display = 'block'
                         }
 
-                        const ops = {
-                            height: 4595,
-                            include_base: false,
-                            orien: 'portrait',
-                            type: 'png',
-                            width: 4200,
+                        lfBnt.addEventListener('click', lfMove)
+                        rightBnt.addEventListener('click', rgMove)
+
+                        function closeMake() {
+                            document.querySelector(
+                                '.make-content'
+                            ).style.display = 'none'
+                            document.querySelector('.make').style.display =
+                                'none'
+
+                            document.querySelector('.make-content').remove()
+                            document.querySelector('.make').remove()
                         }
 
-                        Object.keys(lumise.data.stages).map(function (s, i) {
-                            // if (lumise.data.stages[s].canvas) {
-                            // }
-                            down(
-                                lumise.data.stages[s].canvas,
-                                ops,
-                                lumise.data.stages[s]
-                            )
+                        const closeBtn =
+                            document.querySelector('.close-my-btn-l')
+                        closeBtn.addEventListener('click', closeMake)
+                    }
+
+                    function createBaseImg(design) {
+                        const tpObj = {}
+                        Object.keys(lumise.data.stages).map((s) => {
+                            design.forEach((i) => {
+                                const tp = []
+                                i.stage.forEach((c) => {
+                                    tp.push(baseImg[c])
+                                })
+                                tpObj[s] = tp
+                            })
                         })
+                        return tpObj
+                    }
 
-                        // TODO 预览
+                    // TODO 预览
+                    function preview() {
                         lumise.fn
                             .previewInit({
                                 product_id:
@@ -18315,24 +18323,10 @@ jQuery(document).ready(function ($) {
                                 this_id: lumise.fn.getQueryString('this_id'),
                                 user_id: lumise.data.user_id,
                             })
-                            .then((r) => {
-                                const tpObj = {}
-                                Object.keys(lumise.data.stages).map(function (
-                                    s,
-                                    i
-                                ) {
-                                    r.design.forEach((i) => {
-                                        const tp = []
-                                        i.stage.forEach((c) => {
-                                            tp.push(baseImg[c])
-                                        })
-                                        tpObj[s] = tp
-                                    })
-                                })
+                            .then(({ design }) => {
+                                const tpObj = createBaseImg(design)
                                 const previewImg = []
-                              
-
-                                r.design.forEach((c) => {
+                                design.forEach((c) => {
                                     const tpa = []
                                     c.stage.forEach((i) => {
                                         tpa.push(tpObj[i][0])
@@ -18349,11 +18343,12 @@ jQuery(document).ready(function ($) {
                                         })
                                 })
                                 return previewImg
-                            }).then(r=>{
-
-                                console.log(r);
+                            })
+                            .then((r) => {
+                                console.log(r)
                                 // if (previewImg.length <= 0) return
-                                // createPreview(previewImg)
+                                const  previewImg = ['https://pic3.zhimg.com/v2-58d652598269710fa67ec8d1c88d8f03_r.jpg?source=1940ef5c','https://www.keaidian.com/uploads/allimg/190424/24110307_19.jpg']
+                                createPreviewNode(previewImg)
                             })
                     }
                     preview()

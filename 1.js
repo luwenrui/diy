@@ -11188,8 +11188,10 @@ jQuery(document).ready(function ($) {
                         cache: true,
                         type: 'POST',
                         url: 'http://42.192.45.188/api/psd/replace',
-                        data,
+                        data:JSON.stringify(data),
                         async: false,
+                        dataType:"JSON",
+                        contentType:"application/json",
                         success: function (res) {
                             resolve(res)
                         },
@@ -18244,6 +18246,8 @@ jQuery(document).ready(function ($) {
                                 }
                             }
                             function initZindex() {
+
+                                console.log(node[0]);
                                 node[0].style.display = 'block'
                             }
                             clearZindex()
@@ -18251,7 +18255,7 @@ jQuery(document).ready(function ($) {
                             setTimeout(()=>{
                                 initZindex()
                             },1000)
-
+                            
                             function lfMove() {
                                 if (cur <= 0) return
                                 cur--
@@ -18341,7 +18345,7 @@ jQuery(document).ready(function ($) {
                                         .isDesign({
                                             psdUrl: c.upload,
                                             psdLayer: c.psdLayer,
-                                            imageUrls: [1, 2, 3],
+                                            imageUrls: tpa,
                                         })
                                         .then((r) => {})
 

@@ -17710,7 +17710,7 @@ jQuery(document).ready(function ($) {
                     }
 
                     const base64Arr = {
-                        product_id: getQueryString('product_base'),
+                        product_base: getQueryString('product_base'),
                         is_child: getQueryString('is_child'),
                         this_id: [],
                         img: [],
@@ -18010,172 +18010,78 @@ jQuery(document).ready(function ($) {
                     }
 
                     function down(canvas, ops, stage) {
-                        var type = ops.type,
-                            include_base = ops.include_base,
-                            stage = stage,
-                            canvas = canvas
-                            // wcf =
-                            //     'menubar=0,status=0,titlebar=0,toolbar=0,location=0,directories=0',
-                            // ex = {
-                            //     format: 'png',
-                            //     multiplier: 2 /**(2/window.devicePixelRatio)*/,
-                            //     width: stage.product.width,
-                            //     height: stage.product.height,
-                            //     top:
-                            //         stage.product.top -
-                            //         stage.product.height / 2,
-                            //     left:
-                            //         stage.product.left -
-                            //         stage.product.width / 2,
-                            // }
 
-                        switch (type) {
-                            // case 'svg':
-                            //     var svg_obj = lumise.fn.export_svg(include_base)
+                        var type = ops.type;
+                        var include_base = ops.include_base;
+                        var stage = stage;
+                        var canvas = canvas;
 
-                            //     if (svg_obj !== null) {
-                            //         lumise.fn.download(
-                            //             'data:image/svg+xml;base64,' +
-                            //                 btoa(svg_obj),
-                            //             name + '.svg'
-                            //         )
+                        if (type === 'png') {
+                            var h = ops.height,
+                                w = ops.width
+                            var o = ops.orien,
+                                bg = canvas.backgroundColor,
+                                multiplier = h / stage.limit_zone.height,
+                                mp =
+                                    o != 'landscape'
+                                        ? multiplier
+                                        : multiplier *
+                                          (canvas.width / canvas.height),
+                                dops = {
+                                    stage: stage,
+                                    top: stage.limit_zone.top,
+                                    left: stage.limit_zone.left,
+                                    width: stage.limit_zone.width,
+                                    height: stage.limit_zone.height,
+                                    multiplier: mp, //Math.ceil(mp),
+                                    is_bg:
+                                        include_base === true ? 'full' : false,
+                                },
+                                data = lumise.tools.toImage(dops),
+                                _canvas = document.createElement('canvas'),
+                                ctx = _canvas.getContext('2d'),
+                                img = new Image()
 
-                            //         delete svg_obj
-                            //     } else lumise.fn.notice('Error on render SVG', 'error')
-
-                            //     break
-                            case 'png':
-                                var h = ops.height,
-                                    w = ops.width
-                                var o = ops.orien,
-                                    bg = canvas.backgroundColor,
-                                    multiplier = h / stage.limit_zone.height,
-                                    mp =
-                                        o != 'landscape'
-                                            ? multiplier
-                                            : multiplier *
-                                              (canvas.width / canvas.height),
-                                    dops = {
-                                        stage: stage,
-                                        top: stage.limit_zone.top,
-                                        left: stage.limit_zone.left,
-                                        width: stage.limit_zone.width,
-                                        height: stage.limit_zone.height,
-                                        multiplier: mp, //Math.ceil(mp),
-                                        is_bg:
-                                            include_base === true
-                                                ? 'full'
-                                                : false,
-                                    },
-                                    data = lumise.tools.toImage(dops),
-                                    _canvas = document.createElement('canvas'),
-                                    ctx = _canvas.getContext('2d'),
-                                    img = new Image()
-
-                                if (multiplier > 33) multiplier = 33
-                                if (typeof ops.callback != 'function') {
-                                    ops.callback = function (data) {
-                                        lumise.fn.download(data, name + '.png')
-                                    }
+                            if (multiplier > 33) multiplier = 33
+                            if (typeof ops.callback != 'function') {
+                                ops.callback = function (data) {
+                                    lumise.fn.download(data, name + '.png')
                                 }
+                            }
 
-                                if (o != 'landscape') {
-                                    _canvas.width = w
-                                    _canvas.height = h
+                            if (o != 'landscape') {
+                                _canvas.width = w
+                                _canvas.height = h
 
-                                    img.onload = function () {
-                                        var _w = this.width,
-                                            _h = this.height
+                                img.onload = function () {
+                                    var _w = this.width,
+                                        _h = this.height
 
-                                        if (_w != w) {
-                                            _h = (_h / _w) * w
-                                            _w = w
-                                        }
-
-                                        if (_h > h) {
-                                            _w = (_w / _h) * h
-                                            _h = h
-                                        }
-                                        ctx.drawImage(
-                                            this,
-                                            (w - _w) / 2,
-                                            (h - _h) / 2,
-                                            _w,
-                                            _h
-                                        )
-
-                                        lumise.f('false')
-
-                                        ops.callback(_canvas.toDataURL())
-
-                                        delete _canvas
-                                        delete ctx
+                                    if (_w != w) {
+                                        _h = (_h / _w) * w
+                                        _w = w
                                     }
-                                    baseImg[stage.name] = data
-                                } 
-                                // else {
-                                //     multiplier =
-                                //         w / stage.limit_zone.width < 33
-                                //             ? h / stage.limit_zone.width
-                                //             : 33
 
-                                //     var data = lumise.tools.toImage({
-                                //         stage: stage,
-                                //         width: stage.limit_zone.width,
-                                //         left: stage.limit_zone.left,
-                                //         multiplier: mp,
-                                //         is_bg:
-                                //             include_base === true
-                                //                 ? 'full'
-                                //                 : false,
-                                //     })
+                                    if (_h > h) {
+                                        _w = (_w / _h) * h
+                                        _h = h
+                                    }
+                                    ctx.drawImage(
+                                        this,
+                                        (w - _w) / 2,
+                                        (h - _h) / 2,
+                                        _w,
+                                        _h
+                                    )
 
-                                //     _canvas.width = w
-                                //     _canvas.height = h
+                                    lumise.f('false')
+                                    ops.callback(_canvas.toDataURL())
 
-                                //     img.onload = function () {
-                                //         ctx.translate(
-                                //             _canvas.width / 2,
-                                //             _canvas.height / 2
-                                //         )
-                                //         ctx.rotate(Math.PI / 2)
-
-                                //         var ih = w,
-                                //             iw = w * (this.width / this.height)
-                                //         if (iw > w) {
-                                //             ih = ih * (w / iw)
-                                //             iw = w
-                                //         }
-
-                                //         if (ih > h) {
-                                //             iw = iw * (h / ih)
-                                //             ih = h
-                                //         }
-
-                                //         ctx.drawImage(
-                                //             this,
-                                //             -iw / 2,
-                                //             -ih / 2,
-                                //             iw,
-                                //             ih
-                                //         )
-
-                                //         ctx.rotate(-Math.PI / 2)
-                                //         ctx.translate(
-                                //             -_canvas.width / 2,
-                                //             -_canvas.height / 2
-                                //         )
-
-                                //         lumise.f('false')
-                                //         ops.callback(_canvas.toDataURL())
-
-                                //         delete _canvas
-                                //         delete ctx
-                                //     }
-                                //     img.src = data
-                                //     base64Arr.img.push({ data })
-                                // }
-                                break
+                                    delete _canvas
+                                    delete ctx
+                                }
+                                baseImg[stage.name] = data
+                            }
                         }
                     }
 
@@ -18317,7 +18223,7 @@ jQuery(document).ready(function ($) {
                     function preview() {
                         lumise.fn
                             .previewInit({
-                                product_id:
+                                product_base:
                                     lumise.fn.getQueryString('product_base'),
                                 is_child: lumise.fn.getQueryString('is_child'),
                                 this_id: lumise.fn.getQueryString('this_id'),
@@ -18338,17 +18244,14 @@ jQuery(document).ready(function ($) {
                                             imageUrls: tpa,
                                         })
                                         .then((resp) => {
-                                            console.log(resp)
                                             previewImg.push(resp.data)
                                         })
                                 })
                                 return previewImg
                             })
                             .then((r) => {
-                                console.log(r)
-                                // if (previewImg.length <= 0) return
-                                const  previewImg = ['https://pic3.zhimg.com/v2-58d652598269710fa67ec8d1c88d8f03_r.jpg?source=1940ef5c','https://www.keaidian.com/uploads/allimg/190424/24110307_19.jpg']
-                                createPreviewNode(previewImg)
+                                if (r.length <= 0) return
+                                createPreviewNode(r)
                             })
                     }
                     preview()

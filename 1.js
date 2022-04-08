@@ -18011,10 +18011,32 @@ jQuery(document).ready(function ($) {
 
                     function down(canvas, ops, stage) {
 
-                        var type = ops.type;
-                        var include_base = ops.include_base;
-                        var stage = stage;
-                        var canvas = canvas;
+
+
+                        var type = ops.type,
+                        include_base = ops.include_base,
+                        stage =  lumise.stage(),
+                        canvas = stage.canvas
+                        // wcf = "menubar=0,status=0,titlebar=0,toolbar=0,location=0,directories=0",
+                        // ex = {
+                        //     format: 'png',
+                        //     multiplier: 2/**(2/window.devicePixelRatio)*/,
+                        //     width: stage.product.width,
+                        //     height: stage.product.height,
+                        //     top: stage.product.top-(stage.product.height/2),
+                        //     left: stage.product.left-(stage.product.width/2)
+                        // },
+                        // name = lumise.data.prefix_file+'_'+lumise.fn.slugify(
+                        //     $('#lumise-product header name t').text()
+                        // )+'_'+lumise.current_stage;
+
+
+
+
+                        // var type = ops.type;
+                        // var include_base = ops.include_base;
+                        // var stage = stage;
+                        // var canvas = canvas;
 
                         if (type === 'png') {
                             var h = ops.height,

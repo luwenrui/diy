@@ -11145,10 +11145,13 @@ jQuery(document).ready(function ($) {
                         cache: true,
                         type: 'POST',
                         url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax_get',
-                        // url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category/ajax_get',
                         data,
                         async: false,
                         success: function (res, status) {
+                            sessionStorage.setItem(
+                                'design',
+                                JSON.stringify(res.design)
+                            )
                             resolve(res.data)
                         },
                         error: function () {
@@ -11164,38 +11167,21 @@ jQuery(document).ready(function ($) {
                 if (r != null) return unescape(r[2])
                 return null
             },
-            // 预览预请求
-            previewInit(data) {
-                return new Promise((resolve) => {
-                    $.ajax({
-                        cache: true,
-                        type: 'POST',
-                        url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax_get',
-                        data,
-                        async: false,
-                        success: function (res) {
-                            resolve(res)
-                        },
-                        error: function () {
-                            console.log('预览请求错误')
-                        },
-                    })
-                })
-            },
             isDesign(data) {
-                return new Promise((resolve) => {
+                return new Promise((resolve,reject) => {
                     $.ajax({
                         cache: true,
                         type: 'POST',
                         url: 'http://42.192.45.188/api/psd/replace',
                         data: JSON.stringify(data),
-                        async: false,
+                        async:true,
                         dataType: 'JSON',
                         contentType: 'application/json',
                         success: function (res) {
                             resolve(res)
                         },
                         error: function () {
+                            reject()
                             console.log('预览请求错误')
                         },
                     })
@@ -17682,6 +17668,77 @@ jQuery(document).ready(function ($) {
             },
 
             init: function () {
+                function addLoad() {
+                    const bg = document.createElement('div')
+                    bg.className = 'bg'
+                    bg.style.display = 'none'
+                    bg.style.width = '100%'
+                    bg.style.height = '100vh'
+                    bg.style.justifyContent = 'center'
+                    bg.style.alignItems = 'center'
+                    bg.style.backgroundColor = 'rgba(0,0,0,0.5)'
+                    bg.style.position = 'fixed'
+                    bg.style.top = 0
+                    bg.style.left = 0
+                    bg.style.right = 0
+                    bg.style.bottom = 0
+                    bg.style.zIndex = 10000000
+
+                    const styleTag = document.createElement('style')
+                    styleTag.innerHTML = `
+                    .loading-img{
+                        width: 100px;
+                        height: 100px;
+                        animation: loading 1s linear infinite;
+                    }
+                    @keyframes loading{
+                        0%{
+                            transform: rotate(0deg);
+                        }
+                        100%{
+                            transform: rotate(360deg);
+                        }
+                    }
+                `
+                    document.querySelector('head').appendChild(styleTag)
+                    const img = document.createElement('img')
+                    img.src =
+                        'https://images.weserv.nl/?url=https://article.biliimg.com/bfs/article/7e35bd0acd457b1ef9c60295b007f3084d5ea8de.png'
+                    img.style.width = '100px'
+                    img.style.height = '100px'
+                    img.className = 'loading-img'
+
+                    const text = document.createElement('p')
+                    text.innerHTML = '正在加载中...'
+                    text.style.color = 'white'
+                    text.style.fontSize = '20px'
+
+                    const parcel = document.createElement('div')
+                    parcel.className = 'parcel'
+                    parcel.appendChild(img)
+                    parcel.appendChild(text)
+                    parcel.style.display = 'none'
+                    bg.appendChild(parcel)
+                    document.querySelector('body').appendChild(bg)
+                }
+                addLoad()
+
+                function LoadShow() {
+                    console.log(document.querySelector('.parcel'))
+                    document.querySelector('.parcel').style.display = 'block'
+                    document.querySelector('.bg').style.display = 'flex'
+                }
+
+                function LoadHide() {
+                    console.log(1212)
+                    document.querySelector('.parcel').style.display = 'none'
+                    document.querySelector('.bg').style.display = 'none'
+                }
+
+
+             
+
+
                 if (lumise.onload == undefined) lumise.cart.render()
 
                 /*
@@ -17696,6 +17753,9 @@ jQuery(document).ready(function ($) {
                 })
 
                 lumise.actions.add('checkout', lumise.cart.checkout)
+
+
+
 
                 // TODO 保存
                 $('#lumise-cart-action').on('click', function (e) {
@@ -18000,6 +18060,7 @@ jQuery(document).ready(function ($) {
                 })
 
                 $('#lumise-cart-action1').on('click', function (e) {
+                    LoadShow()
                     const baseImg = {}
                     const ops = {
                         height: 4595,
@@ -18010,34 +18071,10 @@ jQuery(document).ready(function ($) {
                     }
 
                     function down(canvas, ops, stage) {
-
-
-
                         var type = ops.type,
-                        include_base = ops.include_base,
-                        stage =  lumise.stage(),
-                        canvas = stage.canvas
-                        // wcf = "menubar=0,status=0,titlebar=0,toolbar=0,location=0,directories=0",
-                        // ex = {
-                        //     format: 'png',
-                        //     multiplier: 2/**(2/window.devicePixelRatio)*/,
-                        //     width: stage.product.width,
-                        //     height: stage.product.height,
-                        //     top: stage.product.top-(stage.product.height/2),
-                        //     left: stage.product.left-(stage.product.width/2)
-                        // },
-                        // name = lumise.data.prefix_file+'_'+lumise.fn.slugify(
-                        //     $('#lumise-product header name t').text()
-                        // )+'_'+lumise.current_stage;
-
-
-
-
-                        // var type = ops.type;
-                        // var include_base = ops.include_base;
-                        // var stage = stage;
-                        // var canvas = canvas;
-
+                            include_base = ops.include_base,
+                            stage = lumise.stage(),
+                            canvas = stage.canvas
                         if (type === 'png') {
                             var h = ops.height,
                                 w = ops.width
@@ -18063,27 +18100,27 @@ jQuery(document).ready(function ($) {
                                 _canvas = document.createElement('canvas'),
                                 ctx = _canvas.getContext('2d'),
                                 img = new Image()
-
+    
                             if (multiplier > 33) multiplier = 33
                             if (typeof ops.callback != 'function') {
                                 ops.callback = function (data) {
                                     lumise.fn.download(data, name + '.png')
                                 }
                             }
-
+    
                             if (o != 'landscape') {
                                 _canvas.width = w
                                 _canvas.height = h
-
+    
                                 img.onload = function () {
                                     var _w = this.width,
                                         _h = this.height
-
+    
                                     if (_w != w) {
                                         _h = (_h / _w) * w
                                         _w = w
                                     }
-
+    
                                     if (_h > h) {
                                         _w = (_w / _h) * h
                                         _h = h
@@ -18095,10 +18132,10 @@ jQuery(document).ready(function ($) {
                                         _w,
                                         _h
                                     )
-
+    
                                     lumise.f('false')
                                     ops.callback(_canvas.toDataURL())
-
+    
                                     delete _canvas
                                     delete ctx
                                 }
@@ -18106,7 +18143,6 @@ jQuery(document).ready(function ($) {
                             }
                         }
                     }
-
                     Object.keys(lumise.data.stages).map(function (s, i) {
                         down(
                             lumise.data.stages[s].canvas,
@@ -18241,42 +18277,45 @@ jQuery(document).ready(function ($) {
                         return tpObj
                     }
 
-                    // TODO 预览
-                    function preview() {
-                        lumise.fn
-                            .previewInit({
-                                product_base:
-                                    lumise.fn.getQueryString('product_base'),
-                                is_child: lumise.fn.getQueryString('is_child'),
-                                this_id: lumise.fn.getQueryString('this_id'),
-                                user_id: lumise.data.user_id,
-                            })
-                            .then(({ design }) => {
-                                const tpObj = createBaseImg(design)
-                                const previewImg = []
-                                design.forEach((c) => {
-                                    const tpa = []
-                                    c.stage.forEach((i) => {
-                                        tpa.push(tpObj[i][0])
-                                    })
-                                    lumise.fn
-                                        .isDesign({
-                                            psdUrl: c.upload,
-                                            psdLayer: c.psdLayer,
-                                            imageUrls: tpa,
-                                        })
-                                        .then((resp) => {
-                                            previewImg.push(resp.data)
-                                        })
-                                })
-                                return previewImg
-                            })
-                            .then((r) => {
-                                if (r.length <= 0) return
-                                createPreviewNode(r)
-                            })
+                    // 预览
+                    let design = sessionStorage.getItem('design')
+                    const previewImg = []
+
+                    if (JSON.parse(design)) {
+                        design = JSON.parse(design)
                     }
-                    preview()
+                    if (design) {
+                        LoadShow()
+
+                        const tpObj = createBaseImg(design)
+                        const designLen = design.length
+                        let cur = 0
+                        design.forEach((c) => {
+                            cur ++
+                            const tpa = []
+                            c.stage.forEach((i) => {
+                                tpa.push(tpObj[i][0])
+                            })
+                            lumise.fn
+                                .isDesign({
+                                    psdUrl: c.upload,
+                                    psdLayer: c.psdLayer,
+                                    imageUrls: tpa,
+                                })
+                                .then((resp) => {
+                                    previewImg.push(resp.data)
+                                    if (cur === designLen) {
+                                        previewImg.length > 0 ? LoadHide() : ''
+                                        if (previewImg.length <= 0)return;
+                                        createPreviewNode(previewImg)
+                                    }
+                                })
+                                .catch((err) => {
+                                    LoadHide()
+                                    console.log(err)
+                                })
+                        })
+                    }
                 })
 
                 lumise.render.cart_change()
@@ -21225,18 +21264,8 @@ jQuery(document).ready(function ($) {
                 }
             })()
 
-            function getQueryString(name) {
-                var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
-                var r = window.location.search.substr(1).match(reg)
-                if (r != null) return unescape(r[2])
-                return null
-            }
-
             n = n.toUpperCase()
 
-            console.log('init')
-            console.log(getQueryString('this_id'))
-            console.log(lumise.data.ajax)
             $.ajax({
                 url: lumise.data.ajax,
                 method: 'POST',
@@ -21248,7 +21277,7 @@ jQuery(document).ready(function ($) {
                     is_child: lumise.fn.url_var('is_child', ''),
                     product_cms: lumise.fn.url_var('product_cms', ''),
                     share: lumise.fn.url_var('share', ''),
-                    this_id: getQueryString('this_id'),
+                    this_id: lumise.fn.getQueryString('this_id'),
                 },
                 dataType: 'JSON',
                 success: function (res) {

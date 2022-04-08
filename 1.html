@@ -202,9 +202,71 @@
             const closeBtn = document.querySelector('.close-my-btn-l')
             closeBtn.addEventListener('click', closeMake)
         }
-        createPreview([
-            'https://www.keaidian.com/uploads/allimg/190424/24110307_8.jpg',
-            'https://www.keaidian.com/uploads/allimg/190424/24110307_19.jpg',
-        ])
+        // createPreview([
+        //     'https://www.keaidian.com/uploads/allimg/190424/24110307_8.jpg',
+        //     'https://www.keaidian.com/uploads/allimg/190424/24110307_19.jpg',
+        // ])
+
+        class Load {
+            constructor() {
+                this.initLoad()
+            }
+            initLoad() {
+                const bg = document.createElement('div')
+                bg.className = 'bg'
+                bg.style.display = 'flex'
+                bg.style.width = '100%'
+                bg.style.height = '100vh'
+                bg.style.justifyContent = 'center'
+                bg.style.alignItems = 'center'
+                bg.style.backgroundColor = 'rgba(0,0,0,0.5)'
+
+                const styleTag = document.createElement('style')
+                styleTag.innerHTML = `
+                .loading-img{
+                    width: 100px;
+                    height: 100px;
+                    animation: loading 1s linear infinite;
+                }
+                @keyframes loading{
+                    0%{
+                        transform: rotate(0deg);
+                    }
+                    100%{
+                        transform: rotate(360deg);
+                    }
+                }
+            `
+                document.querySelector('head').appendChild(styleTag)
+                const img = document.createElement('img')
+                img.src =
+                    'https://images.weserv.nl/?url=https://article.biliimg.com/bfs/article/7e35bd0acd457b1ef9c60295b007f3084d5ea8de.png'
+                img.style.width = '100px'
+                img.style.height = '100px'
+                img.className = 'loading-img'
+
+                const text = document.createElement('p')
+                text.innerHTML = '正在加载中...'
+                text.style.color = 'white'
+                text.style.fontSize = '20px'
+
+                const parcel = document.createElement('div')
+                parcel.className = 'parcel'
+                parcel.appendChild(img)
+                parcel.appendChild(text)
+                bg.appendChild(parcel)
+                document.querySelector('body').appendChild(bg)
+            }
+            show() {
+                document.querySelector('.parcel').style.display = 'block'
+                document.querySelector('.bg').style.display = 'flex'
+            }
+
+            hide() {
+                document.querySelector('.parcel').style.display = 'none'
+                document.querySelector('.bg').style.display = 'none'
+            }
+        }
+        const loading = new Load()
     </script>
 </html>

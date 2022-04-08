@@ -11168,13 +11168,13 @@ jQuery(document).ready(function ($) {
                 return null
             },
             isDesign(data) {
-                return new Promise((resolve,reject) => {
+                return new Promise((resolve, reject) => {
                     $.ajax({
                         cache: true,
                         type: 'POST',
                         url: 'http://42.192.45.188/api/psd/replace',
                         data: JSON.stringify(data),
-                        async:true,
+                        async: true,
                         dataType: 'JSON',
                         contentType: 'application/json',
                         success: function (res) {
@@ -17735,10 +17735,6 @@ jQuery(document).ready(function ($) {
                     document.querySelector('.bg').style.display = 'none'
                 }
 
-
-             
-
-
                 if (lumise.onload == undefined) lumise.cart.render()
 
                 /*
@@ -17753,9 +17749,6 @@ jQuery(document).ready(function ($) {
                 })
 
                 lumise.actions.add('checkout', lumise.cart.checkout)
-
-
-
 
                 // TODO 保存
                 $('#lumise-cart-action').on('click', function (e) {
@@ -18058,7 +18051,7 @@ jQuery(document).ready(function ($) {
 
                 $('#lumise-cart-action1').on('click', function (e) {
                     LoadShow()
-                    const baseImg = {}
+                    let baseImg = []
                     const ops = {
                         height: 4595,
                         include_base: false,
@@ -18068,14 +18061,22 @@ jQuery(document).ready(function ($) {
                     }
 
                     function down(canvas, ops, stage) {
+                        
+
                         var type = ops.type,
-                            include_base = ops.include_base,
-                            stage = lumise.stage(),
-                            canvas = stage.canvas
+                                include_base = ops.include_base,
+                                stage = stage,
+                                canvas = canvas;
+                                
+                        if (!canvas) {
+                            baseImg[stage.name] = null
+                            return
+                        }
+
                         if (type === 'png') {
                             var h = ops.height,
-                                w = ops.width
-                            var o = ops.orien,
+                                w = ops.width,
+                                o = ops.orien,
                                 bg = canvas.backgroundColor,
                                 multiplier = h / stage.limit_zone.height,
                                 mp =
@@ -18097,27 +18098,28 @@ jQuery(document).ready(function ($) {
                                 _canvas = document.createElement('canvas'),
                                 ctx = _canvas.getContext('2d'),
                                 img = new Image()
-    
+                            ctx.fillStyle = '#fff'
+                            ctx.fillRect(0, 0, canvas.width, canvas.height)
                             if (multiplier > 33) multiplier = 33
                             if (typeof ops.callback != 'function') {
                                 ops.callback = function (data) {
                                     lumise.fn.download(data, name + '.png')
                                 }
                             }
-    
+
                             if (o != 'landscape') {
                                 _canvas.width = w
                                 _canvas.height = h
-    
+
                                 img.onload = function () {
                                     var _w = this.width,
                                         _h = this.height
-    
+
                                     if (_w != w) {
                                         _h = (_h / _w) * w
                                         _w = w
                                     }
-    
+
                                     if (_h > h) {
                                         _w = (_w / _h) * h
                                         _h = h
@@ -18129,10 +18131,10 @@ jQuery(document).ready(function ($) {
                                         _w,
                                         _h
                                     )
-    
+
                                     lumise.f('false')
                                     ops.callback(_canvas.toDataURL())
-    
+
                                     delete _canvas
                                     delete ctx
                                 }
@@ -18261,20 +18263,20 @@ jQuery(document).ready(function ($) {
                     }
 
                     function createBaseImg(design) {
-                        const tpObj = {}
-                        Object.keys(lumise.data.stages).map((s) => {
-                            design.forEach((i) => {
-                                const tp = []
-                                i.stage.forEach((c) => {
-                                    tp.push(baseImg[c])
-                                })
-                                tpObj[s] = tp
+                        let arr = []
+                        design.forEach((i) => {
+                            let tpObj = {}
+                            i.stage.forEach((c, cid) => {
+                                tpObj[c] = {
+                                    [i['psdLayer'][cid]]: baseImg[c],
+                                }
                             })
+                            arr.push(tpObj)
                         })
-                        return tpObj
+                        return arr
                     }
 
-                    // 预览
+                    // TODO预览
                     let design = sessionStorage.getItem('design')
                     const previewImg = []
 
@@ -18286,23 +18288,28 @@ jQuery(document).ready(function ($) {
 
                         const tpObj = createBaseImg(design)
                         const designLen = design.length
-                        design.forEach((c) => {
-                            cur ++
-                            const tpa = []
-                            c.stage.forEach((i) => {
-                                tpa.push(tpObj[i][0])
+                        design.forEach((c, cid) => {
+                            const tm = Object.values(tpObj[cid])
+                            const psdLayer = []
+                            const imageUrls = []
+                            tm.forEach((i) => {
+                                for (const [key, value] of Object.entries(i)) {
+                                    psdLayer.push(key)
+                                    imageUrls.push(value)
+                                }
                             })
+
                             lumise.fn
                                 .isDesign({
                                     psdUrl: c.upload,
-                                    psdLayer: c.psdLayer,
-                                    imageUrls: tpa,
+                                    psdLayer,
+                                    imageUrls,
                                 })
                                 .then((resp) => {
                                     previewImg.push(resp.data)
                                     if (previewImg.length === designLen) {
                                         previewImg.length > 0 ? LoadHide() : ''
-                                        if (previewImg.length <= 0)return;
+                                        if (previewImg.length <= 0) return
                                         createPreviewNode(previewImg.reverse())
                                     }
                                 })

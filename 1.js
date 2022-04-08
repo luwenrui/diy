@@ -18033,9 +18033,6 @@ jQuery(document).ready(function ($) {
 
                     const data = JSON.stringify(cart_data[id])
                     const pid = 1
-
-                    console.log('save', 1)
-
                     $.ajax({
                         cache: true,
                         type: 'POST',
@@ -18289,7 +18286,6 @@ jQuery(document).ready(function ($) {
 
                         const tpObj = createBaseImg(design)
                         const designLen = design.length
-                        let cur = 0
                         design.forEach((c) => {
                             cur ++
                             const tpa = []
@@ -18304,10 +18300,10 @@ jQuery(document).ready(function ($) {
                                 })
                                 .then((resp) => {
                                     previewImg.push(resp.data)
-                                    if (cur === designLen) {
+                                    if (previewImg.length === designLen) {
                                         previewImg.length > 0 ? LoadHide() : ''
                                         if (previewImg.length <= 0)return;
-                                        createPreviewNode(previewImg)
+                                        createPreviewNode(previewImg.reverse())
                                     }
                                 })
                                 .catch((err) => {

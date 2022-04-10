@@ -10802,8 +10802,6 @@ jQuery(document).ready(function ($) {
                         el.after(g)
                         el.remove()
 
-                        return
-
                         var canvas = document.createElement('canvas'),
                             ctx = canvas.getContext('2d')
                         canvas.width = o._element.width * 5
@@ -10902,18 +10900,30 @@ jQuery(document).ready(function ($) {
                 callback(this.url2blob(dataURL))
             },
 
+            getToken(data = {}) {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        cache: true,
+                        type: 'POST',
+                        url: 'http://diy.cmygx.cn/index.php?s=/api/index/qiniuy',
+                        data,
+                        async: false,
+                        success: function (res, status) {
+                            resolve(res)
+                        },
+                        error: function () {
+                            console.log('系统超时，请重新操作!')
+                        },
+                    })
+                })
+            },
+
             productInit: function () {
-                function getQueryString(name) {
-                    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
-                    var r = window.location.search.substr(1).match(reg)
-                    if (r != null) return unescape(r[2])
-                    return null
-                }
                 const data = {
                     user_id: lumise.data.user_id,
-                    product_base: getQueryString('product_base'),
-                    is_child: getQueryString('is_child'),
-                    this_id: getQueryString('this_id'),
+                    product_base: lumise.fn.getQueryString('product_base'),
+                    is_child: lumise.fn.getQueryString('is_child'),
+                    this_id: lumise.fn.getQueryString('this_id'),
                 }
 
                 return new Promise((resolve, reject) => {
@@ -17526,11 +17536,67 @@ jQuery(document).ready(function ($) {
 
                 lumise.actions.add('checkout', lumise.cart.checkout)
 
+         
+                function putb64(u,data,pic) {
+                    const url  = `http://${u}`
+                    return   new Promise(resolve, reject => {
+                        var xhr = new XMLHttpRequest()
+                        xhr.open('POST', url, true)
+                        xhr.setRequestHeader(
+                            'Content-Type',
+                            'application/octet-stream'
+                        )
+                        xhr.setRequestHeader(
+                            'Authorization',
+                            `${data}`
+                        )
+                        xhr.send(pic)
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState == 4) {
+                                resolve( xhr.responseText)
+                            }else{
+                                reject()
+                            }
+                        }
+                    })
+                }
+
+                function sendSave(data) {
+                    $.ajax({
+                        cache: true,
+                        type: 'POST',
+                        url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax',
+                        data:JSON.stringify( {
+                            product_base: lumise.fn.getQueryString('product_base'),
+                            is_child: lumise.fn.getQueryString('is_child'),
+                            this_id: lumise.fn.getQueryString('this_id'),
+                            user_id: lumise.data.user_id,
+                            design_id: data.id,
+                            data
+                        }),
+                        async: true,
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        success: function (res, status) {
+                            console.log(res)
+                            console.log('save', 2)
+                        },
+                    })
+                }
+
                 // TODO 保存
                 $('#lumise-cart-action').on('click', function (e) {
+                    lumise.cart.add_cart()
+                    setTimeout(()=>{
+                        lumise.fn.getToken().then(({data,url}) => {
+                            putb64(url,data).then(res=>{
+                                console.log(res);
+                            })
+                        })
 
-
-               
+                        sendSave(lumise.data.$cart_design)
+                        console.log(lumise.data.$cart_design);
+                    },1000)
                 })
 
                 $('#lumise-cart-action1').on('click', function (e) {
@@ -17806,6 +17872,10 @@ jQuery(document).ready(function ($) {
             },
 
             add_cart: function (e) {
+
+
+                let curIdx = 0
+
                 if (lumise.fn.url_var('product_cms', '') == '0') {
                     alert('Could not add to cart, missing product_cms id')
                     return
@@ -17816,11 +17886,7 @@ jQuery(document).ready(function ($) {
                     invalids = [],
                     inv = null,
                     attrs = $('.lumise-cart-attributes')
-                // console.log(attrs);exit;
-                /*
-                 *	Check cart_design empty
-                 */
-
+        
                 Object.keys(lumise.data.stages).map(function (s) {
                     if (typeof lumise.data.stages[s] !== 'undefined') {
                         if (lumise.data.stages[s].canvas !== undefined) {
@@ -17868,9 +17934,6 @@ jQuery(document).ready(function ($) {
                     return false
                 }
 
-                /*
-                 *	Check printing
-                 */
 
                 if (
                     lumise.data.printings.length > 0 &&
@@ -17976,11 +18039,7 @@ jQuery(document).ready(function ($) {
                     }
                 } catch (ex) {}
 
-                /*
-                 *
-                 *	END OF VALID OPTIONS
-                 *
-                 */
+
 
                 var cart_design = lumise.fn.export('cart'),
                     start_render = 0,
@@ -17996,7 +18055,7 @@ jQuery(document).ready(function ($) {
                             })
 
                             lumise.get.el('zoom').val('100').trigger('input')
-
+                            console.log(1);
                             lumise.fn.uncache_large_images(function () {
                                 var psize = lumise.get.size()
                                 lumise.f(false)
@@ -18015,11 +18074,7 @@ jQuery(document).ready(function ($) {
                                             null,
                                             true
                                         )
-                                        // console.log(1)
-                                        // console.log(data)
-                                        // console.log(1)
                                         cart_design.stages[s].print_file = data
-                                        // console.log(Object.keys(lumise.data.stages)[start_render])
                                         if (
                                             Object.keys(lumise.data.stages)[
                                                 start_render
@@ -18032,7 +18087,11 @@ jQuery(document).ready(function ($) {
                                             )
                                         } else {
                                             lumise.active_stage(current_stage)
-                                            console.log(cart_design)
+                                            curIdx++
+                                            if (curIdx === 1) {
+                                                lumise.data.$cart_design = cart_design
+                                            }
+
                                             return lumise.cart.process_add_cart(
                                                 cart_design
                                             )
@@ -18125,8 +18184,8 @@ jQuery(document).ready(function ($) {
                             cart_data[id].stages++
                             if (cart_data[id].screenshot === '') {
                                 cart_data[id].screenshot =
-                                lumise.data.stages[s].image
-                            } 
+                                    lumise.data.stages[s].image
+                            }
                         })
 
                         Object.keys(lumise.cart.data.options).map(function (i) {
@@ -18139,24 +18198,25 @@ jQuery(document).ready(function ($) {
                             lumise.cart.qty = 1
 
                         cart_data = lumise.apply_filters('cart_data', cart_data)
-                        
+
                         cart_design = lumise.apply_filters(
                             'cart_design',
                             cart_design
                         )
 
-
                         var cmy_data = JSON.stringify(cart_data)
                         localStorage.setItem('LUMISE-CART-DATA', cmy_data)
                         cart_design.id = id
+
+    
                         lumise.indexed.save([cart_design], 'cart')
 
                         delete cart_design
                         delete cart_data
 
-                        lumise.render.cart_confirm()
-                        lumise.render.cart_change()
-                        lumise.actions.do('add-cart', id)
+                        // lumise.render.cart_confirm()
+                        // lumise.render.cart_change()
+                        // lumise.actions.do('add-cart', id)
 
                         return true
                     },
@@ -19447,19 +19507,15 @@ jQuery(document).ready(function ($) {
             },
 
             do_checkout: function (e) {
-                // alert(1);exit;
-                ////////////////debugger;
+           
                 if (e !== undefined && typeof e.preventDefault == 'function')
                     e.preventDefault()
 
                 var donow = function () {
                     try {
-                        ////////////////debugger;
                         var data1 = JSON.parse(
                             localStorage.getItem('LUMISE-CART-DATA')
                         )
-
-                        //获取数据--始
                         $.ajax({
                             cache: true,
                             type: 'POST',
@@ -19476,20 +19532,11 @@ jQuery(document).ready(function ($) {
                                 } else {
                                     data = JSON.parse(data || '{}')
                                 }
-
-                                //     },
-                                //     error: function() {
-                                //        // alert('Error: could not checkout this time');
-                                //        alert('系统超时，请重新操作!');
-                                //     }
-                                // });
-                                //获取数据--终
-
                                 var count = 0,
                                     get_design = function (res) {
                                         count++
                                         data[res.id].design = res
-                                        // console.log(lumise.apply_filter('custom-checkout',false))
+
                                         if (
                                             count === Object.keys(data).length
                                         ) {
@@ -19507,8 +19554,6 @@ jQuery(document).ready(function ($) {
                                                     )
                                                 )
                                             } else {
-                                                //到这里面11
-                                                // console.log(lumise.apply_filters('checkout', data));exit;
                                                 lumise.actions.do(
                                                     'checkout',
                                                     lumise.apply_filters(

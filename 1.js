@@ -4616,6 +4616,7 @@ jQuery(document).ready(function ($) {
                                 }
 
                                 break
+                            // TODO 查看
                             case 'clear':
                                 lumise.tools.clearAll()
                                 lumise.fn.notice(lumise.i(29), 'success')
@@ -10183,7 +10184,7 @@ jQuery(document).ready(function ($) {
             },
 
             // TODO 打印下载
-            download_design: function (ops) {       
+            download_design: function (ops) {
                 Object.keys(lumise.data.stages).map(function (s, i) {
                     down(
                         lumise.data.stages[s].canvas,
@@ -10253,7 +10254,6 @@ jQuery(document).ready(function ($) {
                             var h = ops.height,
                                 w = ops.width
 
-                         
                             var o = ops.orien,
                                 bg = canvas.backgroundColor,
                                 multiplier = h / stage.limit_zone.height,
@@ -10278,7 +10278,7 @@ jQuery(document).ready(function ($) {
                                 img = new Image()
 
                             if (multiplier > 33) multiplier = 33
-                           
+
                             if (typeof ops.callback != 'function') {
                                 ops.callback = function (data) {
                                     lumise.fn.download(data, name + '.png')
@@ -10288,9 +10288,8 @@ jQuery(document).ready(function ($) {
                             if (o != 'landscape') {
                                 _canvas.width = w
                                 _canvas.height = h
-                              
+
                                 img.onload = function () {
-                             
                                     var _w = this.width,
                                         _h = this.height
 
@@ -10303,7 +10302,7 @@ jQuery(document).ready(function ($) {
                                         _w = (_w / _h) * h
                                         _h = h
                                     }
-                                
+
                                     ctx.drawImage(
                                         this,
                                         (w - _w) / 2,
@@ -10320,7 +10319,6 @@ jQuery(document).ready(function ($) {
                                     delete ctx
                                 }
 
-                
                                 img.src = data
                             } else {
                                 multiplier =
@@ -10380,7 +10378,7 @@ jQuery(document).ready(function ($) {
                                     delete _canvas
                                     delete ctx
                                 }
-                            
+
                                 img.src = data
                             }
 
@@ -10396,7 +10394,6 @@ jQuery(document).ready(function ($) {
                     }
                 }
             },
-            save:function(){},
             download: function (data, name) {
                 lumise.fn.dataURL2Blob(data, function (blob) {
                     var a = $(
@@ -17531,301 +17528,9 @@ jQuery(document).ready(function ($) {
 
                 // TODO 保存
                 $('#lumise-cart-action').on('click', function (e) {
-                    function getQueryString(name) {
-                        var reg = new RegExp(
-                            '(^|&)' + name + '=([^&]*)(&|$)',
-                            'i'
-                        )
-                        var r = window.location.search.substr(1).match(reg)
-                        if (r != null) return unescape(r[2])
-                        return null
-                    }
 
-                    const base64Arr = {
-                        product_base: getQueryString('product_base'),
-                        is_child: getQueryString('is_child'),
-                        this_id: [],
-                        img: [],
-                    }
-                    const ops = {
-                        height: 4595,
-                        include_base: false,
-                        orien: 'portrait',
-                        type: 'png',
-                        width: 4200,
-                    }
 
-                    Object.keys(lumise.data.stages).map(function (s, i) {
-                        // 		if (lumise.data.stages[s].canvas) {
-                        // 			down(lumise.data.stages[s].canvas, ops, lumise.data.stages[s])
-                        // 			base64Arr.this_id.push(s)
-                        // 		}
-                    })
-
-                    // function down(canvas, ops, stage) {
-                    //     var type = ops.type,
-                    //         include_base = ops.include_base,
-                    //         stage = stage,
-                    //         canvas = canvas,
-                    //         wcf =
-                    //             'menubar=0,status=0,titlebar=0,toolbar=0,location=0,directories=0',
-                    //         ex = {
-                    //             format: 'png',
-                    //             multiplier: 2 /**(2/window.devicePixelRatio)*/,
-                    //             width: stage.product.width,
-                    //             height: stage.product.height,
-                    //             top:
-                    //                 stage.product.top -
-                    //                 stage.product.height / 2,
-                    //             left:
-                    //                 stage.product.left -
-                    //                 stage.product.width / 2,
-                    //         }
-
-                    //     switch (type) {
-                    //         case 'svg':
-                    //             var svg_obj = lumise.fn.export_svg(include_base)
-
-                    //             if (svg_obj !== null) {
-                    //                 lumise.fn.download(
-                    //                     'data:image/svg+xml;base64,' +
-                    //                         btoa(svg_obj),
-                    //                     name + '.svg'
-                    //                 )
-
-                    //                 delete svg_obj
-                    //             } else lumise.fn.notice('Error on render SVG', 'error')
-
-                    //             break
-                    //         case 'png':
-                    //             var h = ops.height,
-                    //                 w = ops.width
-                    //             var o = ops.orien,
-                    //                 bg = canvas.backgroundColor,
-                    //                 multiplier = h / stage.limit_zone.height,
-                    //                 mp =
-                    //                     o != 'landscape'
-                    //                         ? multiplier
-                    //                         : multiplier *
-                    //                           (canvas.width / canvas.height),
-                    //                 dops = {
-                    //                     stage: stage,
-                    //                     top: stage.limit_zone.top,
-                    //                     left: stage.limit_zone.left,
-                    //                     width: stage.limit_zone.width,
-                    //                     height: stage.limit_zone.height,
-                    //                     multiplier: mp, //Math.ceil(mp),
-                    //                     is_bg:
-                    //                         include_base === true
-                    //                             ? 'full'
-                    //                             : false,
-                    //                 },
-                    //                 data = lumise.tools.toImage(dops),
-                    //                 _canvas = document.createElement('canvas'),
-                    //                 ctx = _canvas.getContext('2d'),
-                    //                 img = new Image()
-
-                    //             if (multiplier > 33) multiplier = 33
-                    //             if (typeof ops.callback != 'function') {
-                    //                 ops.callback = function (data) {
-                    //                     lumise.fn.download(data, name + '.png')
-                    //                 }
-                    //             }
-
-                    //             if (o != 'landscape') {
-                    //                 _canvas.width = w
-                    //                 _canvas.height = h
-
-                    //                 img.onload = function () {
-                    //                     // console.log(this.width)
-                    //                     // console.log(this.height)
-                    //                     // console.log(this)
-                    //                     var _w = this.width,
-                    //                         _h = this.height
-
-                    //                     if (_w != w) {
-                    //                         _h = (_h / _w) * w
-                    //                         _w = w
-                    //                     }
-
-                    //                     if (_h > h) {
-                    //                         _w = (_w / _h) * h
-                    //                         _h = h
-                    //                     }
-                    //                     ctx.drawImage(
-                    //                         this,
-                    //                         (w - _w) / 2,
-                    //                         (h - _h) / 2,
-                    //                         _w,
-                    //                         _h
-                    //                     )
-
-                    //                     lumise.f('false')
-
-                    //                     ops.callback(_canvas.toDataURL())
-
-                    //                     delete _canvas
-                    //                     delete ctx
-                    //                 }
-
-                    //                 // 			console.log(data)
-                    //                 // 			img.src = data;
-
-                    //                 base64Arr.img.push(data)
-                    //             } else {
-                    //                 multiplier =
-                    //                     w / stage.limit_zone.width < 33
-                    //                         ? h / stage.limit_zone.width
-                    //                         : 33
-
-                    //                 var data = lumise.tools.toImage({
-                    //                     stage: stage,
-                    //                     width: stage.limit_zone.width,
-                    //                     left: stage.limit_zone.left,
-                    //                     multiplier: mp,
-                    //                     is_bg:
-                    //                         include_base === true
-                    //                             ? 'full'
-                    //                             : false,
-                    //                 })
-
-                    //                 _canvas.width = w
-                    //                 _canvas.height = h
-
-                    //                 img.onload = function () {
-                    //                     ctx.translate(
-                    //                         _canvas.width / 2,
-                    //                         _canvas.height / 2
-                    //                     )
-                    //                     ctx.rotate(Math.PI / 2)
-
-                    //                     var ih = w,
-                    //                         iw = w * (this.width / this.height)
-
-                    //                     if (iw > w) {
-                    //                         ih = ih * (w / iw)
-                    //                         iw = w
-                    //                     }
-
-                    //                     if (ih > h) {
-                    //                         iw = iw * (h / ih)
-                    //                         ih = h
-                    //                     }
-
-                    //                     ctx.drawImage(
-                    //                         this,
-                    //                         -iw / 2,
-                    //                         -ih / 2,
-                    //                         iw,
-                    //                         ih
-                    //                     )
-
-                    //                     ctx.rotate(-Math.PI / 2)
-                    //                     ctx.translate(
-                    //                         -_canvas.width / 2,
-                    //                         -_canvas.height / 2
-                    //                     )
-
-                    //                     lumise.f('false')
-                    //                     ops.callback(_canvas.toDataURL())
-
-                    //                     delete _canvas
-                    //                     delete ctx
-                    //                 }
-                    //                 img.src = data
-                    //                 base64Arr.img.push({ data })
-                    //             }
-                    //             break
-                    //     }
-                    // }
-
-                    // 	console.log(base64Arr)
-                    // 	$.ajax({
-                    // 		cache: true,
-                    // 		type: 'POST',
-                    // 		url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax_get_psd_to_png',
-                    // 		data: base64Arr,
-                    // 		async: false,
-                    // 		success: function (res, status) {
-                    // 			if(res.state == 1){
-
-                    // 			}
-                    // 			console.log(res)
-                    // 		},
-                    // 	})
-
-                    const design_id = lumise.fn.export('cart').id
-                    const id = lumise.fn.url_var(
-                        'cart',
-                        new Date().getTime().toString(36).toUpperCase()
-                    )
-
-                    const cart_data = {}
-                    cart_data[id] = {
-                        id: id,
-                        screenshot: '',
-                        stages: 0,
-                        name: lumise.ops.product_data.name,
-                        updated: new Date().getTime(),
-                        product: lumise.ops.product_data.id,
-                        product_cms: lumise.ops.product_data.product,
-                        printing: lumise.cart.printing.current,
-                        printings_cfg: lumise.data.printings_cfg,
-                        options: $.extend(true, {}, lumise.cart.data.options),
-                        attributes: $.extend(
-                            true,
-                            {},
-                            lumise.ops.product_data.attributes
-                        ),
-                        price_total: lumise.cart.get_price(),
-                        extra: $.extend(true, {}, lumise.cart.price.extra),
-                        states_data: $.extend(
-                            true,
-                            {},
-                            lumise.cart.printing.states_data
-                        ),
-                        variation: lumise.data.variation,
-                        template: {
-                            stages: lumise.cart.template,
-                            price: lumise.cart.price.template,
-                        },
-                        system_version: lumise.data.version,
-                    }
-
-                    var r = lumise.data.stages
-
-                    Object.keys(r).map(function (s) {
-                        cart_data[id].stages++
-                        if (cart_data[id].screenshot === '') {
-                            cart_data[id].screenshot =
-                                lumise.data.stages[s].image
-                        } else {
-                        }
-                    })
-
-                    const data = JSON.stringify(cart_data[id])
-                    const pid = 1
-                    $.ajax({
-                        cache: true,
-                        type: 'POST',
-                        url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax',
-                        data: {
-                            product_base: getQueryString('product_base'),
-                            is_child: getQueryString('is_child'),
-                            this_id: getQueryString('this_id'),
-                            user_id: lumise.data.user_id,
-                            data,
-                            design_id: getQueryString('product_base'),
-                        },
-                        async: false,
-                        success: function (res, status) {
-                            console.log(res)
-                            console.log('save', 2)
-                        },
-                    })
-                    lumise.cart.add_cart('button add cart click')
-                    // lumise.cart.add_cart('button add cart click');
-                    // e.preventDefault();
+               
                 })
 
                 $('#lumise-cart-action1').on('click', function (e) {
@@ -17840,12 +17545,10 @@ jQuery(document).ready(function ($) {
                     }
 
                     function down(canvas, ops, stage) {
-                        
-
                         var type = ops.type,
-                                include_base = ops.include_base,
-                                stage = stage,
-                                canvas = canvas;
+                            include_base = ops.include_base,
+                            stage = stage,
+                            canvas = canvas
                         if (!canvas) {
                             baseImg[stage.name] = null
                             return
@@ -18353,7 +18056,6 @@ jQuery(document).ready(function ($) {
 
             process_add_cart: function (cart_design) {
                 lumise.f(false)
-
                 var values = [],
                     cmy_data = '',
                     p_id = cart_design['id'],
@@ -18418,19 +18120,13 @@ jQuery(document).ready(function ($) {
                             system_version: lumise.data.version,
                         }
                         var r = lumise.data.stages
-                        console.log(cart_data[id])
 
                         Object.keys(r).map(function (s) {
                             cart_data[id].stages++
-                            console.log(cart_data[id].screenshot)
                             if (cart_data[id].screenshot === '') {
-                                // console.log(lumise.data.stages[s].image)
                                 cart_data[id].screenshot =
-                                    lumise.data.stages[s].image
-                                // console.log('1'+lumise.data.stages[s].image)
-                            } else {
-                                // console.log('2'+lumise.data.stages[s].image)
-                            }
+                                lumise.data.stages[s].image
+                            } 
                         })
 
                         Object.keys(lumise.cart.data.options).map(function (i) {
@@ -18443,163 +18139,14 @@ jQuery(document).ready(function ($) {
                             lumise.cart.qty = 1
 
                         cart_data = lumise.apply_filters('cart_data', cart_data)
-                        //////////debugger
-                        // console.log(cart_data)
-                        // console.log(3,cart_design);
+                        
                         cart_design = lumise.apply_filters(
                             'cart_design',
                             cart_design
                         )
-                        // console.log(2,cart_design);
-                        //这里写入
+
+
                         var cmy_data = JSON.stringify(cart_data)
-                        // alert(lumise.data.user_id)
-                        var user_id = lumise.data.user_id
-
-                        function getQueryString(name) {
-                            var reg = new RegExp(
-                                '(^|&)' + name + '=([^&]*)(&|$)',
-                                'i'
-                            )
-                            var r = window.location.search.substr(1).match(reg)
-                            if (r != null) return unescape(r[2])
-                            return null
-                        }
-                        // 		//存入数据库 -- 始
-                        // 		$.ajax({
-                        // 			cache: true,
-                        // 			type: "POST",
-                        // 			url		:	 "http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax",
-                        // 			data	:	 {
-                        // 			user_id : lumise.data.user_id,
-                        // 			data : JSON.stringify(cart_data[id]),
-                        // // 			design_id : id	,
-                        // 			design_id : p_id	,
-                        // // 			p_id : p_id	,
-                        //                         product_base: getQueryString('product_base'),
-                        //                         is_child : getQueryString('is_child'),
-                        //                         design_id : 2,
-                        // 			},
-                        // 			async: false,
-                        // 			success: function (res, status) {
-                        // 			    console.log(res)
-                        // 			},
-                        // 			error: function() {
-                        // 				// alert('Error: could not checkout this time');
-                        // 				alert('系统超时，请重新操作!');
-                        // 			}
-                        // 		});
-
-                        // 	function getQueryString(name) {
-                        // 		var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
-                        // 		var r = window.location.search.substr(1).match(reg)
-                        // 		if (r != null) return unescape(r[2])
-                        // 		return null
-                        // 	}
-
-                        //                 function getQueryString(name) {
-                        //                         var reg = new RegExp(
-                        //                             '(^|&)' + name + '=([^&]*)(&|$)',
-                        //                             'i'
-                        //                         )
-                        //                         var r = window.location.search.substr(1).match(reg)
-                        //                         if (r != null) return unescape(r[2])
-                        //                         return null
-                        //                 }
-                        //                 const design_id = lumise.fn.export('cart').id
-                        //                 const id = lumise.fn.url_var(
-                        //                     'cart',
-                        //                     new Date().getTime().toString(36).toUpperCase()
-                        //                 )
-
-                        //                 const cart_data = {}
-                        //                 cart_data[id] = {
-                        //                     id: id,
-                        //                     screenshot: '',
-                        //                     stages: 0,
-                        //                     name: lumise.ops.product_data.name,
-                        //                     updated: new Date().getTime(),
-                        //                     product: lumise.ops.product_data.id,
-                        //                     product_cms: lumise.ops.product_data.product,
-                        //                     printing: lumise.cart.printing.current,
-                        //                     printings_cfg: lumise.data.printings_cfg,
-                        //                     options: $.extend(true, {}, lumise.cart.data.options),
-                        //                     attributes: $.extend(
-                        //                         true,
-                        //                         {},
-                        //                         lumise.ops.product_data.attributes
-                        //                     ),
-                        //                     price_total: lumise.cart.get_price(),
-                        //                     extra: $.extend(true, {}, lumise.cart.price.extra),
-                        //                     states_data: $.extend(
-                        //                         true,
-                        //                         {},
-                        //                         lumise.cart.printing.states_data
-                        //                     ),
-                        //                     variation: lumise.data.variation,
-                        //                     template: {
-                        //                         stages: lumise.cart.template,
-                        //                         price: lumise.cart.price.template,
-                        //                     },
-                        //                     system_version: lumise.data.version,
-                        //                 }
-
-                        //                 var r = lumise.data.stages
-
-                        //                 Object.keys(r).map(function (s) {
-                        //                     cart_data[id].stages++
-                        //                     if (cart_data[id].screenshot === '') {
-                        //                         cart_data[id].screenshot =
-                        //                             lumise.data.stages[s].image
-                        //                     } else {
-                        //                     }
-                        //                 })
-
-                        //                 const data = JSON.stringify(cart_data[id])
-                        //                 const pid = 1
-
-                        //                 console.log('save', 1)
-
-                        //                 // TODO 添加
-                        //                 $.ajax({
-                        //                     cache: true,
-                        //                     type: 'POST',
-                        //                     url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax',
-                        //                     data: {
-                        //                         product_base: getQueryString('product_base'),
-                        //                         is_child: getQueryString('is_child'),
-                        //                         this_id: getQueryString('this_id'),
-                        //                         user_id: lumise.data.user_id,
-                        //                         data,
-                        //                         design_id: getQueryString('product_base'),
-                        //                     },
-                        //                     async: false,
-                        //                     success: function (res, status) {
-                        //                         console.log(res)
-                        //                         console.log('save', 2)
-                        //                     },
-                        //                 })
-
-                        // 	$.ajax({
-                        // 		cache: true,
-                        // 		type: 'POST',
-                        // 		url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category/ajax',
-                        // 		data: {
-                        //         			  	product_id: getQueryString('product_base'),
-                        // 		    is_child: getQueryString('is_child'),
-                        //                         user_id :lumise.data.user_id,
-                        //                         data:JSON.stringify(cart_data[id]),
-                        //                         design_id:p_id,
-                        // 		},
-                        // 		async: false,
-                        // 		success: function (res, status) {
-                        // 		    console.log(res)
-                        // 		    console.log(22)
-                        // 		},
-                        // 	})
-
-                        // 	console.log(cmy_data)
-
                         localStorage.setItem('LUMISE-CART-DATA', cmy_data)
                         cart_design.id = id
                         lumise.indexed.save([cart_design], 'cart')

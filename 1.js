@@ -4588,7 +4588,6 @@ jQuery(document).ready(function ($) {
 
                     fileNav: function (e) {
                         var func = this.getAttribute('data-func')
-                        //////////////////////debugger
                         switch (func) {
                             case 'new':
                                 lumise.design.my_designs['new']()
@@ -10184,7 +10183,7 @@ jQuery(document).ready(function ($) {
             },
 
             // TODO 打印下载
-            download_design: function (ops) {
+            download_design: function (ops) {       
                 Object.keys(lumise.data.stages).map(function (s, i) {
                     down(
                         lumise.data.stages[s].canvas,
@@ -10254,12 +10253,7 @@ jQuery(document).ready(function ($) {
                             var h = ops.height,
                                 w = ops.width
 
-                            // if (window.devicePixelRatio == 3 && h*w >= 16777216) {
-                            // 	let r = 16777216/h*w;
-                            // 	h = h*r;
-                            // 	w = w*r;
-                            // };
-                            // console.log(stage.limit_zone.width, stage.limit_zone.height,ops.orien);
+                         
                             var o = ops.orien,
                                 bg = canvas.backgroundColor,
                                 multiplier = h / stage.limit_zone.height,
@@ -10284,7 +10278,7 @@ jQuery(document).ready(function ($) {
                                 img = new Image()
 
                             if (multiplier > 33) multiplier = 33
-                            //////////////////////debugger
+                           
                             if (typeof ops.callback != 'function') {
                                 ops.callback = function (data) {
                                     lumise.fn.download(data, name + '.png')
@@ -10294,12 +10288,9 @@ jQuery(document).ready(function ($) {
                             if (o != 'landscape') {
                                 _canvas.width = w
                                 _canvas.height = h
-                                // console.log(w)
-                                // console.log(h)
+                              
                                 img.onload = function () {
-                                    // console.log(this.width)
-                                    // console.log(this.height)
-                                    // console.log(this)
+                             
                                     var _w = this.width,
                                         _h = this.height
 
@@ -10312,11 +10303,7 @@ jQuery(document).ready(function ($) {
                                         _w = (_w / _h) * h
                                         _h = h
                                     }
-                                    // console.log(w)
-                                    // console.log(_w)
-                                    // console.log(h)
-                                    // console.log(_h)
-                                    // ctx.drawImage(this, 5, 6, 7, 8);
+                                
                                     ctx.drawImage(
                                         this,
                                         (w - _w) / 2,
@@ -10333,8 +10320,7 @@ jQuery(document).ready(function ($) {
                                     delete ctx
                                 }
 
-                                //debugger;
-                                // console.log(data);exit;
+                
                                 img.src = data
                             } else {
                                 multiplier =
@@ -10394,7 +10380,7 @@ jQuery(document).ready(function ($) {
                                     delete _canvas
                                     delete ctx
                                 }
-                                // console.log(data)
+                            
                                 img.src = data
                             }
 
@@ -10407,217 +10393,10 @@ jQuery(document).ready(function ($) {
                             )
 
                             break
-                        // case 'pdf':
-                        //
-                        // 	lumise.tools.discard();
-                        //
-                        // 	var stages = Object.keys(lumise.data.stages),
-                        // 		inactive = stages.filter(function(s) {
-                        // 			return lumise.data.stages[s].canvas === undefined;
-                        // 		}),
-                        // 		data = [],
-                        // 		ratio = [],
-                        // 		fonts = [],
-                        // 		do_export = function() {
-                        //
-                        // 			var exp = lumise.fn.export_svg(include_base, true),
-                        // 				stage = lumise.stage();
-                        //
-                        // 			data.push([exp[0], lumise.get.size()]);
-                        //
-                        // 			if (!lumise.get.el('print-base').prop('checked'))
-                        // 				ratio.push((stage.edit_zone.width/stage.edit_zone.height).toFixed(5));
-                        // 			else ratio.push((stage.product.width/stage.product.height).toFixed(5));
-                        //
-                        // 			exp[1].map(function(f) {
-                        // 				if (fonts.indexOf(f) === -1)
-                        // 					fonts.push(f);
-                        // 			});
-                        //
-                        // 		},
-                        // 		do_activ = function(i) {
-                        //
-                        // 			lumise.active_stage(stages[i], function() {
-                        //
-                        // 				do_export();
-                        //
-                        // 				if (stages[i+1] !== undefined)
-                        // 					do_activ(i+1);
-                        // 				else
-                        // 					do_upload(data, fonts);
-                        // 			});
-                        //
-                        // 		},
-                        // 		do_upload = function(data, fonts) {
-                        //
-                        // 			var pdf_render = window.open(
-                        // 				lumise.data.ajax+'&action=pdf&nonce=LUMISE-SECURITY:'+
-                        // 				lumise.data.nonce+(fonts.length > 0 ? '&fonts='+encodeURIComponent(fonts.join('|')) : '')+
-                        // 				(lumise.get.el('print-cropmarks').prop('checked') ? '&cropmarks=1' : '')
-                        // 			);
-                        //
-                        // 			lumise.f(false);
-                        //
-                        // 			if (pdf_render === null) {
-                        // 				alert('Please allow popup on this site');
-                        // 				return;
-                        // 			};
-                        //
-                        // 			pdf_render.addEventListener('load', function() {
-                        // 				this.window.renderPDF(data, URL);
-                        // 			});
-                        // 			return;
-                        //
-                        //
-                        //
-                        // 			lumise.f('Start uploading..');
-                        //
-                        // 			var boundary = "---------------------------7da24f2e50046";
-                        // 			var body = '--' + boundary + '\r\n'
-                        // 			         + 'Content-Disposition: form-data; name="file";'
-                        // 			         + 'filename="temp.txt"\r\n'
-                        // 			         + 'Content-type: plain/text\r\n\r\n'
-                        // 			         + data.join('<!-----Lumise break page------>') + '\r\n'+ '--'+ boundary + '--';
-                        //
-                        // 			$.ajax({
-                        // 			    contentType: "multipart/form-data; boundary="+boundary,
-                        // 			    data	:	 body,
-                        // 			    type	:	 "POST",
-                        // 			    url		:	 lumise.data.ajax+
-                        // 			    	 '&action=render_pdf'+
-                        // 			    	 '&ajax=frontend'+
-                        // 			    	 '&name='+encodeURIComponent($('#lumise-product header name t').text())+
-                        // 			    	 '&nonce=LUMISE-SECURITY:'+lumise.data.nonce,
-                        // 			    xhr		:	 function() {
-                        // 				    var xhr = new window.XMLHttpRequest();
-                        // 				    xhr.upload.addEventListener("progress", function(evt){
-                        // 				      if (evt.lengthComputable) {
-                        // 				        var percentComplete = evt.loaded / evt.total;
-                        // 				        if (percentComplete < 1)
-                        // 				       		// $('div#LumiseDesign').attr({'data-msg': parseInt(percentComplete*100)+'% upload complete'});
-                        // 				       		$('div#LumiseDesign').attr({'data-msg': '下载完成'+parseInt(percentComplete*100)+'%'});
-                        // 				       	else{
-                        // 							// $('div#LumiseDesign').attr({'data-msg': lumise.i(159)});
-                        // 						}
-                        // 				      }
-                        // 				    }, false);
-                        // 				    return xhr;
-                        // 				},
-                        // 			    success	:	 function (res, status) {
-                        // 				    lumise.f(false);
-                        // 				    if (res.indexOf('user_data') !== 0 || res.indexOf('.pdf') === -1) {
-                        // 					    alert(res);
-                        // 					    return;
-                        // 				    }
-                        // 				    var a = document.createElement('a');
-                        // 					a.download = name+'.pdf';
-                        // 					a.href = lumise.data.upload_url+res;
-                        // 					a.click();
-                        // 					delete a;
-                        //
-                        // 			    }
-                        // 			});
-                        // 		};
-                        //
-                        // 	if (ops.full === undefined || ops.full !== true) {
-                        // 		do_export();
-                        // 		return do_upload(data, fonts);
-                        // 	};
-                        //
-                        // 	if (inactive.length > 0) {
-                        // 		lumise.active_stage(inactive[0], function(){
-                        // 			lumise.fn.download_design(ops);
-                        // 		});
-                        // 		return;
-                        // 	};
-                        //
-                        // 	lumise.f('Start rendering..');
-                        //
-                        // 	do_activ(0);
-                        //
-                        // break;
-                        //
-                        // case 'json':
-                        //
-                        // 	var data = {
-                        // 		stages : {},
-                        // 		type : lumise.data.type,
-                        // 		updated: new Date().getTime()/1000,
-                        // 		name : lumise.data.name
-                        // 	}, sts = [];
-                        //
-                        // 	//ONLY EXPORT THE CURENT STAGE FOR TEMPLATE PURPOSE (.active)
-                        //
-                        // 	lumise.get.el('stage-nav').find('li[data-stage].active').each(function(){
-                        //
-                        // 		var s = this.getAttribute('data-stage'),
-                        // 			stage = lumise.data.stages[s],
-                        // 			objs, padding;
-                        //
-                        // 		if (stage.canvas) {
-                        //
-                        // 			data.stages['lumise'] = {
-                        // 				data 		: lumise.tools.export(stage),
-                        // 				screenshot	: lumise.tools.toImage({stage: stage}),
-                        // 				edit_zone	: stage.edit_zone,
-                        // 				image		: stage.image,
-                        // 				overlay		: stage.overlay,
-                        // 				updated		: data.updated
-                        // 			};
-                        //
-                        // 			objs = stage.canvas.getObjects().filter(function(o) {
-                        // 				if (o.evented === true) {
-                        // 					return true;
-                        // 				} else return false;
-                        // 			});
-                        //
-                        // 			if (objs.length > 0) {
-                        // 				var group = new fabric.Group(objs, {
-                        // 					originX: 'center',
-                        // 					originY: 'center'
-                        // 				});
-                        // 				padding = [
-                        // 					(group.left-(group.width/2)-stage.limit_zone.left)/stage.limit_zone.width,
-                        // 					(group.top-(group.height/2)-stage.limit_zone.top)/stage.limit_zone.height
-                        // 				];
-                        // 				stage.canvas._activeObject = null;
-                        // 				stage.canvas.setActiveGroup(group.setCoords()).renderAll();
-                        // 				stage.canvas.discardActiveGroup();
-                        // 			} else {
-                        // 				padding = [0, 0];
-                        // 			};
-                        //
-                        // 			data.stages['lumise'].padding = padding;
-                        // 			sts.push(s);
-                        //
-                        // 		} else if ( stage.data ) {
-                        //
-                        // 			data.stages['lumise'] = {
-                        // 				data 		: stage.data,
-                        // 				screenshot	: '',
-                        // 				edit_zone	: '',
-                        // 				image		: '',
-                        // 				overlay		: stage.overlay,
-                        // 				updated		: stage.data.updated,
-                        // 				padding		: [0, 0]
-                        // 			};
-                        //
-                        // 			sts.push(s);
-                        //
-                        // 		}
-                        //
-                        // 	});
-                        //
-                        // 	lumise.fn.download(
-                        // 		'data:application/octet-stream;charset=utf-16le;base64,'+btoa(JSON.stringify(data).replace(/[\u{0080}-\u{FFFF}]/gu,(v) => {return encodeURIComponent(v);})),
-                        // 		name+'.lumi'
-                        // 	);
-                        //
-                        // break;
                     }
                 }
             },
-
+            save:function(){},
             download: function (data, name) {
                 lumise.fn.dataURL2Blob(data, function (blob) {
                     var a = $(
@@ -18067,7 +17846,6 @@ jQuery(document).ready(function ($) {
                                 include_base = ops.include_base,
                                 stage = stage,
                                 canvas = canvas;
-                                
                         if (!canvas) {
                             baseImg[stage.name] = null
                             return

@@ -10942,7 +10942,6 @@ jQuery(document).ready(function ($) {
                             resolve(res.data)
                         },
                         error: function () {
-                            // alert('Error: could not checkout this time');
                             alert('系统超时，请重新操作!')
                         },
                     })
@@ -17632,8 +17631,63 @@ jQuery(document).ready(function ($) {
                     }, 1000)
                 })
 
+
+                function dealImage(base64, w, callback) {
+                    var newImage = new Image();
+                    var quality = 0.6;    //压缩系数0-1之间
+                    newImage.src = base64;
+                    newImage.setAttribute("crossOrigin", 'Anonymous');	//url为外域时需要
+                    var imgWidth, imgHeight;
+                    newImage.onload = function () {
+                        imgWidth = this.width;
+                        imgHeight = this.height;
+                        var canvas = document.createElement("canvas");
+                        var ctx = canvas.getContext("2d");
+                        if (Math.max(imgWidth, imgHeight) > w) {
+                            if (imgWidth > imgHeight) {
+                                canvas.width = w;
+                                canvas.height = w * imgHeight / imgWidth;
+                            } else {
+                                canvas.height = w;
+                                canvas.width = w * imgWidth / imgHeight;
+                            }
+                        } else {
+                            canvas.width = imgWidth;
+                            canvas.height = imgHeight;
+                            quality = 0.6;
+                        }
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+                        var base64 = canvas.toDataURL("image/jpeg", quality); //压缩语句
+                        // 如想确保图片压缩到自己想要的尺寸,如要求在50-150kb之间，请加以下语句，quality初始值根据情况自定
+                        // while (base64.length / 1024 > 150) {
+                        // 	quality -= 0.01;
+                        // 	base64 = canvas.toDataURL("image/jpeg", quality);
+                        // }
+                        // 防止最后一次压缩低于最低尺寸，只要quality递减合理，无需考虑
+                        // while (base64.length / 1024 < 50) {
+                        // 	quality += 0.001;
+                        // 	base64 = canvas.toDataURL("image/jpeg", quality);
+                        // }
+                        callback(base64);//必须通过回调函数返回，否则无法及时拿到该值
+                    }
+                }
+
                 $('#lumise-cart-action1').on('click', function (e) {
-                    LoadShow()
+
+                     // TODO 预览
+                     let design = sessionStorage.getItem('design')
+                     const previewImg = []
+ 
+                     if (JSON.parse(design)) {
+                         design = JSON.parse(design)
+                     }
+ 
+                     if (design.length <= 0) {
+                         alert('暂无预览图')
+                         return
+                     }
+
                     let baseImg = []
                     const ops = {
                         height: 4595,
@@ -17856,40 +17910,38 @@ jQuery(document).ready(function ($) {
                         return arr
                     }
 
-                    // TODO 预览
-                    let design = sessionStorage.getItem('design')
-                    const previewImg = []
-
-                    if (JSON.parse(design)) {
-                        design = JSON.parse(design)
-                    }
-
-                    if (design.length <= 0) {
-                        alert('暂无预览图')
-                        return
-                    }
+                   
 
                     if (design) {
                         LoadShow()
 
                         const tpObj = createBaseImg(design)
                         const designLen = design.length
-                        design.forEach((c, cid) => {
-                            const tm = Object.values(tpObj[cid])
-                            const psdLayer = []
-                            const imageUrls = []
-                            tm.forEach((i) => {
-                                for (const [key, value] of Object.entries(i)) {
-                                    psdLayer.push(key)
-                                    imageUrls.push(value)
-                                }
-                            })
 
-                            lumise.fn
+                        design.forEach((c, cid) => {
+                            new Promise((resolve, reject) => {
+                                const tm = Object.values(tpObj[cid])
+                                const psdLayer = []
+                                const imageUrls = []
+                                tm.forEach((i) => {
+                                    for (const [key, value] of Object.entries(i)) {
+                                        dealImage(value, 1400, (newBase64) => {
+                                            psdLayer.push(key)
+                                            imageUrls.push(newBase64)
+                                            const resp = {
+                                                psdLayer,
+                                                imageUrls,
+                                            }
+                                            resolve(resp)
+                                        });
+                                    }
+                                })
+                            }).then((resp)=>{
+                                lumise.fn
                                 .isDesign({
                                     psdUrl: c.upload,
-                                    psdLayer,
-                                    imageUrls,
+                                    psdLayer:resp.psdLayer,
+                                    imageUrls:resp.imageUrls,
                                 })
                                 .then((resp) => {
                                     previewImg.push(resp.data)
@@ -17903,6 +17955,7 @@ jQuery(document).ready(function ($) {
                                     LoadHide()
                                     console.log(err)
                                 })
+                            })
                         })
                     }
                 })
@@ -17950,7 +18003,7 @@ jQuery(document).ready(function ($) {
                             ) {
                                 has_design++
                             }
-                        }
+                        }   
                     }
                 })
 
@@ -18716,10 +18769,6 @@ jQuery(document).ready(function ($) {
                     },
                 })
             },
-
-            /*
-             * @param data - Product object
-             */
 
             // TODO render product
             render: function (data) {
@@ -20046,10 +20095,13 @@ jQuery(document).ready(function ($) {
                     })
             })
 
-            this.actions.add('db-ready', function () {
 
+            // TODO 加载
+            this.actions.add('db-ready', function () {
+                lumise.fn.productInit().then((carts) => {
+                    
 				try {
-					var cart_data = JSON.parse(localStorage.getItem('LUMISE-CART-DATA'));
+					var cart_data = JSON.parse(carts)
 				} 
                 catch(ex){
 					var cart_data = null;
@@ -20065,6 +20117,7 @@ jQuery(document).ready(function ($) {
 
 				};
 
+                lumise.cart.edit_item('L1U6G1W7');
 				if (has_cart === true) {
 
 					lumise.cart.edit_item(lumise.fn.url_var('cart'));
@@ -20121,159 +20174,163 @@ jQuery(document).ready(function ($) {
 						}
 					});
 				}
+                    
+                })
+
+
 
 			
 
 
 
 
-            //     try {
-            //         var cart_data1 = JSON.parse(
-            //             localStorage.getItem('LUMISE-CART-DATA')
-            //         )
+                // try {
+                //     var cart_data1 = JSON.parse(
+                //         localStorage.getItem('LUMISE-CART-DATA')
+                //     )
 
-            //         lumise.fn.productInit().then((carts) => {
+                //     lumise.fn.productInit().then((carts) => {
 
-            //             var cart_data = JSON.parse(carts)
-            //             var has_cart = false
+                //         var cart_data = JSON.parse(carts)
+                //         var has_cart = false
 
-            //             if (lumise.fn.url_var('cart', '') !== '') {
-            //                 if (
-            //                     cart_data !== null &&
-            //                     cart_data[lumise.fn.url_var('cart')] !==
-            //                         undefined
-            //                 )
-            //                     has_cart = true
-            //                 else lumise.fn.notice(lumise.i(120), 'error', 3500)
-            //             }
+                //         if (lumise.fn.url_var('cart', '') !== '') {
+                //             if (
+                //                 cart_data !== null &&
+                //                 cart_data[lumise.fn.url_var('cart')] !==
+                //                     undefined
+                //             )
+                //                 has_cart = true
+                //             else lumise.fn.notice(lumise.i(120), 'error', 3500)
+                //         }
 
-            //             if (has_cart === true) {
-            //                 lumise.cart.edit_item(cart_data)
-            //             } else if (lumise.data.onload) {
-            //                 lumise.f(lumise.i('importing') + '..')
-            //                 lumise.fn.set_url('cart', null)
-            //                 setTimeout(function () {
-            //                     if (lumise.data.share !== undefined) {
-            //                         Object.keys(lumise.data.onload.stages).map(
-            //                             function (s) {
-            //                                 delete lumise.data.onload.stages[s]
-            //                                     .template
-            //                             }
-            //                         )
-            //                     }
+                //         if (has_cart === true) {
+                //             lumise.cart.edit_item(cart_data)
+                //         } else if (lumise.data.onload) {
+                //             lumise.f(lumise.i('importing') + '..')
+                //             lumise.fn.set_url('cart', null)
+                //             setTimeout(function () {
+                //                 if (lumise.data.share !== undefined) {
+                //                     Object.keys(lumise.data.onload.stages).map(
+                //                         function (s) {
+                //                             delete lumise.data.onload.stages[s]
+                //                                 .template
+                //                         }
+                //                     )
+                //                 }
 
-            //                     lumise.render.product(lumise.data.onload)
-            //                     delete lumise.data.onload
-            //                 }, 100)
-            //             } else if (
-            //                 lumise.fn.url_var('reorder', '') === '' &&
-            //                 lumise.get.el('no-product').length > 0
-            //             ) {
-            //                 lumise.f(false)
-            //                 lumise.actions.do('noproduct')
-            //             }
+                //                 lumise.render.product(lumise.data.onload)
+                //                 delete lumise.data.onload
+                //             }, 100)
+                //         } else if (
+                //             lumise.fn.url_var('reorder', '') === '' &&
+                //             lumise.get.el('no-product').length > 0
+                //         ) {
+                //             lumise.f(false)
+                //             lumise.actions.do('noproduct')
+                //         }
 
-            //             if (lumise.data.share_invalid !== undefined) {
-            //                 lumise.fn.confirm({
-            //                     title: lumise.data.share_invalid,
-            //                     primary: {},
-            //                     second: {
-            //                         text: 'Ok',
-            //                     },
-            //                     type: 'error',
-            //                 })
-            //             }
-            //             var carts1 = localStorage.getItem('LUMISE-CART-DATA')
+                //         if (lumise.data.share_invalid !== undefined) {
+                //             lumise.fn.confirm({
+                //                 title: lumise.data.share_invalid,
+                //                 primary: {},
+                //                 second: {
+                //                     text: 'Ok',
+                //                 },
+                //                 type: 'error',
+                //             })
+                //         }
+                //         var carts1 = localStorage.getItem('LUMISE-CART-DATA')
 
-            //             if (carts && carts !== '' && carts != '[]') {
-            //                 carts = Object.keys(JSON.parse(carts))
-            //                 lumise.indexed.list(
-            //                     function (data) {
-            //                         if (carts.indexOf(data.id) === -1)
-            //                             lumise.indexed.delete(data.id, 'cart')
-            //                     },
-            //                     'cart',
-            //                     function (st) {
-            //                         if (st == 'done') {
-            //                             lumise.ops.cart_cursor = null
-            //                         }
-            //                     }
-            //                 )
-            //             }
-            //         })
-            //     } catch (ex) {
-            //         var cart_data = null
-            //         var has_cart = false
+                //         if (carts && carts !== '' && carts != '[]') {
+                //             carts = Object.keys(JSON.parse(carts))
+                //             lumise.indexed.list(
+                //                 function (data) {
+                //                     if (carts.indexOf(data.id) === -1)
+                //                         lumise.indexed.delete(data.id, 'cart')
+                //                 },
+                //                 'cart',
+                //                 function (st) {
+                //                     if (st == 'done') {
+                //                         lumise.ops.cart_cursor = null
+                //                     }
+                //                 }
+                //             )
+                //         }
+                //     })
+                // } catch (ex) {
+                //     var cart_data = null
+                //     var has_cart = false
 
-            //         if (lumise.fn.url_var('cart', '') !== '') {
-            //             if (
-            //                 cart_data !== null &&
-            //                 cart_data[lumise.fn.url_var('cart')] !== undefined
-            //             )
-            //                 has_cart = true
-            //             else lumise.fn.notice(lumise.i(120), 'error', 3500)
-            //         }
+                //     if (lumise.fn.url_var('cart', '') !== '') {
+                //         if (
+                //             cart_data !== null &&
+                //             cart_data[lumise.fn.url_var('cart')] !== undefined
+                //         )
+                //             has_cart = true
+                //         else lumise.fn.notice(lumise.i(120), 'error', 3500)
+                //     }
 
-            //         if (has_cart === true) {
-            //             lumise.cart.edit_item(lumise.fn.url_var('cart'))
-            //         } else if (lumise.data.onload) {
-            //             lumise.f(lumise.i('importing') + '..')
+                //     if (has_cart === true) {
+                //         lumise.cart.edit_item(lumise.fn.url_var('cart'))
+                //     } else if (lumise.data.onload) {
+                //         lumise.f(lumise.i('importing') + '..')
 
-            //             lumise.fn.set_url('cart', null)
+                //         lumise.fn.set_url('cart', null)
 
-            //             setTimeout(function () {
-            //                 if (lumise.data.share !== undefined) {
-            //                     Object.keys(lumise.data.onload.stages).map(
-            //                         function (s) {
-            //                             delete lumise.data.onload.stages[s]
-            //                                 .template
-            //                         }
-            //                     )
-            //                 }
+                //         setTimeout(function () {
+                //             if (lumise.data.share !== undefined) {
+                //                 Object.keys(lumise.data.onload.stages).map(
+                //                     function (s) {
+                //                         delete lumise.data.onload.stages[s]
+                //                             .template
+                //                     }
+                //                 )
+                //             }
 
-            //                 lumise.render.product(lumise.data.onload)
+                //             lumise.render.product(lumise.data.onload)
 
-            //                 delete lumise.data.onload
-            //             }, 100)
-            //         } else if (
-            //             lumise.fn.url_var('reorder', '') === '' &&
-            //             lumise.get.el('no-product').length > 0
-            //         ) {
-            //             lumise.f(false)
-            //             lumise.actions.do('noproduct')
-            //         }
+                //             delete lumise.data.onload
+                //         }, 100)
+                //     } else if (
+                //         lumise.fn.url_var('reorder', '') === '' &&
+                //         lumise.get.el('no-product').length > 0
+                //     ) {
+                //         lumise.f(false)
+                //         lumise.actions.do('noproduct')
+                //     }
 
-            //         if (lumise.data.share_invalid !== undefined) {
-            //             lumise.fn.confirm({
-            //                 title: lumise.data.share_invalid,
-            //                 primary: {},
-            //                 second: {
-            //                     text: 'Ok',
-            //                 },
-            //                 type: 'error',
-            //             })
-            //         }
+                //     if (lumise.data.share_invalid !== undefined) {
+                //         lumise.fn.confirm({
+                //             title: lumise.data.share_invalid,
+                //             primary: {},
+                //             second: {
+                //                 text: 'Ok',
+                //             },
+                //             type: 'error',
+                //         })
+                //     }
 
-            //         /* Clear unuse cart data in DB */
-            //         var carts1 = localStorage.getItem('LUMISE-CART-DATA')
-            //         lumise.fn.productInit().then((carts) => {
-            //             if (carts && carts !== '' && carts != '[]') {
-            //                 carts = Object.keys(JSON.parse(carts))
-            //                 lumise.indexed.list(
-            //                     function (data) {
-            //                         if (carts.indexOf(data.id) === -1)
-            //                             lumise.indexed.delete(data.id, 'cart')
-            //                     },
-            //                     'cart',
-            //                     function (st) {
-            //                         if (st == 'done') {
-            //                             lumise.ops.cart_cursor = null
-            //                         }
-            //                     }
-            //                 )
-            //             }
-            //         })
-            //     }
+                //     /* Clear unuse cart data in DB */
+                //     var carts1 = localStorage.getItem('LUMISE-CART-DATA')
+                //     lumise.fn.productInit().then((carts) => {
+                //         if (carts && carts !== '' && carts != '[]') {
+                //             carts = Object.keys(JSON.parse(carts))
+                //             lumise.indexed.list(
+                //                 function (data) {
+                //                     if (carts.indexOf(data.id) === -1)
+                //                         lumise.indexed.delete(data.id, 'cart')
+                //                 },
+                //                 'cart',
+                //                 function (st) {
+                //                     if (st == 'done') {
+                //                         lumise.ops.cart_cursor = null
+                //                     }
+                //                 }
+                //             )
+                //         }
+                //     })
+                // }
             })
 
             this.actions.add('first-completed', function () {

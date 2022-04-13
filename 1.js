@@ -10939,6 +10939,10 @@ jQuery(document).ready(function ($) {
                                 'design',
                                 JSON.stringify(res.design)
                             )
+                            sessionStorage.setItem('designInfo',JSON.stringify({
+                                width:res.width,
+                                height:res.height,
+                            }))
                             resolve(res.data)
                         },
                         error: function () {
@@ -17677,10 +17681,12 @@ jQuery(document).ready(function ($) {
 
                      // TODO 预览
                      let design = sessionStorage.getItem('design')
+                     let designInfo = sessionStorage.getItem('designInfo')
                      const previewImg = []
  
                      if (JSON.parse(design)) {
                          design = JSON.parse(design)
+                         designInfo = JSON.parse(designInfo)
                      }
  
                      if (design.length <= 0) {
@@ -17690,11 +17696,11 @@ jQuery(document).ready(function ($) {
 
                     let baseImg = []
                     const ops = {
-                        height: 4595,
+                        height: designInfo.height,
                         include_base: false,
                         orien: 'portrait',
                         type: 'png',
-                        width: 4200,
+                        width: designInfo.height,
                     }
 
                     function down(canvas, ops, stage) {
@@ -17823,7 +17829,7 @@ jQuery(document).ready(function ($) {
 
                             const closeImg = document.createElement('img')
                             closeImg.src =
-                                'https://i.postimg.cc/XYffBpxq/304.png'
+                                'http://diy.cmygx.cn/public/close.jpg'
                             close.appendChild(closeImg)
 
                             const lf = document.createElement('span')
@@ -17925,7 +17931,7 @@ jQuery(document).ready(function ($) {
                                 const imageUrls = []
                                 tm.forEach((i) => {
                                     for (const [key, value] of Object.entries(i)) {
-                                        dealImage(value, 1400, (newBase64) => {
+                                        dealImage(value, 4000, (newBase64) => {
                                             psdLayer.push(key)
                                             imageUrls.push(newBase64)
                                             const resp = {
@@ -17942,6 +17948,8 @@ jQuery(document).ready(function ($) {
                                     psdUrl: c.upload,
                                     psdLayer:resp.psdLayer,
                                     imageUrls:resp.imageUrls,
+                                    width:designInfo.width,
+                                    height:designInfo.height
                                 })
                                 .then((resp) => {
                                     previewImg.push(resp.data)

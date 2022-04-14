@@ -10933,6 +10933,23 @@ jQuery(document).ready(function ($) {
                         data,
                         async: false,
                         success: function (res, status) {
+                            const { width, height, data, design, data_design } = res
+                            sessionStorage.setItem('design', JSON.stringify(design))
+                            sessionStorage.setItem(
+                                'designInfo',
+                                JSON.stringify({
+                                    width,
+                                    height,
+                                    data,
+                                    data_design,
+                                })
+                            )
+                            localStorage.setItem(
+                                'LUMISE-CART-DATA',
+                                JSON.stringify({
+                                    [data_design.id]: data_design,
+                                })
+                            )
                             resolve(res)
                         },
                         error: function () {
@@ -11526,7 +11543,7 @@ jQuery(document).ready(function ($) {
 
                 return ''
             },
-
+            // TODO font loading
             getTextWidth: function (op, callback) {
                 if (typeof callback != 'function') return
 
@@ -15400,342 +15417,359 @@ jQuery(document).ready(function ($) {
                 lumise.get.el('cart-options').show()
 
                 lumise.render.cart_change()
-                // lumise.cart.render(data);
+                lumise.cart.render(data);
             },
 
             cart_change: function () {
-                var current_id = lumise.fn.url_var('cart', ''),
-                    btn = lumise.get.el('cart-action')
-                var items1 = localStorage.getItem('LUMISE-CART-DATA')
 
-                //             lumise.fn.productInit().then(items=>{
-                //               		var	wrp = lumise.get.el('cart-items'),
-                // 			ul = wrp.find('ul[data-view="items"]'),
-                // 			total = 0, item, keys, color;
 
-                // 		if (btn.length > 0) {
-                // 			if (current_id === '')
-                // 				btn.attr({'data-action': 'add-cart'}).find('>span').html(btn.data('add'));
-                // 			else
-                // 				btn.attr({'data-action': 'update-cart'}).find('>span').html(btn.data('update'));
-                // 		}
 
-                // 		ul.html('');
+        //         var current_id = lumise.fn.url_var('cart', ''),
+        //             btn = lumise.get.el('cart-action'),
+        //             items = localStorage.getItem('LUMISE-CART-DATA'),
+        //             wrp = lumise.get.el('cart-items'),
+        //             ul = wrp.find('ul[data-view="items"]'),
+        //             total = 0,
+        //             item,
+        //             keys,
+        //             color
 
-                // 		try {
-                // 			items = JSON.parse(items);
-                // 			keys = Object.keys(items);
-                // 		}catch(ex) {
-                // 			items = {};
-                // 			keys = [];
-                // 		}
 
-                // 		var item, color, qty;
+        //             if (!items) {
+        //             return
+        //             }
 
-                // 		if (Object.keys(items).length > 0) {
-                // 			Object.keys(items).map(function(id) {
-                // 				item = items[id];
-                // 				if (lumise.fn.version_compare('1.7.1', item.system_version) <= 0) {
-                // 					color = '#fefdfe';
-                // 					qty = item.options.quantity ? item.options.quantity : 1;
-                // 					if (
-                // 						typeof item.attributes == 'object' &&
-                // 						typeof item.options == 'object' &&
-                // 						Object.keys(item.attributes).length > 0
-                // 					) {
-                // 						Object.keys(item.attributes).map(function(im) {
-                // 							if (
-                // 								item.attributes[im].type == 'product_color' &&
-                // 								item.options[im] !== undefined
-                // 							) color = item.options[im];
-                // 						});
-                // 					};
-                // 					if (
-                // 						typeof item.attributes == 'object' &&
-                // 						typeof item.options == 'object' &&
-                // 						Object.keys(item.attributes).length > 0
-                // 					) {
-                // 						Object.keys(item.attributes).map(function(im) {
-                // 							if (
-                // 								item.attributes[im].type == 'quantity' &&
-                // 								item.options[im] !== undefined
-                // 							) qty = item.options[im];
-                // 						});
-                // 					};
 
-                // 					try {
-                // 						if (isNaN(qty)) {
-                // 							var qt = 0;
-                // 							Object.values(JSON.parse(qty)).map(function(q) {
-                // 								qt += parseInt(q);
-                // 							});
-                // 							qty = qt;
-                // 						}
-                // 					} catch (ex) {};
-                // 					// <price>'+lumise.fn.price(item.price_total)+'</price> \
-                // 					ul.append(
-                // 						'<li data-func="edit" data-id="'+id+'">\
-                // 				<span data-view="thumbn">\
-                // 					<img data-func="edit" title="'+lumise.i('edit')+'" data-id="'+id+'" style="background: '+color+'" src="'+item.screenshot+'" />\
-                // 				</span>\
-                // 				<span data-view="info">\
-                // 					'+(id != current_id ?
-                // 							'<name>\
-                //                                             <a href="#edit" data-func="edit" title="'+lumise.i('edit')+'" data-id="'+id+'">'+
-                // 							item.name+'\
-                // 							</a>\
-                // 						</name>' + '<quantity>x '+qty+'</quantity>' :
-                // 							'<name>'+item.name+'</name> ' +'<quantity>x '+qty+'</quantity>'
-                // 						)+' <a href="#remove" title="'+lumise.i('remove')+'">\
-                // 						<i class="lumisex-android-close" data-func="remove" data-id="'+id+'"></i>\
-                // 					</a>\
-                // 					'+(id == current_id ? ' <a href="#edit" data-func="edit" title="'+lumise.i('edit')+'" data-id="'+id+'"><small>'+lumise.i(72)+'</small></a> ' : '')+'\
-                // 				</span>\
-                // 			</li>');
-                // 					total += parseFloat(item.price_total);
-                // 				}
-                // 			});
-                // 			// ul.append('<li><strong>'+lumise.i(74)+': '+lumise.fn.price(total.toFixed(2))+'</strong></li>');
-                // 			ul.attr({'data-empty': 'false'});
-                // 		}else {
-                // 			ul.attr({'data-empty': 'true'}).html('<p><i class="lumisex-bag"></i> '+lumise.i(71)+'</p>');
-                // 		}
+        //         // if (btn.length > 0) {
+        //         //     if (current_id === '')
+        //         //         btn.attr({ 'data-action': 'add-cart' })
+        //         //             .find('>span')
+        //         //             .html(btn.data('add'))
+        //         //     else
+        //         //         btn.attr({ 'data-action': 'update-cart' })
+        //         //             .find('>span')
+        //         //             .html(btn.data('update'))
+        //         // }
 
-                // 		lumise.get.el('addToCart').find('small').remove();
-                // 		lumise.get.el('addToCart').append(' <small>'+keys.length+'</small>');
+        //         ul.html('')
 
-                // 		lumise.actions.do('cart-change');
-                //             })
+        //         try {
+        //             items = JSON.parse(items)
+        //             keys = Object.keys(items)
+        //         } catch (ex) {
+        //             items = {}
+        //             keys = []
+        //         }
+
+        //         var item, color, qty
+
+        //         if (Object.keys(items).length > 0) {
+        //             Object.keys(items).map(function (id) {
+        //                 item = items[id]
+        //                 if (
+        //                     lumise.fn.version_compare(
+        //                         '1.7.1',
+        //                         item.system_version
+        //                     ) <= 0
+        //                 ) {
+        //                     color = '#fefdfe'
+        //                     qty = item.options.quantity
+        //                         ? item.options.quantity
+        //                         : 1
+        //                     if (
+        //                         typeof item.attributes == 'object' &&
+        //                         typeof item.options == 'object' &&
+        //                         Object.keys(item.attributes).length > 0
+        //                     ) {
+        //                         Object.keys(item.attributes).map(function (im) {
+        //                             if (
+        //                                 item.attributes[im].type ==
+        //                                     'product_color' &&
+        //                                 item.options[im] !== undefined
+        //                             )
+        //                                 color = item.options[im]
+        //                         })
+        //                     }
+        //                     if (
+        //                         typeof item.attributes == 'object' &&
+        //                         typeof item.options == 'object' &&
+        //                         Object.keys(item.attributes).length > 0
+        //                     ) {
+        //                         Object.keys(item.attributes).map(function (im) {
+        //                             if (
+        //                                 item.attributes[im].type ==
+        //                                     'quantity' &&
+        //                                 item.options[im] !== undefined
+        //                             )
+        //                                 qty = item.options[im]
+        //                         })
+        //                     }
+
+        //                     try {
+        //                         if (isNaN(qty)) {
+        //                             var qt = 0
+        //                             Object.values(JSON.parse(qty)).map(
+        //                                 function (q) {
+        //                                     qt += parseInt(q)
+        //                                 }
+        //                             )
+        //                             qty = qt
+        //                         }
+        //                     } catch (ex) {}
+        //                     // <price>'+lumise.fn.price(item.price_total)+'</price> \
+        //                     ul.append(
+        //                         '<li data-func="edit" data-id="' +
+        //                             id +
+        //                             '">\
+        //     <span data-view="thumbn">\
+        //         <img data-func="edit" title="' +
+        //                             lumise.i('edit') +
+        //                             '" data-id="' +
+        //                             id +
+        //                             '" style="background: ' +
+        //                             color +
+        //                             '" src="' +
+        //                             item.screenshot +
+        //                             '" />\
+        //     </span>\
+        //     <span data-view="info">\
+        //         ' +
+        //                             (id != current_id
+        //                                 ? '<name>\
+        //             <a href="#edit" data-func="edit" title="' +
+        //                                   lumise.i('edit') +
+        //                                   '" data-id="' +
+        //                                   id +
+        //                                   '">' +
+        //                                   item.name +
+        //                                   '\
+        //                 </a>\
+        //             </name>' +
+        //                                   '<quantity>x ' +
+        //                                   qty +
+        //                                   '</quantity>'
+        //                                 : '<name>' +
+        //                                   item.name +
+        //                                   '</name> ' +
+        //                                   '<quantity>x ' +
+        //                                   qty +
+        //                                   '</quantity>') +
+        //                             ' <a href="#remove" title="' +
+        //                             lumise.i('remove') +
+        //                             '">\
+        //             <i class="lumisex-android-close" data-func="remove" data-id="' +
+        //                             id +
+        //                             '"></i>\
+        //         </a>\
+        //         ' +
+        //                             (id == current_id
+        //                                 ? '<small>' + lumise.i(72) + '</small> '
+        //                                 : '') +
+        //                             '\
+        //     </span>\
+        // </li>'
+        //                     )
+        //                     total += parseFloat(item.price_total)
+        //                 }
+        //             })
+        //             // ul.append('<li><strong>'+lumise.i(74)+': '+lumise.fn.price(total.toFixed(2))+'</strong></li>');
+        //             ul.attr({ 'data-empty': 'false' })
+        //         } else {
+        //             ul.attr({ 'data-empty': 'true' }).html(
+        //                 '<p><i class="lumisex-bag"></i> ' +
+        //                     lumise.i(71) +
+        //                     '</p>'
+        //             )
+        //         }
+
+        //         lumise.get.el('addToCart').find('small').remove()
+        //         lumise.get
+        //             .el('addToCart')
+        //             .append(' <small>' + keys.length + '</small>')
+
+        //         lumise.actions.do('cart-change')
             },
 
             cart_details: function (e) {
-                // '<th data-align="center">'+lumise.i(104)+'</th>',
-                // '<th data-align="center">'+lumise.i(79)+'</th>',
-                ////////////debugger;
-                var test1 = localStorage.getItem('LUMISE-CART-DATA')
 
-                // 				lumise.fn.productInit().then(test=>{
-                // 						var test1 = localStorage.getItem('LUMISE-CART-DATA');
-                // 						var items = JSON.parse(test || '{}'),
-                // 							ind = 1, item, attr, total = 0, current = lumise.fn.url_var('cart'),
-                // 							table = ['<table class="lumise-table sty2"><thead>',
-                // 								'<tr>',
-                // 								'<th> &nbsp; # &nbsp; </th>',
-                // 								'<th>'+lumise.i(76)+'</th>',
-                // 								'<th data-align="left"><div style="width: 240px;">'+lumise.i(77)+'</div></th>',
+				// '<th data-align="center">'+lumise.i(104)+'</th>',
+				// '<th data-align="center">'+lumise.i(79)+'</th>',
+				var items = JSON.parse(localStorage.getItem('LUMISE-CART-DATA') || '{}'),
+                ind = 1, item, attr, total = 0, current = lumise.fn.url_var('cart'),
+                table = ['<table class="lumise-table sty2"><thead>',
+                    '<tr>',
+                    '<th> &nbsp; # &nbsp; </th>',
+                    '<th>'+lumise.i(76)+'</th>',
+                    '<th data-align="left"><div style="width: 240px;">'+lumise.i(77)+'</div></th>',
 
-                // 								'<th data-align="center"><div style="width: 120px;">'+lumise.i(78)+'</div></th>',
-                // 								'</tr>',
-                // 								'</thead>',
-                // 								'<tbody>'],
-                // 							ext_qty = function (val){
-                // 								if(val.indexOf('-') > -1){
-                // 									val = val.split('-');
-                // 									var qty = val[val.length-1];
-                // 									val = val.slice(0, -1);
-                // 									return val.join('-') + ' ('+qty+')';
-                // 								}
+                    '<th data-align="center"><div style="width: 120px;">'+lumise.i(78)+'</div></th>',
+                    '</tr>',
+                    '</thead>',
+                    '<tbody>'],
+                ext_qty = function (val){
+                    if(val.indexOf('-') > -1){
+                        val = val.split('-');
+                        var qty = val[val.length-1];
+                        val = val.slice(0, -1);
+                        return val.join('-') + ' ('+qty+')';
+                    }
 
-                // 								return val;
+                    return val;
 
-                // 							};
-                // 						if (Object.keys(items).length > 0) {
-                // 							Object.keys(items).map(function(id) {
+                };
 
-                // 								if (lumise.fn.version_compare('1.7.1', items[id].system_version) > 0) {
+            if (Object.keys(items).length > 0) {
+                Object.keys(items).map(function(id) {
 
-                // 									//存入数据库 -- 始
-                // 									$.ajax({
+                    if (lumise.fn.version_compare('1.7.1', items[id].system_version) > 0) {
+                        delete items[id];
+                        debugger;
+                        localStorage.setItem('LUMISE-CART-DATA', JSON.stringify(items));
+                        lumise.indexed.delete(id, 'cart');
+                        return;
+                    };
 
-                // 										cache: true,
-                // 										type: "POST",
-                // 										url		:	 "http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax_delete",
-                // 										data	:	 {
-                // 											user_id : lumise.data.user_id,
-                // 											design_id : id	,
+                    var item = items[id], val, attr = '';
 
-                // 										},
-                // 										async: false,
+                    Object.keys(item.options).map(function(at) {
 
-                // 										success: function (res, status) {
+                        val = item.options[at];
 
-                // 										},
-                // 										error: function() {
-                // 										alert('系统超时，请重新操作!');
-                // 										}
-                // 									});
-                // 									delete items[id];
-                // 									localStorage.setItem('LUMISE-CART-DATA', JSON.stringify(items));
-                // 									lumise.indexed.delete(id, 'cart');
-                // 									return;
-                // 								};
+                        if (val === '')
+                            return;
 
-                // 								var item = items[id], val, attr = '';
+                        if (
+                            item.attributes[at].type == 'product_color' ||
+                            item.attributes[at].type == 'color'
+                        ) {
 
-                // 								Object.keys(item.options).map(function(at) {
+                            var lb = lumise.fn.attr_label(val, item.attributes[at].values);
 
-                // 									val = item.options[at];
+                            val = '<span title="'+lb+'" style="background: '+val+';padding: 3px 5px;border-radius: 2px;color:'+lumise.fn.invert(val)+'">'+lb+'</span>';
 
-                // 									if (val === '')
-                // 										return;
+                        } else if (item.attributes[at].type == 'quantity') {
+                            if (val !== '' && isNaN(parseInt(val))) {
+                                try {
+                                    val = JSON.parse(val);
+                                    Object.keys(val).map(function(o) {
+                                        var lb = lumise.fn.attr_label(o, item.attributes[at].values.multiple_options);
+                                        val[o] = lb+': '+val[o];
+                                    });
+                                    val = Object.values(val).join(', ');
+                                } catch (ex) {};
+                            }
+                        } else if (typeof item.attributes[at].values == 'object') {
+                            val = lumise.fn.attr_label(val, item.attributes[at].values);
+                        };
 
-                // 									if (
-                // 										item.attributes[at].type == 'product_color' ||
-                // 										item.attributes[at].type == 'color'
-                // 									) {
+                        attr += '<strong>'+item.attributes[at].name+':</strong> '+val+'<br />';
 
-                // 										var lb = lumise.fn.attr_label(val, item.attributes[at].values);
+                    });
+                    // '<td data-align="center">'+lumise.fn.price(item.price_total)+'</td>',
 
-                // 										val = '<span title="'+lb+'" style="background: '+val+';padding: 3px 5px;border-radius: 2px;color:'+lumise.fn.invert(val)+'">'+lb+'</span>';
+                    // '<td data-align="center">'+lumise.fn.date('h:m D d M, Y', item.updated)+'</td>',
+                    table = table.concat([
+                        '<tr>',
+                        '<td>'+(ind++)+'</td>',
+                        '<td class="product-thumb">',
+                        '<div data-design-layer="'+id+'"></div>',
+                        '<span class="product-title"  align="center">'+item.name+'</span>',
+                        '</td>',
+                        '<td>'+attr+'<strong>'+lumise.i(191)+':</strong> '+item.stages+'</td>',
 
-                // 									} else if (item.attributes[at].type == 'quantity') {
-                // 										if (val !== '' && isNaN(parseInt(val))) {
-                // 											try {
-                // 												val = JSON.parse(val);
-                // 												Object.keys(val).map(function(o) {
-                // 													var lb = lumise.fn.attr_label(o, item.attributes[at].values.multiple_options);
-                // 													val[o] = lb+': '+val[o];
-                // 												});
-                // 												val = Object.values(val).join(', ');
-                // 											} catch (ex) {};
-                // 										}
-                // 									} else if (typeof item.attributes[at].values == 'object') {
-                // 										val = lumise.fn.attr_label(val, item.attributes[at].values);
-                // 									};
+                        '<td data-align="center">',
+                        (current != id ? '<a href="#edit" data-id="'+id+'">'+lumise.i('edit')+'</a>' : lumise.i(72)),
+                        '&nbsp; | &nbsp;<a href="#remove" data-id="'+id+'">'+lumise.i('remove')+'</a>',
+                        '</td>'
+                    ]);
 
-                // 									attr += '<strong>'+item.attributes[at].name+':</strong> '+val+'<br />';
+                    setTimeout(lumise.fn.cart_thumbn, 100, id);
 
-                // 								});
-                // 								// '<td data-align="center">'+lumise.fn.price(item.price_total)+'</td>',
-                // ////////////debugger
-                // 								// '<td data-align="center">'+lumise.fn.date('h:m D d M, Y', item.updated)+'</td>',
-                // 								table = table.concat([
-                // 									'<tr>',
-                // 									'<td>'+(ind++)+'</td>',
-                // 									'<td class="product-thumb">',
-                // 									'<div data-design-layer="'+id+'"></div>',
-                // 									'<span class="product-title"  align="center">'+item.name+'</span>',
-                // 									'</td>',
-                // 									'<td>'+attr+'<strong>'+lumise.i(191)+':</strong> '+item.stages+'</td>',
+                    total += parseFloat(item.price_total);
 
-                // 									'<td data-align="center">',
-                // 									(current != id ? '<a href="#edit" data-id="'+id+'">'+lumise.i('edit')+'</a>&nbsp; | &nbsp;' : ''),
-                // 									'<a href="#remove" data-id="'+id+'">'+lumise.i('remove')+'</a>',
-                // 									'</td>'
-                // 								]);
+                });
+                // '<td colspan="3" class="lumise-total">'+lumise.i(74)+': '+lumise.fn.price(total.toFixed(2)),
+                // 	'</td>',
+                table = table.concat(['</tbody>',
+                    '<tfoot>',
+                    '<tr>',
+                    '<td colspan="3" data-align="right">',
+                    '<button class="lumise-btn-primary">'+lumise.i(75)+' <i class="lumisex-android-arrow-forward"></i></button>',
+                    '</td>',
+                    '</tr>',
+                    '</tfoot>',
+                    '</table>']);
 
-                // 								setTimeout(lumise.fn.cart_thumbn, 100, id);
+            }else{
+                table = table.concat(['<tr>', '<td colspan="6"><h3>'+lumise.i(42)+'</h3></td>','</tr>','</table>']);
+            };
 
-                // 								total += parseFloat(item.price_total);
+            lumise.tools.lightbox({
+                content: '<div id="lumise-cart-details" class="lumise_content lumise_wrapper_table">\
+                            <h3 class="title">'+lumise.i(73)+'</h3>\
+                            <div>'+table.join('')+'</div>\
+                        </div>'
+            });
 
-                // 							});
-                // 							// '<td colspan="3" class="lumise-total">'+lumise.i(74)+': '+lumise.fn.price(total.toFixed(2)),
-                // 							// 	'</td>',
-                // 							table = table.concat(['</tbody>',
-                // 								'<tfoot>',
-                // 								'<tr>',
-                // 								'<td colspan="3" data-align="right">',
-                // 								'<button class="lumise-btn-primary">'+lumise.i(75)+' <i class="lumisex-android-arrow-forward"></i></button>',
-                // 								'</td>',
-                // 								'</tr>',
-                // 								'</tfoot>',
-                // 								'</table>']);
+            lumise.trigger({
 
-                // 						}else{
-                // 							table = table.concat(['<tr>', '<td colspan="6"><h3>'+lumise.i(42)+'</h3></td>','</tr>','</table>']);
-                // 						};
+                el: $('#lumise-cart-details'),
 
-                // 						lumise.tools.lightbox({
-                // 							content: '<div id="lumise-cart-details" class="lumise_content lumise_wrapper_table">\
-                // 								<h3 class="title">'+lumise.i(73)+'</h3>\
-                // 								<div>'+table.join('')+'</div>\
-                // 							</div>'
-                // 						});
-                // 						////////////debugger;
-                // 						lumise.trigger({
+                events: {
+                    'a[href="#edit"]': 'edit_item',
+                    'a[href="#remove"]': 'remove_item',
+                    'tfoot button.lumise-btn-primary': lumise.cart.do_checkout
+                },
 
-                // 							el: $('#lumise-cart-details'),
+                edit_item: function(e) {
+                    lumise.cart.edit_item(this.getAttribute('data-id'), e);
+                    e.preventDefault();
+                },
 
-                // 							events: {
-                // 								'a[href="#edit"]': 'edit_item',
-                // 								'a[href="#remove"]': 'remove_item',
-                // 								'tfoot button.lumise-btn-primary': lumise.cart.do_checkout
-                // 							},
+                remove_item: function(e) {
 
-                // 							edit_item: function(e) {
-                // 								lumise.cart.edit_item(this.getAttribute('data-id'), e);
-                // 								e.preventDefault();
-                // 							},
+                    if (confirm(lumise.i('sure'))) {
 
-                // 							remove_item: function(e) {
-                // // ////////////debugger
-                // 								if (confirm('确定要继续操作吗')) {
+                        var id = this.getAttribute('data-id'),
+                            total_elm = $('#lumise-cart-details').find('tfoot tr:first td'),
+                            total = 0;
 
-                // 									var id = this.getAttribute('data-id'),
-                // 										total_elm = $('#lumise-cart-details').find('tfoot tr:first td'),
-                // 										total = 0;
+                        if (lumise.fn.url_var('cart', null) == id)
+                            lumise.fn.set_url('cart', null);
 
-                // 									if (lumise.fn.url_var('cart', null) == id)
-                // 										lumise.fn.set_url('cart', null);
+                        var items = JSON.parse(localStorage.getItem('LUMISE-CART-DATA'));
+                        delete items[id];
+                        debugger;
+                        localStorage.setItem('LUMISE-CART-DATA', JSON.stringify(items));
+                        lumise.render.cart_change();
 
-                // 									//存入数据库 -- 始
-                // 									$.ajax({
+                        $(this).closest('tr').remove();
 
-                // 										cache: true,
-                // 										type: "POST",
-                // 										url		:	 "http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax_delete",
-                // 										data	:	 {
-                // 											user_id : lumise.data.user_id,
-                // 											design_id : id	,
+                        //calc total
+                        Object.keys(items).map(function(i) {
+                            if (items[i].price_total !== undefined)
+                                total += parseFloat(items[i].price_total);
+                        });
 
-                // 										},
-                // 										async: false,
+                        // $(total_elm[0]).html(
+                        // 	lumise.i(74)+': '+lumise.fn.price(total.toFixed(2))
+                        // );
 
-                // 										success: function (res, status) {
+                        if(total == 0) {
+                            $(total_elm[1]).html('');
+                            $('#lumise-cart-details').find('tfoot .lumise-btn-primary').hide();
+                        }
 
-                // 										},
-                // 										error: function() {
-                // 											// alert('Error: could not checkout this time');
-                // 											alert('系统超时，请重新操作!');
-                // 										}
-                // 									});
-                // 									//存入数据库 -- 终
+                    };
+                    e.preventDefault();
 
-                // 									var items1 = JSON.parse(localStorage.getItem('LUMISE-CART-DATA'));
+                }
 
-                // 									delete items[id];
+            });
 
-                // 									// alert(13);exit;
-                // 									localStorage.setItem('LUMISE-CART-DATA', JSON.stringify(items));
-                // 									lumise.render.cart_change();
+            e.preventDefault();
 
-                // 									$(this).closest('tr').remove();
-                // 									////////////debugger
-                // 									//calc total
-                // 									Object.keys(items).map(function(i) {
-                // 										if (items[i].price_total !== undefined)
-                // 											total += parseFloat(items[i].price_total);
-                // 									});
 
-                // 									// $(total_elm[0]).html(
-                // 									// 	lumise.i(74)+': '+lumise.fn.price(total.toFixed(2))
-                // 									// );
-
-                // 									if(total == 0) {
-                // 										$(total_elm[1]).html('');
-                // 										$('#lumise-cart-details').find('tfoot .lumise-btn-primary').hide();
-                // 									}
-
-                // 								};
-                // 								e.preventDefault();
-
-                // 							}
-
-                // 						});
-
-                // 						e.preventDefault();
-
-                // 				})
             },
 
             categories: function (type, res) {
@@ -18283,7 +18317,7 @@ jQuery(document).ready(function ($) {
                 delete cart_design
                 delete cart_data
 
-                lumise.render.cart_confirm()
+                // lumise.render.cart_confirm()
                 lumise.render.cart_change()
                 lumise.actions.do('add-cart', id)
 
@@ -18856,6 +18890,11 @@ jQuery(document).ready(function ($) {
 
             // TODO render product
             render: function (data) {
+
+
+                lumise.fn.productInit().then(res=>{
+
+                })
                 var attr = {},
                     wrp = lumise.get.el('cart-attributes')
 
@@ -18864,284 +18903,287 @@ jQuery(document).ready(function ($) {
                 if (data === undefined) return
 
                 lumise.cart.printing.render(data.printing)
-
                 lumise.cart.price.base = parseFloat(data.price)
+				var cart = localStorage.getItem('LUMISE-CART-DATA')
+                if (cart !== '' && cart != '[]') cart = JSON.parse(cart)
+                else cart = {}
+                Object.keys(data.attributes).map(function (k) {
+                    var attr = data.attributes[k]
+                    lumise.ops.product_data.attributes[k].allows =
+                        attr.allows
 
-                var cart1 = localStorage.getItem('LUMISE-CART-DATA')
-
-                lumise.fn.productInit().then((cart) => {
-                    console.log(12)
-                    var cur = lumise.fn.url_var('cart', '')
-                    ////debugger
-                    if (cart !== '' && cart != '[]') cart = JSON.parse(cart)
-                    else cart = {}
-
-                    // console.log(cart)
-                    Object.keys(data.attributes).map(function (k) {
-                        var attr = data.attributes[k]
-                        // console.log(attr)
-                        lumise.ops.product_data.attributes[k].allows =
-                            attr.allows
-
-                        if (attr.value === undefined) {
-                            if (
-                                typeof attr.values == 'object' &&
-                                typeof attr.values.options == 'object'
-                            ) {
-                                attr.value = []
-                                attr.values.options.map(function (o) {
-                                    if (o.default === true)
-                                        attr.value.push(o.value)
-                                })
-                                attr.value = attr.value.join(decodeURI('%0A'))
-                            } else if (
-                                typeof attr.values == 'object' &&
-                                attr.values.default !== undefined
-                            ) {
-                                attr.value = attr.values.default
-                            } else attr.value = ''
-                        }
-
-                        if (attr.id === undefined)
-                            attr.id = lumise.cart.slug(attr.name)
-
-                        wrp.append(lumise.cart.fields.render(attr))
-                    })
-
-                    if (lumise.data.calc_formula == '1') {
-                        // wrp.append(
-                        // 	'<div class="lumise-cart-field how-calculate">\
-                        // 		<a href="#formula">\
-                        // 			'+lumise.i(180)+'\
-                        // 			<i class="lumisex-ios-arrow-forward"></i>\
-                        // 		</a>\
-                        // 	</div>'
-                        // )
+                    if (attr.value === undefined) {
+                        if (
+                            typeof attr.values == 'object' &&
+                            typeof attr.values.options == 'object'
+                        ) {
+                            attr.value = []
+                            attr.values.options.map(function (o) {
+                                if (o.default === true)
+                                    attr.value.push(o.value)
+                            })
+                            attr.value = attr.value.join(decodeURI('%0A'))
+                        } else if (
+                            typeof attr.values == 'object' &&
+                            attr.values.default !== undefined
+                        ) {
+                            attr.value = attr.values.default
+                        } else attr.value = ''
                     }
 
-                    lumise.trigger({
-                        el: wrp,
-                        events: {
-                            '.lumise-cart-param:change': 'calc_cart',
-                            'a[href="#formula"]': 'formula',
-                        },
-                        calc_cart: function (e) {
-                            // hash : 2cca8dcd607566aec4da56227019f71f
-                            // make sesion local variable save satate dropdown change
-                            // console.log('dropdown change');
-                            sessionStorage.setItem(
-                                'LUMISE-PRINT-DROPDOWN',
-                                'false'
-                            )
+                    if (attr.id === undefined)
+                        attr.id = lumise.cart.slug(attr.name)
 
-                            $(
-                                '#lumise-cart-attributes em.lumise-required-msg'
-                            ).remove()
+                    wrp.append(lumise.cart.fields.render(attr))
+                })
 
-                            lumise.cart.variations(this)
-                            lumise.cart.calc()
+                if (lumise.data.calc_formula == '1') {
+                    // wrp.append(
+                    // 	'<div class="lumise-cart-field how-calculate">\
+                    // 		<a href="#formula">\
+                    // 			'+lumise.i(180)+'\
+                    // 			<i class="lumisex-ios-arrow-forward"></i>\
+                    // 		</a>\
+                    // 	</div>'
+                    // )
+                }
 
-                            lumise.render.cart_change()
-                            lumise.actions.do('cart-changed', true)
-                        },
-                        formula: function (e) {
-                            e.preventDefault()
+                lumise.trigger({
+                    el: wrp,
+                    events: {
+                        '.lumise-cart-param:change': 'calc_cart',
+                        'a[href="#formula"]': 'formula',
+                    },
+                    calc_cart: function (e) {
+                        // hash : 2cca8dcd607566aec4da56227019f71f
+                        // make sesion local variable save satate dropdown change
+                        // console.log('dropdown change');
+                        sessionStorage.setItem(
+                            'LUMISE-PRINT-DROPDOWN',
+                            'false'
+                        )
 
-                            var sum = lumise.cart.sum_calc(),
-                                table = '',
-                                print_detail = false
+                        $(
+                            '#lumise-cart-attributes em.lumise-required-msg'
+                        ).remove()
 
-                            if (lumise.data.printings.length > 0) {
-                                var print = lumise.data.printings.filter(
-                                    function (p) {
-                                        return (
-                                            p.id == lumise.cart.printing.current
-                                        )
-                                    }
-                                )
+                        lumise.cart.variations(this)
+                        lumise.cart.calc()
 
-                                print_detail =
-                                    print.length > 0 &&
-                                    (print[0].description !== '' ||
-                                        (typeof print[0].calculate[
-                                            'show_detail'
-                                        ] !== 'undefined' &&
-                                            print[0].calculate.show_detail ==
-                                                1)) &&
-                                    lumise.cart.printing.calc(lumise.cart.qty) >
-                                        0
-                                        ? true
-                                        : false
-                            }
+                        lumise.render.cart_change()
+                        lumise.actions.do('cart-changed', true)
+                    },
+                    formula: function (e) {
+                        e.preventDefault()
 
-                            var varitxt = '',
-                                vr =
-                                    lumise.ops.product_data.variations !==
-                                        undefined &&
-                                    lumise.ops.product_data.variations
-                                        .variations !== undefined &&
-                                    lumise.ops.product_data.variations
-                                        .variations[lumise.data.variation] !==
-                                        undefined
-                                        ? lumise.ops.product_data.variations
-                                              .variations[lumise.data.variation]
-                                        : null
+                        var sum = lumise.cart.sum_calc(),
+                            table = '',
+                            print_detail = false
 
-                            if (lumise.data.variation !== null && vr !== null) {
-                                varitxt +=
-                                    '<p class="notice">' +
-                                    lumise.i(193) +
-                                    ' <strong>#' +
-                                    lumise.data.variation +
-                                    '</strong>' +
-                                    (vr.price !== ''
-                                        ? ', ' +
-                                          lumise.i(182) +
-                                          ': <strong>' +
-                                          vr.price +
-                                          '</strong>'
-                                        : '') +
-                                    (vr.minqty !== ''
-                                        ? ', min-qty: <strong>' +
-                                          vr.minqty +
-                                          '</strong>'
-                                        : '') +
-                                    (vr.maxqty !== ''
-                                        ? ', max-qty: <strong>' +
-                                          vr.maxqty +
-                                          '</strong>'
-                                        : '') +
-                                    '</p>'
-                            }
-
-                            var item_price =
-                                sum.ext +
-                                sum.base +
-                                sum.template +
-                                lumise.cart.printing.calc(lumise.cart.qty)
-
-                            lumise.tools.lightbox({
-                                content:
-                                    '<div class="lumise_content lumise_wrapper_table">\
-                                    <h3 class="title">' +
-                                    lumise.i(180) +
-                                    '</h3>\
-                                    <div id="lumise-formula-detail">\
-                                        ' +
-                                    varitxt +
-                                    '\
-                                        <table>\
-                                            <tr>\
-                                                <td style="width:20%;text-align: left">' +
-                                    lumise.i(182) +
-                                    '</td>\
-                                                <td>' +
-                                    lumise.fn.price(
-                                        sum.base - lumise.cart.price.attr
-                                    ) +
-                                    '</td>\
-                                            </tr>\
-                                            <tr>\
-                                                <td style="width:20%;text-align: left">' +
-                                    lumise.i(199) +
-                                    '</td>\
-                                                <td>' +
-                                    lumise.fn.price(lumise.cart.price.attr) +
-                                    '</td>\
-                                            </tr>\
-                                            <tr>\
-                                                <td style="width:20%;text-align: left">' +
-                                    lumise.i(91) +
-                                    '</td>\
-                                                <td>' +
-                                    lumise.fn.price(sum.template) +
-                                    '</td>\
-                                            </tr>\
-                                            <tr>\
-                                                <td style="width:20%;text-align: left">' +
-                                    lumise.i(108) +
-                                    '</td>\
-                                                <td>' +
-                                    lumise.fn.price(
-                                        lumise.cart.printing.calc(
-                                            lumise.cart.qty
-                                        )
-                                    ) +
-                                    (print_detail
-                                        ? ' &nbsp; <a href="#" data-print="' +
-                                          print[0].id +
-                                          '">' +
-                                          lumise.i(68) +
-                                          ' <i class="lumisex-android-open"></i></a>'
-                                        : '') +
-                                    '</td>\
-                                    </tr>\
-                                    <tr>\
-                                        <td style="width:20%;text-align: left">' +
-                                    lumise.i(183) +
-                                    '</td>\
-                                                <td>' +
-                                    lumise.fn.price(sum.ext) +
-                                    '</td>\
-                                            </tr>\
-                                            <tr>\
-                                                <td style="width:20%;text-align: left">' +
-                                    lumise.i(74) +
-                                    '</td>\
-                                                <td>' +
-                                    lumise.fn.price(item_price) +
-                                    ' x ' +
-                                    lumise.cart.qty +
-                                    'qty = <strong>' +
-                                    lumise.fn.price(
-                                        item_price * lumise.cart.qty
-                                    ) +
-                                    '</strong></td>\
-                                            </tr>\
-                                            ' +
-                                    (lumise.cart.price.fixed !== 0
-                                        ? '\
-                                            <tr>\
-                                                <td style="width:20%;text-align: left">' +
-                                          lumise.i(198) +
-                                          '</td>\
-                                                <td>' +
-                                          lumise.i(74) +
-                                          ' + ' +
-                                          lumise.fn.price(
-                                              lumise.cart.price.fixed
-                                          ) +
-                                          ' = <strong>' +
-                                          lumise.fn.price(
-                                              item_price * lumise.cart.qty +
-                                                  lumise.cart.price.fixed
-                                          ) +
-                                          '</strong></td>\
-                                            </tr>\
-                                            '
-                                        : '') +
-                                    '\
-                                        </table>\
-                                    </div>\
-                                </div>',
-                            })
-
-                            $('#lumise-formula-detail a[data-print]').on(
-                                'click',
-                                function (e) {
-                                    e.preventDefault()
-                                    lumise.fn.print_detail(
-                                        this.getAttribute('data-print')
+                        if (lumise.data.printings.length > 0) {
+                            var print = lumise.data.printings.filter(
+                                function (p) {
+                                    return (
+                                        p.id == lumise.cart.printing.current
                                     )
                                 }
                             )
-                        },
-                        error: function () {
-                            // alert('Error: could not checkout this time');
-                            alert('系统超时，请重新操作!')
-                        },
-                    })
+
+                            print_detail =
+                                print.length > 0 &&
+                                (print[0].description !== '' ||
+                                    (typeof print[0].calculate[
+                                        'show_detail'
+                                    ] !== 'undefined' &&
+                                        print[0].calculate.show_detail ==
+                                            1)) &&
+                                lumise.cart.printing.calc(lumise.cart.qty) >
+                                    0
+                                    ? true
+                                    : false
+                        }
+
+                        var varitxt = '',
+                            vr =
+                                lumise.ops.product_data.variations !==
+                                    undefined &&
+                                lumise.ops.product_data.variations
+                                    .variations !== undefined &&
+                                lumise.ops.product_data.variations
+                                    .variations[lumise.data.variation] !==
+                                    undefined
+                                    ? lumise.ops.product_data.variations
+                                          .variations[lumise.data.variation]
+                                    : null
+
+                        if (lumise.data.variation !== null && vr !== null) {
+                            varitxt +=
+                                '<p class="notice">' +
+                                lumise.i(193) +
+                                ' <strong>#' +
+                                lumise.data.variation +
+                                '</strong>' +
+                                (vr.price !== ''
+                                    ? ', ' +
+                                      lumise.i(182) +
+                                      ': <strong>' +
+                                      vr.price +
+                                      '</strong>'
+                                    : '') +
+                                (vr.minqty !== ''
+                                    ? ', min-qty: <strong>' +
+                                      vr.minqty +
+                                      '</strong>'
+                                    : '') +
+                                (vr.maxqty !== ''
+                                    ? ', max-qty: <strong>' +
+                                      vr.maxqty +
+                                      '</strong>'
+                                    : '') +
+                                '</p>'
+                        }
+
+                        var item_price =
+                            sum.ext +
+                            sum.base +
+                            sum.template +
+                            lumise.cart.printing.calc(lumise.cart.qty)
+
+                        lumise.tools.lightbox({
+                            content:
+                                '<div class="lumise_content lumise_wrapper_table">\
+                                <h3 class="title">' +
+                                lumise.i(180) +
+                                '</h3>\
+                                <div id="lumise-formula-detail">\
+                                    ' +
+                                varitxt +
+                                '\
+                                    <table>\
+                                        <tr>\
+                                            <td style="width:20%;text-align: left">' +
+                                lumise.i(182) +
+                                '</td>\
+                                            <td>' +
+                                lumise.fn.price(
+                                    sum.base - lumise.cart.price.attr
+                                ) +
+                                '</td>\
+                                        </tr>\
+                                        <tr>\
+                                            <td style="width:20%;text-align: left">' +
+                                lumise.i(199) +
+                                '</td>\
+                                            <td>' +
+                                lumise.fn.price(lumise.cart.price.attr) +
+                                '</td>\
+                                        </tr>\
+                                        <tr>\
+                                            <td style="width:20%;text-align: left">' +
+                                lumise.i(91) +
+                                '</td>\
+                                            <td>' +
+                                lumise.fn.price(sum.template) +
+                                '</td>\
+                                        </tr>\
+                                        <tr>\
+                                            <td style="width:20%;text-align: left">' +
+                                lumise.i(108) +
+                                '</td>\
+                                            <td>' +
+                                lumise.fn.price(
+                                    lumise.cart.printing.calc(
+                                        lumise.cart.qty
+                                    )
+                                ) +
+                                (print_detail
+                                    ? ' &nbsp; <a href="#" data-print="' +
+                                      print[0].id +
+                                      '">' +
+                                      lumise.i(68) +
+                                      ' <i class="lumisex-android-open"></i></a>'
+                                    : '') +
+                                '</td>\
+                                </tr>\
+                                <tr>\
+                                    <td style="width:20%;text-align: left">' +
+                                lumise.i(183) +
+                                '</td>\
+                                            <td>' +
+                                lumise.fn.price(sum.ext) +
+                                '</td>\
+                                        </tr>\
+                                        <tr>\
+                                            <td style="width:20%;text-align: left">' +
+                                lumise.i(74) +
+                                '</td>\
+                                            <td>' +
+                                lumise.fn.price(item_price) +
+                                ' x ' +
+                                lumise.cart.qty +
+                                'qty = <strong>' +
+                                lumise.fn.price(
+                                    item_price * lumise.cart.qty
+                                ) +
+                                '</strong></td>\
+                                        </tr>\
+                                        ' +
+                                (lumise.cart.price.fixed !== 0
+                                    ? '\
+                                        <tr>\
+                                            <td style="width:20%;text-align: left">' +
+                                      lumise.i(198) +
+                                      '</td>\
+                                            <td>' +
+                                      lumise.i(74) +
+                                      ' + ' +
+                                      lumise.fn.price(
+                                          lumise.cart.price.fixed
+                                      ) +
+                                      ' = <strong>' +
+                                      lumise.fn.price(
+                                          item_price * lumise.cart.qty +
+                                              lumise.cart.price.fixed
+                                      ) +
+                                      '</strong></td>\
+                                        </tr>\
+                                        '
+                                    : '') +
+                                '\
+                                    </table>\
+                                </div>\
+                            </div>',
+                        })
+
+                        $('#lumise-formula-detail a[data-print]').on(
+                            'click',
+                            function (e) {
+                                e.preventDefault()
+                                lumise.fn.print_detail(
+                                    this.getAttribute('data-print')
+                                )
+                            }
+                        )
+                    },
+                    error: function () {
+                        // alert('Error: could not checkout this time');
+                        alert('系统超时，请重新操作!')
+                    },
                 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 lumise.cart.calc()
 
@@ -19643,7 +19685,6 @@ jQuery(document).ready(function ($) {
                 if (e && typeof e.preventDefault == 'function')
                     e.preventDefault()
             },
-
             do_checkout: function (e) {
                 if (e !== undefined && typeof e.preventDefault == 'function')
                     e.preventDefault()
@@ -20111,52 +20152,51 @@ jQuery(document).ready(function ($) {
             this.actions.add('save', lumise.fn.update_state)
             // TODO actions cart_edit
             this.actions.add('cart_edit', function (ops) {
-                console.log(121)
                 $('.lumise-lightbox').remove()
-                function setView(ops) {
-                    let res = localStorage.getItem('designInfo')
-                    if (res) {
-                        res = JSON.parse(res).data
-                    }
-                    lumise.fn.load_product({
-                        id: ops.product,
-                        cms: ops.product_cms,
-                        printing: ops.printing,
-                        options: ops.options,
-                        template: ops.template,
-                        stages: res.stages,
-                        callback: function (res) {
-                            if (res.id === undefined) {
-                                lumise.f(false)
-                                lumise.fn.notice(
-                                    'ERROR_LOAD_PRODUCT',
-                                    'error',
-                                    3500
-                                )
-                                return
-                            } else {
-                                lumise.get
-                                    .el('general-status')
-                                    .html(
-                                        '<span>\
-                                            <text>\
-                                                <i class="lumisex-android-alert"></i> ' +
-                                            lumise.i(186) +
-                                            ' <strong>#' +
-                                            ops.id +
-                                            '</strong></text>\
-                                            <a href="#cancel-design" data-btn="cancel" data-func="cancel-design">\
-                                                ' +
-                                            lumise.i(187) +
-                                            '\
-                                            </a>\
-                                        </span>'
-                                    )
-                            }
-                        },
-                    })
+
+                let res = sessionStorage.getItem('designInfo')
+                if (res) {
+                    res = JSON.parse(res).data
                 }
-                setView(ops)
+
+                lumise.fn.load_product({
+                    id: ops.product,
+                    cms: ops.product_cms,
+                    printing: ops.printing,
+                    options: ops.options,
+                    template: ops.template,
+                    stages: res.stages,
+                    callback: function (res) {
+                        if (res.id === undefined) {
+                            lumise.f(false)
+                            lumise.fn.notice(
+                                'ERROR_LOAD_PRODUCT',
+                                'error',
+                                3500
+                            )
+                            return
+                        } else {
+                            lumise.get
+                                .el('general-status')
+                                .html(
+                                    '<span>\
+                                        <text>\
+                                            <i class="lumisex-android-alert"></i> ' +
+                                        lumise.i(186) +
+                                        ' <strong>#' +
+                                        ops.id +
+                                        '</strong></text>\
+                                        <a href="#cancel-design" data-btn="cancel" data-func="cancel-design">\
+                                            ' +
+                                        lumise.i(187) +
+                                        '\
+                                        </a>\
+                                    </span>'
+                                )
+                        }
+                    },
+                })
+
                 lumise.fn.clear_url()
                 lumise.fn.set_url('cart', ops.id)
                 lumise.render.cart_change()
@@ -20190,7 +20230,7 @@ jQuery(document).ready(function ($) {
                     })
             })
 
-            // TODO 加载
+            // TODO加载
             this.actions.add('db-ready', function () {
                 lumise.fn.productInit().then((res) => {
                     const { width, height, data, design, data_design } = res
@@ -20210,7 +20250,11 @@ jQuery(document).ready(function ($) {
                             [data_design.id]: data_design,
                         })
                     )
-                    var has_cart = false
+                    let has_cart
+
+
+                    data_design.length > 0 ? has_cart = true:has_cart = false
+
                     if (has_cart === true) {
                         lumise.cart.edit_item(data_design.id)
                     } else if (lumise.data.onload) {
@@ -20267,155 +20311,8 @@ jQuery(document).ready(function ($) {
                         )
                     }
                 })
-
-                // try {
-                //     var cart_data1 = JSON.parse(
-                //         localStorage.getItem('LUMISE-CART-DATA')
-                //     )
-
-                //     lumise.fn.productInit().then((carts) => {
-
-                //         var cart_data = JSON.parse(carts)
-                //         var has_cart = false
-
-                //         if (lumise.fn.url_var('cart', '') !== '') {
-                //             if (
-                //                 cart_data !== null &&
-                //                 cart_data[lumise.fn.url_var('cart')] !==
-                //                     undefined
-                //             )
-                //                 has_cart = true
-                //             else lumise.fn.notice(lumise.i(120), 'error', 3500)
-                //         }
-
-                //         if (has_cart === true) {
-                //             lumise.cart.edit_item(cart_data)
-                //         } else if (lumise.data.onload) {
-                //             lumise.f(lumise.i('importing') + '..')
-                //             lumise.fn.set_url('cart', null)
-                //             setTimeout(function () {
-                //                 if (lumise.data.share !== undefined) {
-                //                     Object.keys(lumise.data.onload.stages).map(
-                //                         function (s) {
-                //                             delete lumise.data.onload.stages[s]
-                //                                 .template
-                //                         }
-                //                     )
-                //                 }
-
-                //                 lumise.render.product(lumise.data.onload)
-                //                 delete lumise.data.onload
-                //             }, 100)
-                //         } else if (
-                //             lumise.fn.url_var('reorder', '') === '' &&
-                //             lumise.get.el('no-product').length > 0
-                //         ) {
-                //             lumise.f(false)
-                //             lumise.actions.do('noproduct')
-                //         }
-
-                //         if (lumise.data.share_invalid !== undefined) {
-                //             lumise.fn.confirm({
-                //                 title: lumise.data.share_invalid,
-                //                 primary: {},
-                //                 second: {
-                //                     text: 'Ok',
-                //                 },
-                //                 type: 'error',
-                //             })
-                //         }
-                //         var carts1 = localStorage.getItem('LUMISE-CART-DATA')
-
-                //         if (carts && carts !== '' && carts != '[]') {
-                //             carts = Object.keys(JSON.parse(carts))
-                //             lumise.indexed.list(
-                //                 function (data) {
-                //                     if (carts.indexOf(data.id) === -1)
-                //                         lumise.indexed.delete(data.id, 'cart')
-                //                 },
-                //                 'cart',
-                //                 function (st) {
-                //                     if (st == 'done') {
-                //                         lumise.ops.cart_cursor = null
-                //                     }
-                //                 }
-                //             )
-                //         }
-                //     })
-                // } catch (ex) {
-                //     var cart_data = null
-                //     var has_cart = false
-
-                //     if (lumise.fn.url_var('cart', '') !== '') {
-                //         if (
-                //             cart_data !== null &&
-                //             cart_data[lumise.fn.url_var('cart')] !== undefined
-                //         )
-                //             has_cart = true
-                //         else lumise.fn.notice(lumise.i(120), 'error', 3500)
-                //     }
-
-                //     if (has_cart === true) {
-                //         lumise.cart.edit_item(lumise.fn.url_var('cart'))
-                //     } else if (lumise.data.onload) {
-                //         lumise.f(lumise.i('importing') + '..')
-
-                //         lumise.fn.set_url('cart', null)
-
-                //         setTimeout(function () {
-                //             if (lumise.data.share !== undefined) {
-                //                 Object.keys(lumise.data.onload.stages).map(
-                //                     function (s) {
-                //                         delete lumise.data.onload.stages[s]
-                //                             .template
-                //                     }
-                //                 )
-                //             }
-
-                //             lumise.render.product(lumise.data.onload)
-
-                //             delete lumise.data.onload
-                //         }, 100)
-                //     } else if (
-                //         lumise.fn.url_var('reorder', '') === '' &&
-                //         lumise.get.el('no-product').length > 0
-                //     ) {
-                //         lumise.f(false)
-                //         lumise.actions.do('noproduct')
-                //     }
-
-                //     if (lumise.data.share_invalid !== undefined) {
-                //         lumise.fn.confirm({
-                //             title: lumise.data.share_invalid,
-                //             primary: {},
-                //             second: {
-                //                 text: 'Ok',
-                //             },
-                //             type: 'error',
-                //         })
-                //     }
-
-                //     /* Clear unuse cart data in DB */
-                //     var carts1 = localStorage.getItem('LUMISE-CART-DATA')
-                //     lumise.fn.productInit().then((carts) => {
-                //         if (carts && carts !== '' && carts != '[]') {
-                //             carts = Object.keys(JSON.parse(carts))
-                //             lumise.indexed.list(
-                //                 function (data) {
-                //                     if (carts.indexOf(data.id) === -1)
-                //                         lumise.indexed.delete(data.id, 'cart')
-                //                 },
-                //                 'cart',
-                //                 function (st) {
-                //                     if (st == 'done') {
-                //                         lumise.ops.cart_cursor = null
-                //                     }
-                //                 }
-                //             )
-                //         }
-                //     })
-                // }
             })
+
 
             this.actions.add('first-completed', function () {
                 if (lumise.fn.url_var('cart', '') != '') {

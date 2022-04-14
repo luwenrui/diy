@@ -1592,20 +1592,20 @@ jQuery(document).ready(function ($) {
 
                     /*var svg_text = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="100" height="100" viewBox="0 0 100 100" xml:space="preserve"><text font-family="Roboto" font-size="30" font-weight="normal" style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(25,25,112);" direction="rtl" text-anchor="end"><tspan x="0" y="50" fill="#191970" direction="rtl" text-anchor="end">&#x0061;&#x0062;&#x0035;&#x0040;&#x0021;</tspan></text></svg>';
 
-					svg_text = '<svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 500">\
-								    <path id="curve" fill="transparent" d="M73.2,148.6c4-6.1,65.5-96.8,178.6-95.6c111.3,1.2,170.8,90.3,175.1,97" />\
-								    <text width="500" font-size="40">\
-								      <textPath xlink:href="#curve">\
-								        Dangerous Curves Ahead\
-								      </textPath>\
-								    </text>\
-								  </svg>';
+                        svg_text = '<svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 500 500">\
+                                        <path id="curve" fill="transparent" d="M73.2,148.6c4-6.1,65.5-96.8,178.6-95.6c111.3,1.2,170.8,90.3,175.1,97" />\
+                                        <text width="500" font-size="40">\
+                                        <textPath xlink:href="#curve">\
+                                            Dangerous Curves Ahead\
+                                        </textPath>\
+                                        </text>\
+                                    </svg>';
 
-					svg_text = '<svg width="140.453125" height="70.265625" viewBox="58.984375 0 140.453125 70.265625" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="0.843894627118865"><text fill="#FF0000" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" x="" y="" text-anchor="start" font-size="24px" font-family="arial" pattclass="none" data-textcurve="180" data-itemzoom="1 1" data-textspacing="11"><textPath xlink:href="#textPath-item-0"><tspan dy="-11">Hello world</tspan></textPath></text></g><defs><path id="textPath-item-0" d="M 91.609375 70.1074415696873 A 37.5605665696873 37.5605665696873 0 0 1 166.7305081393746 70.1074415696873"></path></defs></svg>';
+                        svg_text = '<svg width="140.453125" height="70.265625" viewBox="58.984375 0 140.453125 70.265625" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="0.843894627118865"><text fill="#FF0000" stroke="none" stroke-width="0" stroke-linecap="round" stroke-linejoin="round" x="" y="" text-anchor="start" font-size="24px" font-family="arial" pattclass="none" data-textcurve="180" data-itemzoom="1 1" data-textspacing="11"><textPath xlink:href="#textPath-item-0"><tspan dy="-11">Hello world</tspan></textPath></text></g><defs><path id="textPath-item-0" d="M 91.609375 70.1074415696873 A 37.5605665696873 37.5605665696873 0 0 1 166.7305081393746 70.1074415696873"></path></defs></svg>';
 
-					ops.src = 'data:image/svg+xml;base64,'+btoa(svg_text);
+                        ops.src = 'data:image/svg+xml;base64,'+btoa(svg_text);
 
-					return this.image(ops, callback);*/
+                        return this.image(ops, callback);*/
 
                     ops.editable = false
 
@@ -1816,8 +1816,8 @@ jQuery(document).ready(function ($) {
                         )
 
                         /*
-							Use the thumbnail on the editor for a large image
-						*/
+                                Use the thumbnail on the editor for a large image
+                            */
 
                         if (
                             ops.src.indexOf('data:image/svg+xml;base64') ===
@@ -2555,16 +2555,16 @@ jQuery(document).ready(function ($) {
                                     .el('general-status')
                                     .html(
                                         '<span>\
-										<text>\
-											<i class="lumisex-android-alert"></i> ' +
+                                            <text>\
+                                                <i class="lumisex-android-alert"></i> ' +
                                             lumise.i(184) +
                                             '</text>\
-                                    <a href="#clear-designs" data-btn="cancel" data-func="clear-designs">\
-                                        ' +
+                                        <a href="#clear-designs" data-btn="cancel" data-func="clear-designs">\
+                                            ' +
                                             lumise.i(185) +
                                             '\
-										</a>\
-									</span>'
+                                            </a>\
+                                        </span>'
                                     )
 
                                 lumise.render.cart_change()
@@ -2576,16 +2576,16 @@ jQuery(document).ready(function ($) {
                                     .el('general-status')
                                     .html(
                                         '<span>\
-										<text>\
-											<i class="lumisex-android-alert"></i> ' +
+                                            <text>\
+                                                <i class="lumisex-android-alert"></i> ' +
                                             lumise.i(184) +
                                             '</text>\
-                                    <a href="#clear-designs" data-btn="cancel" data-func="clear-designs">\
-                                        ' +
+                                        <a href="#clear-designs" data-btn="cancel" data-func="clear-designs">\
+                                            ' +
                                             lumise.i(185) +
                                             '\
-										</a>\
-									</span>'
+                                            </a>\
+                                        </span>'
                                     )
 
                                 lumise.render.cart_change()
@@ -2727,15 +2727,15 @@ jQuery(document).ready(function ($) {
                                     .data({ category: el.data('category') })
                                     .html(
                                         '<header>\
-												<span data-act="back" title="' +
+                                                    <span data-act="back" title="' +
                                             lumise.i(43) +
                                             '">\
-													<i class="lumisex-android-arrow-back"></i>\
-												</span>\
-												<span class="lumise-category-title">' +
+                                                        <i class="lumisex-android-arrow-back"></i>\
+                                                    </span>\
+                                                    <span class="lumise-category-title">' +
                                             lumise.i(44) +
                                             '</span>\
-											</header><i class="lumise-spinner white x3 mt2"></i>'
+                                                </header><i class="lumise-spinner white x3 mt2"></i>'
                                     )
 
                                 lumise.post({
@@ -2960,13 +2960,13 @@ jQuery(document).ready(function ($) {
                                             .find('>div')
                                             .html(
                                                 '<div class="lumise-template-preview">\
-												<img style="background:' +
+                                                    <img style="background:' +
                                                     c +
                                                     '" src="' +
                                                     s.product._element.src +
                                                     '" />\
-												<div class="lumise-tp-limit"></div>\
-											</div>'
+                                                    <div class="lumise-tp-limit"></div>\
+                                                </div>'
                                             )
 
                                         lumise.get
@@ -3579,7 +3579,7 @@ jQuery(document).ready(function ($) {
                             a = c.getActiveObject()
 
                         /*if (a.type == 'text-fx' && e.isTrigger !== undefined)
-							return;*/
+                                return;*/
 
                         if (a && a.fill !== this.value) {
                             if (
@@ -4160,7 +4160,7 @@ jQuery(document).ready(function ($) {
                             width: 1020,
                             content:
                                 '<iframe src="https://services.lumise.com/fonts/"></iframe>\
-									  <span data-view="loading"><i class="lumise-spinner x3"></i></span>',
+                                        <span data-view="loading"><i class="lumise-spinner x3"></i></span>',
                         })
 
                         $('#lumise-lightbox iframe').on('load', function () {
@@ -4616,7 +4616,6 @@ jQuery(document).ready(function ($) {
                                 }
 
                                 break
-                            // TODO 查看
                             case 'clear':
                                 lumise.tools.clearAll()
                                 lumise.fn.notice(lumise.i(29), 'success')
@@ -5015,10 +5014,10 @@ jQuery(document).ready(function ($) {
 
                                             html +=
                                                 '<span data-item>\
-											<a href="' +
+                                                <a href="' +
                                                 share_url +
                                                 '" target="_blank">\
-												<img src="' +
+                                                    <img src="' +
                                                 lumise.data.upload_url +
                                                 'shares/' +
                                                 lumise.fn.date(
@@ -5029,13 +5028,13 @@ jQuery(document).ready(function ($) {
                                                 s.share_id +
                                                 '.jpg' +
                                                 '" height="150" />\
-											</a>\
-											<name>' +
+                                                </a>\
+                                                <name>' +
                                                 s.name +
                                                 '</name>\
-											<span data-view="func">\
-												<i class="lumise-icon-menu"></i>\
-												<span data-view="fsub" data-id="' +
+                                                <span data-view="func">\
+                                                    <i class="lumise-icon-menu"></i>\
+                                                    <span data-view="fsub" data-id="' +
                                                 s.share_id +
                                                 '" data-aid="' +
                                                 s.aid +
@@ -5044,30 +5043,30 @@ jQuery(document).ready(function ($) {
                                                 '" data-created="' +
                                                 s.created +
                                                 '">\
-													<date data-func="date">' +
+                                                        <date data-func="date">' +
                                                 lumise.fn.date(
                                                     'h:m D d M, Y',
                                                     s.created
                                                 ) +
                                                 '</date>\
-													<button data-func="copy-link">\
-														<i class="lumise-icon-doc"></i> ' +
+                                                        <button data-func="copy-link">\
+                                                            <i class="lumise-icon-doc"></i> ' +
                                                 lumise.i(130) +
                                                 '\
-													</button>\
-													<button data-func="open">\
-														<i class="lumise-icon-link"></i> ' +
+                                                        </button>\
+                                                        <button data-func="open">\
+                                                            <i class="lumise-icon-link"></i> ' +
                                                 lumise.i(131) +
                                                 '\
-													</button>\
-													<button data-func="delete">\
-														<i class="lumise-icon-trash"></i> ' +
+                                                        </button>\
+                                                        <button data-func="delete">\
+                                                            <i class="lumise-icon-trash"></i> ' +
                                                 lumise.i(132) +
                                                 '\
-													</button>\
-												</span>\
-											</span>\
-										</span>'
+                                                        </button>\
+                                                    </span>\
+                                                </span>\
+                                            </span>'
                                         })
 
                                         wrp.html(html)
@@ -6098,20 +6097,20 @@ jQuery(document).ready(function ($) {
 
                     var tmpl =
                             '<li draggable="true" class="%class%" data-id="%id%">\
-							%thumbn%\
-							<span class="layer-name" contenteditable="true" title="%name%">%name%</span> \
-							<span class="layer-func">\
-								<i class="lumise-icon-eye" %visible%title="' +
+                                %thumbn%\
+                                <span class="layer-name" contenteditable="true" title="%name%">%name%</span> \
+                                <span class="layer-func">\
+                                    <i class="lumise-icon-eye" %visible%title="' +
                             lumise.i('14') +
                             '" data-act="visible"></i>\
-								<i class="lumise-icon-lock-open" %selectable%title="' +
+                                    <i class="lumise-icon-lock-open" %selectable%title="' +
                             lumise.i('15') +
                             '" data-act="selectable"></i>\
-								<i class="lumise-icon-close" title="' +
+                                    <i class="lumise-icon-close" title="' +
                             lumise.i('16') +
                             '" data-act="delete"></i>\
-							</span>\
-						</li>',
+                                </span>\
+                            </li>',
                         layers = lumise.get.el('layers>ul').html(''),
                         index = 0,
                         is_empty = true,
@@ -6564,30 +6563,30 @@ jQuery(document).ready(function ($) {
                             width: 500,
                             content:
                                 '<div id="lumise-create-qrcode" class="lumise-lightbox-form">\
-										<h3 class="title">' +
+                                            <h3 class="title">' +
                                 lumise.i('10') +
                                 '</h3>\
-										<p>\
-											<label>' +
+                                            <p>\
+                                                <label>' +
                                 lumise.i('11') +
                                 ':</label>\
-											<input name="text" type="text" placeholder="' +
+                                                <input name="text" type="text" placeholder="' +
                                 lumise.i('11') +
                                 '" /></p>\
-										<p>\
-											<label>' +
+                                            <p>\
+                                                <label>' +
                                 lumise.i('12') +
                                 ':</label>\
-											<input name="color" type="search" placeholder="' +
+                                                <input name="color" type="search" placeholder="' +
                                 lumise.i('13') +
                                 '" value="' +
                                 fill_default +
                                 '" />\
-										</p>\
-										<p class="right"><button class="primary">' +
+                                            </p>\
+                                            <p class="right"><button class="primary">' +
                                 lumise.i('10') +
                                 '</button></p>\
-									</div>',
+                                        </div>',
                         })
 
                         new jscolor.color(
@@ -6716,7 +6715,7 @@ jQuery(document).ready(function ($) {
                                 e.target.getAttribute('data-color')
                             )
                             /*if (se.color && typeof se.color.fromString == 'function')
-								se.color.fromString(cl);*/
+                                    se.color.fromString(cl);*/
                             se.value = cl
                             se.style.background = cl
                             se.style.color = lumise.tools.svg.invertColor(cl)
@@ -7448,20 +7447,20 @@ jQuery(document).ready(function ($) {
                         '<li style="background-image: url(\'' +
                         URL.createObjectURL(ops.thumbn ? ops.thumbn : ops.url) +
                         '\')" \
-			    				data-ops=\'[{"type": "upload", "name": "' +
+                                    data-ops=\'[{"type": "upload", "name": "' +
                         ops.name +
                         '", "id": "' +
                         id +
                         '"}]\' class="lumise-clipart">\
-								<i data-info="' +
+                                    <i data-info="' +
                         id +
                         '"></i>\
-								<i class="lumise-icon-close" data-delete="' +
+                                    <i class="lumise-icon-close" data-delete="' +
                         id +
                         '" title="' +
                         lumise.i(47) +
                         '"></i>\
-							</li>'
+                                </li>'
 
                     if (dir == 'prepend')
                         lumise.get
@@ -8452,19 +8451,19 @@ jQuery(document).ready(function ($) {
                     this.clearAll()
 
                     /*
-					Object.keys(lumise.data.stages).map(function(s){
+                        Object.keys(lumise.data.stages).map(function(s){
 
-						delete lumise.data.stages[s].data;
-						delete lumise.data.stages[s].screenshot;
-						delete lumise.data.stages[s].updated;
+                            delete lumise.data.stages[s].data;
+                            delete lumise.data.stages[s].screenshot;
+                            delete lumise.data.stages[s].updated;
 
-						lumise.data.stages[s].stack = {
-							data : [],
-						    state : true,
-						    index : 0
-					    };
+                            lumise.data.stages[s].stack = {
+                                data : [],
+                                state : true,
+                                index : 0
+                            };
 
-					});*/
+                        });*/
 
                     var _stages = {}
 
@@ -8597,15 +8596,15 @@ jQuery(document).ready(function ($) {
 
                 var ff = family.replace(/[\"\']*/g, '')
                 /*
-				if (navigator.userAgent.indexOf("Firefox") === -1 && document.fonts.check('1px '+ff)) {
+                    if (navigator.userAgent.indexOf("Firefox") === -1 && document.fonts.check('1px '+ff)) {
 
-					document.fonts.load('1px '+ff, 'a').then(function(){
-						document.fonts.load('italic bold 1px '+ff, 'a').then(function(){
-							callback(family);
-						});
-					});
-					return;
-				};*/
+                        document.fonts.load('1px '+ff, 'a').then(function(){
+                            document.fonts.load('italic bold 1px '+ff, 'a').then(function(){
+                                callback(family);
+                            });
+                        });
+                        return;
+                    };*/
 
                 if (typeof font == 'string') {
                     if (
@@ -8672,23 +8671,23 @@ jQuery(document).ready(function ($) {
                     ),
                     tmpl =
                         '<div id="lumise-lightbox" class="lumise-lightbox">\
-								<div id="lumise-lightbox-body">\
-									<div id="lumise-lightbox-content" style="min-width:' +
+                                    <div id="lumise-lightbox-body">\
+                                        <div id="lumise-lightbox-content" style="min-width:' +
                         cfg.width +
                         'px">\
-										' +
+                                            ' +
                         cfg.content +
                         '\
-									</div>\
-									' +
+                                        </div>\
+                                        ' +
                         cfg.footer +
                         '\
-									<a class="kalb-close" href="#close" title="Close">\
-										<i class="lumisex-android-close"></i>\
-									</a>\
-								</div>\
-								<div class="kalb-overlay"></div>\
-							</div>'
+                                        <a class="kalb-close" href="#close" title="Close">\
+                                            <i class="lumisex-android-close"></i>\
+                                        </a>\
+                                    </div>\
+                                    <div class="kalb-overlay"></div>\
+                                </div>'
 
                 if (cfg.footer !== '')
                     cfg.footer =
@@ -9065,29 +9064,29 @@ jQuery(document).ready(function ($) {
 
                     $('#LumiseDesign').append(
                         '<div id="lumise-svg-workspace">\
-							<div id="lumise-svg-edit">' +
+                                <div id="lumise-svg-edit">' +
                             svg.substr(svg.indexOf('<svg')) +
                             '\
-							</div>\
-							<div data-view="zoom">\
-								<i class="lumisex-android-search"></i> zoom <input type="range" min="100" max="300" value="100" />\
-							</div>\
-							<div id="lumise-svg-tool">\
-								<ul data-view="nav">\
-									<li data-func="save" title="' +
+                                </div>\
+                                <div data-view="zoom">\
+                                    <i class="lumisex-android-search"></i> zoom <input type="range" min="100" max="300" value="100" />\
+                                </div>\
+                                <div id="lumise-svg-tool">\
+                                    <ul data-view="nav">\
+                                        <li data-func="save" title="' +
                             lumise.i('save') +
                             '"><i class="lumisex-android-done"></i></li>\
-									<li data-func="reset" title="' +
+                                        <li data-func="reset" title="' +
                             lumise.i('reset') +
                             '"><i class="lumisex-android-refresh"></i></li>\
-									<li data-func="cancel" title="' +
+                                        <li data-func="cancel" title="' +
                             lumise.i('cancel') +
                             '"><i class="lumisex-android-close"></i></li>\
-								</ul>\
-								<h3>所有颜色</h3>\
-								<div data-view="current-colors"></div>\
-							</div>\
-						</div>'
+                                    </ul>\
+                                    <h3>所有颜色</h3>\
+                                    <div data-view="current-colors"></div>\
+                                </div>\
+                            </div>'
                     )
 
                     var svg = $('#lumise-svg-edit>svg')
@@ -9140,18 +9139,18 @@ jQuery(document).ready(function ($) {
                             ) {
                                 $('#lumise-svg-tool>ul[data-view="nav"]').after(
                                     '<h3>选择</h3>\
-                                    <div data-view="customize">\
-                                        <label> 填充:</label>\
-                                        <div class="lumst" id="lumise-svg-fills">\
-                                            <div id="lumise-svg-fills-custom"></div>\
+                                        <div data-view="customize">\
+                                            <label> 填充:</label>\
+                                            <div class="lumst" id="lumise-svg-fills">\
+                                                <div id="lumise-svg-fills-custom"></div>\
+                                            </div>\
                                         </div>\
-                                    </div>\
-                                    <div data-view="customize">\
-                                        <label>轻触:</label>\
-                                        <div class="lumst" id="lumise-svg-strokes">\
-                                            <div id="lumise-svg-strokes-custom"></div>\
-                                        </div>\
-                                    </div>'
+                                        <div data-view="customize">\
+                                            <label>轻触:</label>\
+                                            <div class="lumst" id="lumise-svg-strokes">\
+                                                <div id="lumise-svg-strokes-custom"></div>\
+                                            </div>\
+                                        </div>'
                                 )
                             }
 
@@ -9590,15 +9589,15 @@ jQuery(document).ready(function ($) {
 
                 /*anicfg.x = -((canvas.width*view[0])-canvas.width)/2;*/
                 /*
-				if (view[0] > 1) {
-					anicfg.x = (
-						((canvas.width/2)/view[0])+(stage.limit_zone.left/view[0]) -
-						((canvas.width/2)+stage.limit_zone.left)
-					);
-				} else {
-					anicfg.x = 0;
-					anicfg.y = 0;
-				};*/
+                    if (view[0] > 1) {
+                        anicfg.x = (
+                            ((canvas.width/2)/view[0])+(stage.limit_zone.left/view[0]) -
+                            ((canvas.width/2)+stage.limit_zone.left)
+                        );
+                    } else {
+                        anicfg.x = 0;
+                        anicfg.y = 0;
+                    };*/
 
                 if (anicfg.x == view[4] && anicfg.y == view[5]) return true
 
@@ -10183,7 +10182,6 @@ jQuery(document).ready(function ($) {
                 lumise.f(false)
             },
 
-            // TODO 打印下载
             download_design: function (ops) {
                 Object.keys(lumise.data.stages).map(function (s, i) {
                     down(
@@ -10510,7 +10508,7 @@ jQuery(document).ready(function ($) {
                     svg.append(limitZ)
                     svg.find('defs').append(
                         '<clipPath id="limit-zone-path">\
-							<rect x="' +
+                                <rect x="' +
                             lz.left +
                             '" y="' +
                             lz.top +
@@ -10523,7 +10521,7 @@ jQuery(document).ready(function ($) {
                             '" height="' +
                             lz.height +
                             '" />\
-						</clipPath>'
+                            </clipPath>'
                     )
                 }
 
@@ -10597,7 +10595,7 @@ jQuery(document).ready(function ($) {
                                     '<clipPath id="imagebox-' +
                                         o.id +
                                         '">\
-									<rect transform="translate(' +
+                                        <rect transform="translate(' +
                                         (parseFloat(trn1[0]) -
                                             parseFloat(trn2[0])) +
                                         ' ' +
@@ -10612,7 +10610,7 @@ jQuery(document).ready(function ($) {
                                         '" height="' +
                                         o.height +
                                         '" />\
-								</clipPath>'
+                                    </clipPath>'
                                 )
                             svg_obj
                                 .find('#' + ib_el[0].id)
@@ -10889,8 +10887,8 @@ jQuery(document).ready(function ($) {
                     .replace(/\>\<\/stop\>/g, '/>')
 
                 /*$('#svg-preview').remove();
-				$('body').append('<div id="svg-preview" style="position: fixed; top: 50px; right: 50px;z-index: 100000000000000000">'+svg_data+'</div>');
-				return null;*/
+                    $('body').append('<div id="svg-preview" style="position: fixed; top: 50px; right: 50px;z-index: 100000000000000000">'+svg_data+'</div>');
+                    return null;*/
 
                 if (is_pdf === false) return svg_data
                 else return [svg_data, fonts]
@@ -10935,17 +10933,10 @@ jQuery(document).ready(function ($) {
                         data,
                         async: false,
                         success: function (res, status) {
-                            sessionStorage.setItem(
-                                'design',
-                                JSON.stringify(res.design)
-                            )
-                            sessionStorage.setItem('designInfo',JSON.stringify({
-                                width:res.width,
-                                height:res.height,
-                            }))
-                            resolve(res.data)
+                            resolve(res)
                         },
                         error: function () {
+                            reject()
                             alert('系统超时，请重新操作!')
                         },
                     })
@@ -12218,16 +12209,16 @@ jQuery(document).ready(function ($) {
                         '" class="lumise-stage canvas-wrapper" style="height: ' +
                         mh +
                         'px;">\
-						<canvas id="lumise-stage-' +
+                            <canvas id="lumise-stage-' +
                         name +
                         '-canvas" width="' +
                         mw +
                         '" height="' +
                         mh +
                         '"></canvas>\
-						<div class="lumise-snap-line-x"></div>\
-						<div class="lumise-snap-line-y"></div>\
-					</div>'
+                            <div class="lumise-snap-line-x"></div>\
+                            <div class="lumise-snap-line-y"></div>\
+                        </div>'
                 )
 
                 stage.canvas = new fabric.Canvas(
@@ -12546,7 +12537,7 @@ jQuery(document).ready(function ($) {
                     top: (stage.canvas.height - 40) / 2,
                     fill: color,
                     /*stroke: '#ebeced',
-					strokeWidth: 2,*/
+                        strokeWidth: 2,*/
                     selectable: false,
                     evented: false,
                     stroke: 'transparent',
@@ -12932,15 +12923,15 @@ jQuery(document).ready(function ($) {
                 lumise.tools.lightbox({
                     content:
                         '<div class="lumise_content lumise_wrapper_table">\
-								<h3 class="title">' +
+                                    <h3 class="title">' +
                         lumise.i(67) +
                         ' (' +
                         print.title +
                         ')</h3>\
-								<div id="lumise-print-detail">\
-									<i class="lumise-spinner x3 margin-2"></i>\
-								</div>\
-							</div>',
+                                    <div id="lumise-print-detail">\
+                                        <i class="lumise-spinner x3 margin-2"></i>\
+                                    </div>\
+                                </div>',
                 })
 
                 $('#lumise-print-detail').html(
@@ -12982,9 +12973,11 @@ jQuery(document).ready(function ($) {
 
                         table_content +=
                             '<table>\
-								<thead>\
-									<tr>\
-										<th>' + lumise.i(66) + '</th>'
+                                    <thead>\
+                                        <tr>\
+                                            <th>' +
+                            lumise.i(66) +
+                            '</th>'
 
                         for (var r in print.calculate.values[fi][
                             Object.keys(print.calculate.values[fi])[0]
@@ -13025,9 +13018,10 @@ jQuery(document).ready(function ($) {
                             table_content += '</tr>'
                         }
 
-                        table_content += '\
-							</tbody>\
-							</table>'
+                        table_content +=
+                            '\
+                                </tbody>\
+                                </table>'
 
                         if (print.calculate.multi) table_content += '</div>'
                     }
@@ -13279,10 +13273,10 @@ jQuery(document).ready(function ($) {
                         lumise.actions.do('cart-changed', data)
 
                         /*
-							// Auto save design of cart item editting
-							data.id = cart_id;
-							lumise.indexed.save([data], 'cart');
-						*/
+                                // Auto save design of cart item editting
+                                data.id = cart_id;
+                                lumise.indexed.save([data], 'cart');
+                            */
                     } else if (save == 'share') {
                         return data
                     } else if (typeof save == 'function') {
@@ -13922,10 +13916,10 @@ jQuery(document).ready(function ($) {
                         ? ' data-type="' + opt.type + '"'
                         : '') +
                     '>\
-						<conf data-label="' +
+                            <conf data-label="' +
                     (opt.label ? opt.label : 'Confirmation') +
                     '">\
-							<p>' +
+                                <p>' +
                     opt.title +
                     '</p>' +
                     (opt.primary.text !== undefined
@@ -13945,9 +13939,9 @@ jQuery(document).ready(function ($) {
                           '</button>'
                         : '') +
                     '\
-							<i class="lumisex-android-close" data-btn="close"></i>\
-						</conf>\
-					</div>'
+                                <i class="lumisex-android-close" data-btn="close"></i>\
+                            </conf>\
+                        </div>'
 
                 $('#lumise-confirm').remove()
                 $('#LumiseDesign').append(html)
@@ -14003,79 +13997,79 @@ jQuery(document).ready(function ($) {
                     width: ops.width !== undefined ? ops.width : 500,
                     content:
                         '<div class="lumise_crop_dragArea">\
-								<img src="' +
+                                    <img src="' +
                         ops.src +
                         '" class="lumise_crop_img" style="max-height: 520px;" />\
-								<div class="lumise_crop_selArea">\
-									<div class="lumise_crop_marqueeHoriz lumise_crop_marqueeNorth"><span></span></div>\
-									<div class="lumise_crop_marqueeVert lumise_crop_marqueeEast"><span></span></div>\
-									<div class="lumise_crop_marqueeHoriz lumise_crop_marqueeSouth"><span></span></div>\
-									<div class="lumise_crop_marqueeVert lumise_crop_marqueeWest"><span></span></div>\
-									<div class="lumise_crop_handle lumise_crop_handleN" data-target="n"></div>\
-									<div class="lumise_crop_handle lumise_crop_handleNE" data-target="ne"></div>\
-									<div class="lumise_crop_handle lumise_crop_handleE" data-target="e"></div>\
-									<div class="lumise_crop_handle lumise_crop_handleSE" data-target="se"></div>\
-									<div class="lumise_crop_handle lumise_crop_handleS" data-target="s"></div>\
-									<div class="lumise_crop_handle lumise_crop_handleSW" data-target="sw"></div>\
-									<div class="lumise_crop_handle lumise_crop_handleW" data-target="w"></div>\
-									<div class="lumise_crop_handle lumise_crop_handleNW" data-target="nw"></div>\
-									<div class="lumise_crop_clickArea" style="background-image: url(\'' +
+                                    <div class="lumise_crop_selArea">\
+                                        <div class="lumise_crop_marqueeHoriz lumise_crop_marqueeNorth"><span></span></div>\
+                                        <div class="lumise_crop_marqueeVert lumise_crop_marqueeEast"><span></span></div>\
+                                        <div class="lumise_crop_marqueeHoriz lumise_crop_marqueeSouth"><span></span></div>\
+                                        <div class="lumise_crop_marqueeVert lumise_crop_marqueeWest"><span></span></div>\
+                                        <div class="lumise_crop_handle lumise_crop_handleN" data-target="n"></div>\
+                                        <div class="lumise_crop_handle lumise_crop_handleNE" data-target="ne"></div>\
+                                        <div class="lumise_crop_handle lumise_crop_handleE" data-target="e"></div>\
+                                        <div class="lumise_crop_handle lumise_crop_handleSE" data-target="se"></div>\
+                                        <div class="lumise_crop_handle lumise_crop_handleS" data-target="s"></div>\
+                                        <div class="lumise_crop_handle lumise_crop_handleSW" data-target="sw"></div>\
+                                        <div class="lumise_crop_handle lumise_crop_handleW" data-target="w"></div>\
+                                        <div class="lumise_crop_handle lumise_crop_handleNW" data-target="nw"></div>\
+                                        <div class="lumise_crop_clickArea" style="background-image: url(\'' +
                         ops.src +
                         '\');" data-target="visible" title="Enter to apply">\
-									</div>\
-									<div class="lumise_crop_info">0 x 0</div>\
-								</div>\
-								<div class="lumise_crop_clickArea_scan" data-target="darken"></div>\
-							</div>\
-							<ul class="lumise-crop-btns">\
-								<li data-func="center">\
-									<i class="lumisex-resize-arrow-down"></i>\
-									<span>' +
+                                        </div>\
+                                        <div class="lumise_crop_info">0 x 0</div>\
+                                    </div>\
+                                    <div class="lumise_crop_clickArea_scan" data-target="darken"></div>\
+                                </div>\
+                                <ul class="lumise-crop-btns">\
+                                    <li data-func="center">\
+                                        <i class="lumisex-resize-arrow-down"></i>\
+                                        <span>' +
                         lumise.i('01') +
                         '</span>\
-								</li>\
-								<li data-func="horizontal">\
-									<i class="lumisex-move-horizontal"></i>\
-									<span>' +
+                                    </li>\
+                                    <li data-func="horizontal">\
+                                        <i class="lumisex-move-horizontal"></i>\
+                                        <span>' +
                         lumise.i('02') +
                         '</span>\
-								</li>\
-								<li data-func="vertical">\
-									<i class="lumisex-move-vertical"></i>\
-									<span>' +
+                                    </li>\
+                                    <li data-func="vertical">\
+                                        <i class="lumisex-move-vertical"></i>\
+                                        <span>' +
                         lumise.i('03') +
                         '</span>\
-								</li>\
-								' +
+                                    </li>\
+                                    ' +
                         (ops.square !== false
                             ? '<li data-func="square">\
-									<i class="lumisex-android-checkbox-outline-blank"></i>\
-									<span>' +
+                                        <i class="lumisex-android-checkbox-outline-blank"></i>\
+                                        <span>' +
                               lumise.i('04') +
                               '</span>\
-								</li>\
-								'
+                                    </li>\
+                                    '
                             : '') +
                         (ops.dimension !== undefined
                             ? '<li data-func="dimension" class="active">\
-									<i class="lumisex-link"></i>\
-									<span>' +
+                                        <i class="lumisex-link"></i>\
+                                        <span>' +
                               lumise.i('168') +
                               '</span>\
-								</li>\
-								'
+                                    </li>\
+                                    '
                             : '') +
                         '<li data-func="save">\
-									' +
+                                        ' +
                         lumise.i('save') +
                         '\
-								</li>\
-								<li data-func="cancel">\
-									' +
+                                    </li>\
+                                    <li data-func="cancel">\
+                                        ' +
                         lumise.i('cancel') +
                         '\
-								</li>\
-							</ul>',
+                                    </li>\
+                                </ul>',
                 })
 
                 var crop = $(
@@ -14411,18 +14405,18 @@ jQuery(document).ready(function ($) {
 
             large_image_helper: function (op) {
                 /*
-					{
-						w: img.naturalWidth,
-						h: img.naturalHeight,
-						ew: stage.limit_zone.width,
-						eh: stage.limit_zone.height,
-						iw: w,
-						ih: h,
-						el: img,
-						obj: image,
-						src: src
-					}
-				*/
+                        {
+                            w: img.naturalWidth,
+                            h: img.naturalHeight,
+                            ew: stage.limit_zone.width,
+                            eh: stage.limit_zone.height,
+                            iw: w,
+                            ih: h,
+                            el: img,
+                            obj: image,
+                            src: src
+                        }
+                    */
 
                 op.obj.set({ full_src: op.src })
 
@@ -14668,11 +14662,11 @@ jQuery(document).ready(function ($) {
                                 // alert(2)
                                 $('#lumise-saved-designs').prepend(
                                     '<li data-view="add" data-func="edit" data-id="new">\
-									<b data-func="edit">+</b>\
-									<span data-func="edit">' +
+                                        <b data-func="edit">+</b>\
+                                        <span data-func="edit">' +
                                         lumise.i(107) +
                                         '</span>\
-								</li>'
+                                    </li>'
                                 )
                             } else if (
                                 $('#lumise-saved-designs>li').length === 0
@@ -14729,27 +14723,27 @@ jQuery(document).ready(function ($) {
                     '" data-name="' +
                     design.name +
                     '" class="bgcolorafter">\
-							<div data-view="stages">\
-								<span>\
-								  <img src="' +
+                                <div data-view="stages">\
+                                    <span>\
+                                    <img src="' +
                     design.screenshot +
                     '" height="150" />\
-								</span>\
-							</div>\
-							<span data-view="name" data-id="' +
+                                    </span>\
+                                </div>\
+                                <span data-view="name" data-id="' +
                     design.id +
                     '" data-func="name" title="' +
                     lumise.i(52) +
                     '" data-enter="blur" contenteditable>' +
                     (design.name ? design.name : '未命名') +
                     '</span>\
-							<em data-view="date">加入时间：' +
+                                <em data-view="date">加入时间：' +
                     lumise.fn.date('Y-M-d h:m', design.updated * 1000) +
                     '</em>\
-							<i class="lumisex-android-close" data-func="delete" title="' +
+                                <i class="lumisex-android-close" data-func="delete" title="' +
                     lumise.i(51) +
                     '"></i>\
-						</li>'
+                            </li>'
 
                 el.append(lis)
             },
@@ -14765,9 +14759,9 @@ jQuery(document).ready(function ($) {
                             '<p class="gray">' +
                                 lumise.i(158) +
                                 '</p>\
-						<div class="lumise-tab-body">\
-							<ul class="lumise-list-items"></ul>\
-						</div>'
+                            <div class="lumise-tab-body">\
+                                <ul class="lumise-list-items"></ul>\
+                            </div>'
                         )
                 }
 
@@ -14778,15 +14772,15 @@ jQuery(document).ready(function ($) {
                     data.map(function (sh) {
                         ul.append(
                             '<li class="lumise-clipart" \
-							data-ops="[{\
-								&quot;type&quot;: &quot;shape&quot;,\
-								&quot;resource&quot;: &quot;shape&quot;,\
-								&quot;width&quot;: 60,\
-								 &quot;height&quot;: 60 ,\
-								 &quot;name&quot;: &quot;' +
+                                data-ops="[{\
+                                    &quot;type&quot;: &quot;shape&quot;,\
+                                    &quot;resource&quot;: &quot;shape&quot;,\
+                                    &quot;width&quot;: 60,\
+                                    &quot;height&quot;: 60 ,\
+                                    &quot;name&quot;: &quot;' +
                                 sh.name +
                                 '&quot;\
-							}]">' +
+                                }]">' +
                                 sh.content +
                                 '</li>'
                         )
@@ -14845,21 +14839,21 @@ jQuery(document).ready(function ($) {
                             '"textAlign": "center", "text": "' +
                             family +
                             '"}]\'>\
-							<svg width="10" height="40" xmlns="http://www.w3.org/2000/svg" \
-								xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none">\
-								<g>\
-									<text fill="#FFFFFF" stroke="none" stroke-width="0" stroke-linecap="round" \
-										stroke-linejoin="round" x="0" y="30" text-anchor="middle" \
-											font-size="30px" font-family="' +
+                                <svg width="10" height="40" xmlns="http://www.w3.org/2000/svg" \
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none">\
+                                    <g>\
+                                        <text fill="#FFFFFF" stroke="none" stroke-width="0" stroke-linecap="round" \
+                                            stroke-linejoin="round" x="0" y="30" text-anchor="middle" \
+                                                font-size="30px" font-family="' +
                             family +
                             '">\
-										<tspan x="50%" dy="0">' +
+                                            <tspan x="50%" dy="0">' +
                             family +
                             '</tspan>\
-									</text>\
-								</g>\
-							</svg>\
-						</span>'
+                                        </text>\
+                                    </g>\
+                                </svg>\
+                            </span>'
                     )
 
                     $('#lumise-text-ext').append(el)
@@ -14886,10 +14880,10 @@ jQuery(document).ready(function ($) {
                             ' data-family="' +
                             font.name +
                             '" \
-								style="font-family: \'' +
+                                    style="font-family: \'' +
                             font.name +
                             '\'" \
-								data-source="' +
+                                    data-source="' +
                             font.upload +
                             '">' +
                             font.name +
@@ -14922,15 +14916,15 @@ jQuery(document).ready(function ($) {
                         '\')" rel="stylesheet" href="' +
                         (uri + txt) +
                         '" \
-							type="text/css" media="all" />\
-							<font' +
+                                type="text/css" media="all" />\
+                                <font' +
                         (active == decodeURIComponent(family)
                             ? ' class="selected"'
                             : '') +
                         ' data-family="' +
                         decodeURIComponent(family) +
                         '" \
-								style="font-family: \'' +
+                                    style="font-family: \'' +
                         decodeURIComponent(family) +
                         '\'">' +
                         decodeURIComponent(family) +
@@ -15026,14 +15020,14 @@ jQuery(document).ready(function ($) {
                                             ? ' class="active"'
                                             : '') +
                                         '>\
-										<img style="background:' +
+                                            <img style="background:' +
                                         lumise.get.color() +
                                         '" data-stage="' +
                                         s +
                                         '" src="' +
                                         thumbn_url +
                                         '" />\
-										<span data-stage="' +
+                                            <span data-stage="' +
                                         s +
                                         '">' +
                                         (label !== ''
@@ -15045,7 +15039,7 @@ jQuery(document).ready(function ($) {
                                               ')'
                                             : i + '/' + total) +
                                         '</span>\
-									</li>'
+                                        </li>'
                                 )
 
                                 i++
@@ -15152,16 +15146,16 @@ jQuery(document).ready(function ($) {
                     lumise.f(false)
                     $('#lumise-main').html(
                         '<div id="lumise-no-product" style="display: block;">\
-							<p>' +
+                                <p>' +
                             lumise.i(208) +
                             '</p>\
-							<button class="lumise-btn" id="lumise-select-product">\
-								<i class="lumisex-android-apps"></i> \
-								' +
+                                <button class="lumise-btn" id="lumise-select-product">\
+                                    <i class="lumisex-android-apps"></i> \
+                                    ' +
                             lumise.i(87) +
                             '\
-							</button>\
-						</div>'
+                                </button>\
+                            </div>'
                     )
 
                     $('#lumise-select-product').on(
@@ -15261,7 +15255,7 @@ jQuery(document).ready(function ($) {
                                         }
                                         $('#lumise-general-status').html(
                                             '<span>\
-											<i class="lumisex-android-checkmark-circle"></i> ' +
+                                                <i class="lumisex-android-checkmark-circle"></i> ' +
                                                 lumise.i(136) +
                                                 '</span>'
                                         )
@@ -15834,13 +15828,13 @@ jQuery(document).ready(function ($) {
                             '"' +
                             (curr == item.id ? ' class="active"' : '') +
                             '>\
-									<span style="background-image:url(\'' +
+                                        <span style="background-image:url(\'' +
                             thumbn +
                             '\');"></span>\
-									<p>' +
+                                        <p>' +
                             item.name +
                             '</p>\
-								 </li>'
+                                    </li>'
                     })
                     html += '</ul></div>'
 
@@ -15901,8 +15895,8 @@ jQuery(document).ready(function ($) {
                         '<div id="lumise-change-products-wrp" data-btn="' +
                         btn_txt +
                         '" >\
-								<center><i class="lumise-spinner x3"></i></center>\
-							  </div>',
+                                    <center><i class="lumise-spinner x3"></i></center>\
+                                </div>',
                 })
 
                 if (lumise.ops.products !== undefined)
@@ -15920,37 +15914,37 @@ jQuery(document).ready(function ($) {
             cart_confirm: function () {
                 var el = $(
                     '<div id="lumise-update-cart-confirm" data-func="close" style="opacity:0">\
-							<div>\
-								<img src="' +
+                                <div>\
+                                    <img src="' +
                         lumise.data.assets +
                         'assets/images/done.svg" alt="" />\
-								<em>' +
+                                    <em>' +
                         lumise.i(172) +
                         '!</em>\
-								<ul>\
-									<li>\
-										<a href="#details" data-func="details">' +
+                                    <ul>\
+                                        <li>\
+                                            <a href="#details" data-func="details">' +
                         lumise.i(173) +
                         '</a>\
-									</li>\
-									<li>\
-										<a href="#new" data-func="new">' +
+                                        </li>\
+                                        <li>\
+                                            <a href="#new" data-func="new">' +
                         lumise.i(174) +
                         '</a>\
-									</li>\
-								</ul>\
-								<br>\
-								<button class="lumise-btn-primary" data-func="checkout">\
-									' +
+                                        </li>\
+                                    </ul>\
+                                    <br>\
+                                    <button class="lumise-btn-primary" data-func="checkout">\
+                                        ' +
                         lumise.i(175) +
                         '\
-									<i class="lumisex-android-arrow-forward" data-func="checkout"></i>\
-								</button>\
-								<i class="lumisex-android-close close" title="' +
+                                        <i class="lumisex-android-arrow-forward" data-func="checkout"></i>\
+                                    </button>\
+                                    <i class="lumisex-android-close close" title="' +
                         lumise.i(176) +
                         '" data-func="close"></i>\
-							</div>\
-						</div>'
+                                </div>\
+                            </div>'
                 )
 
                 $('#LumiseDesign').append(el)
@@ -16264,28 +16258,28 @@ jQuery(document).ready(function ($) {
                             '<li style="background-image: url(\'' +
                             item.screenshot +
                             '\')" \
-								data-ops=\'[{\
-									"type": "template", \
-									"name": "' +
+                                    data-ops=\'[{\
+                                        "type": "template", \
+                                        "name": "' +
                             item.name +
                             '", \
-									"id": "' +
+                                        "id": "' +
                             item.id +
                             '", \
-									"tags": "' +
+                                        "tags": "' +
                             (item.tags ? item.tags : '') +
                             '", \
-									"cates": "' +
+                                        "cates": "' +
                             (item.cates ? item.cates : '') +
                             '", \
-									"screenshot": "' +
+                                        "screenshot": "' +
                             item.screenshot +
                             '", \
-									"price": "' +
+                                        "price": "' +
                             item.price +
                             '"\
-								}]\' class="lumise-template">\
-								<i data-tag="' +
+                                    }]\' class="lumise-template">\
+                                    <i data-tag="' +
                             item.id +
                             '">' +
                             (item.price
@@ -16294,7 +16288,7 @@ jQuery(document).ready(function ($) {
                             '</i><i data-info="' +
                             item.id +
                             '"></i>\
-								</li>'
+                                    </li>'
                     })
                     var total = res.total ? res.total : 0
                     lumise.ops.templates_q = res.q
@@ -16391,9 +16385,9 @@ jQuery(document).ready(function ($) {
                         .find('li[data-tool="designs"]')
                         .attr({ 'data-load': 'designs' })
                     /*
-					if ( window.location.href.indexOf('design='+res.id+'&') === -1)
-						window.history.replaceState({},"", lumise.data.url+'?design='+res.id+'&product_base='+res.pid);
-					*/
+                        if ( window.location.href.indexOf('design='+res.id+'&') === -1)
+                            window.history.replaceState({},"", lumise.data.url+'?design='+res.id+'&product_base='+res.pid);
+                        */
                 } else if (res.error) {
                     lumise.fn.notice(res.error, 'error')
                 }
@@ -16585,14 +16579,14 @@ jQuery(document).ready(function ($) {
                             template = ''
 
                         /*if (typeof p.templates == 'object' && p.templates[first] !== undefined)
-							template = 'data-template="'+encodeURIComponent
-								(JSON.stringify([
-									stages[first].edit_zone,
-									p.templates[first],
-									stages[first].product_width,
-									stages[first].product_height
-								])
-							)+'"';*/
+                                template = 'data-template="'+encodeURIComponent
+                                    (JSON.stringify([
+                                        stages[first].edit_zone,
+                                        p.templates[first],
+                                        stages[first].product_width,
+                                        stages[first].product_height
+                                    ])
+                                )+'"';*/
                         // <img '+template+' style="background:'+color+'" src="'+(stages[first] ? stages[first].image : lumise.data.assets+'assets/images/default_category.jpg')+'" />\
 
                         var p_img = p.product_logo
@@ -16617,24 +16611,24 @@ jQuery(document).ready(function ($) {
                                     ? ' data-cms="' + p.product + '"'
                                     : '') +
                                 '>\
-								<span data-view="thumbn" data-start="' +
+                                    <span data-view="thumbn" data-start="' +
                                 btn_text +
                                 '">\
-									<img ' +
+                                        <img ' +
                                 template +
                                 ' style="background:' +
                                 color +
                                 '" src="' +
                                 p_img +
                                 '" />\
-								</span>\
-								<span data-view="name">' +
+                                    </span>\
+                                    <span data-view="name">' +
                                 p.product_name +
                                 '</span>\
-								<span data-view="price">' +
+                                    <span data-view="price">' +
                                 lumise.fn.price(p.price_min) +
                                 '</span>\
-							</li>'
+                                </li>'
                         )
                     })
                 } else
@@ -16666,29 +16660,29 @@ jQuery(document).ready(function ($) {
                 wrp.html(cates.join('')).append(prods.join(''))
 
                 /*
-				wrp.find('img[data-template]').on('load', function(e) {
+                    wrp.find('img[data-template]').on('load', function(e) {
 
-					var ops = JSON.parse(decodeURIComponent(this.getAttribute('data-template')));
+                        var ops = JSON.parse(decodeURIComponent(this.getAttribute('data-template')));
 
-					this.removeAttribute('data-template');
+                        this.removeAttribute('data-template');
 
-					var edz = ops[0],
-						tem = ops[1],
-						rat = this.offsetWidth/ops[2],
-						t = rat*(edz.top+(ops[3]/2)-(edz.height/2)),
-						l = rat*(edz.left+(ops[2]/2)-(edz.width/2)),
-						w = rat*edz.width,
-						h = rat*edz.height;
+                        var edz = ops[0],
+                            tem = ops[1],
+                            rat = this.offsetWidth/ops[2],
+                            t = rat*(edz.top+(ops[3]/2)-(edz.height/2)),
+                            l = rat*(edz.left+(ops[2]/2)-(edz.width/2)),
+                            w = rat*edz.width,
+                            h = rat*edz.height;
 
 
-					$(this).after(
-						'<span style="top: '+t+'px; left: '+l+'px; width: '+w+'px; height: '+h+'px;border-radius: '+(rat*edz.radius)+'px" data-view="template">\
-							<img style="top: '+(rat*tem.offset.top)+'px; left: '+(rat*tem.offset.left)+'px; height: '+(rat*tem.offset.height)+'px; width: '+(rat*tem.offset.width)+'px; position: absolute;" src="'+tem.screenshot+'" />\
-						</span>'
-					);
+                        $(this).after(
+                            '<span style="top: '+t+'px; left: '+l+'px; width: '+w+'px; height: '+h+'px;border-radius: '+(rat*edz.radius)+'px" data-view="template">\
+                                <img style="top: '+(rat*tem.offset.top)+'px; left: '+(rat*tem.offset.left)+'px; height: '+(rat*tem.offset.height)+'px; width: '+(rat*tem.offset.width)+'px; position: absolute;" src="'+tem.screenshot+'" />\
+                            </span>'
+                        );
 
-				});
-				*/
+                    });
+                    */
 
                 lumise.trigger({
                     el: $('#lumise-change-products-wrp'),
@@ -17476,20 +17470,20 @@ jQuery(document).ready(function ($) {
 
                     const styleTag = document.createElement('style')
                     styleTag.innerHTML = `
-                    .loading-img{
-                        width: 100px;
-                        height: 100px;
-                        animation: loading 1s linear infinite;
-                    }
-                    @keyframes loading{
-                        0%{
-                            transform: rotate(0deg);
+                        .loading-img{
+                            width: 100px;
+                            height: 100px;
+                            animation: loading 1s linear infinite;
                         }
-                        100%{
-                            transform: rotate(360deg);
+                        @keyframes loading{
+                            0%{
+                                transform: rotate(0deg);
+                            }
+                            100%{
+                                transform: rotate(360deg);
+                            }
                         }
-                    }
-                `
+                    `
                     document.querySelector('head').appendChild(styleTag)
                     const img = document.createElement('img')
                     img.src =
@@ -17528,8 +17522,8 @@ jQuery(document).ready(function ($) {
                 if (lumise.onload == undefined) lumise.cart.render()
 
                 /*
-					update printing price when objects changed
-				*/
+                        update printing price when objects changed
+                    */
                 lumise.actions.add('updated', function (data) {
                     clearTimeout(lumise.cart.timer)
 
@@ -17565,6 +17559,19 @@ jQuery(document).ready(function ($) {
                 //     })
                 // }
 
+                // lumise.fn.getToken().then(({data,url}) => {
+                //     const  stages = lumise.data.$cart_design.stages
+                //     const  pritBase = []
+                //     Object.keys(stages).forEach(c=>{
+                //         const stage = stages[c]
+                //         putb64(data,stage.p=rint_file).then(res=>{
+                //             pritBase.push({
+                //                 c:`${url}/${res.key}`,
+                //             })
+                //         })
+                //     })
+                // })
+
                 function sendSave(data) {
                     return new Promise((resolve, reject) => {
                         $.ajax({
@@ -17579,6 +17586,7 @@ jQuery(document).ready(function ($) {
                                 user_id: lumise.data.user_id,
                                 design_id: data.id,
                                 data,
+                                data_design: lumise.data.$data_design[data.id],
                             }),
                             async: true,
                             dataType: 'json',
@@ -17606,18 +17614,6 @@ jQuery(document).ready(function ($) {
 
                     lumise.cart.add_cart()
                     setTimeout(() => {
-                        // lumise.fn.getToken().then(({data,url}) => {
-                        //     const  stages = lumise.data.$cart_design.stages
-                        //     const  pritBase = []
-                        //     Object.keys(stages).forEach(c=>{
-                        //         const stage = stages[c]
-                        //         putb64(data,stage.p=rint_file).then(res=>{
-                        //             pritBase.push({
-                        //                 c:`${url}/${res.key}`,
-                        //             })
-                        //         })
-                        //     })
-                        // })
                         sendSave(lumise.data.$cart_design).then((r) => {
                             if (r.state === 1) {
                                 $('#LumiseDesign').attr({
@@ -17635,34 +17631,33 @@ jQuery(document).ready(function ($) {
                     }, 1000)
                 })
 
-
                 function dealImage(base64, w, callback) {
-                    var newImage = new Image();
-                    var quality = 0.6;    //压缩系数0-1之间
-                    newImage.src = base64;
-                    newImage.setAttribute("crossOrigin", 'Anonymous');	//url为外域时需要
-                    var imgWidth, imgHeight;
+                    var newImage = new Image()
+                    var quality = 0.6 //压缩系数0-1之间
+                    newImage.src = base64
+                    newImage.setAttribute('crossOrigin', 'Anonymous') //url为外域时需要
+                    var imgWidth, imgHeight
                     newImage.onload = function () {
-                        imgWidth = this.width;
-                        imgHeight = this.height;
-                        var canvas = document.createElement("canvas");
-                        var ctx = canvas.getContext("2d");
+                        imgWidth = this.width
+                        imgHeight = this.height
+                        var canvas = document.createElement('canvas')
+                        var ctx = canvas.getContext('2d')
                         if (Math.max(imgWidth, imgHeight) > w) {
                             if (imgWidth > imgHeight) {
-                                canvas.width = w;
-                                canvas.height = w * imgHeight / imgWidth;
+                                canvas.width = w
+                                canvas.height = (w * imgHeight) / imgWidth
                             } else {
-                                canvas.height = w;
-                                canvas.width = w * imgWidth / imgHeight;
+                                canvas.height = w
+                                canvas.width = (w * imgWidth) / imgHeight
                             }
                         } else {
-                            canvas.width = imgWidth;
-                            canvas.height = imgHeight;
-                            quality = 0.6;
+                            canvas.width = imgWidth
+                            canvas.height = imgHeight
+                            quality = 0.6
                         }
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
-                        var base64 = canvas.toDataURL("image/jpeg", quality); //压缩语句
+                        ctx.clearRect(0, 0, canvas.width, canvas.height)
+                        ctx.drawImage(this, 0, 0, canvas.width, canvas.height)
+                        var base64 = canvas.toDataURL('image/jpeg', quality) //压缩语句
                         // 如想确保图片压缩到自己想要的尺寸,如要求在50-150kb之间，请加以下语句，quality初始值根据情况自定
                         // while (base64.length / 1024 > 150) {
                         // 	quality -= 0.01;
@@ -17673,26 +17668,24 @@ jQuery(document).ready(function ($) {
                         // 	quality += 0.001;
                         // 	base64 = canvas.toDataURL("image/jpeg", quality);
                         // }
-                        callback(base64);//必须通过回调函数返回，否则无法及时拿到该值
+                        callback(base64) //必须通过回调函数返回，否则无法及时拿到该值
                     }
                 }
 
                 $('#lumise-cart-action1').on('click', function (e) {
+                    let design = sessionStorage.getItem('design')
+                    let designInfo = sessionStorage.getItem('designInfo')
+                    const previewImg = []
 
-                     // TODO 预览
-                     let design = sessionStorage.getItem('design')
-                     let designInfo = sessionStorage.getItem('designInfo')
-                     const previewImg = []
- 
-                     if (JSON.parse(design)) {
-                         design = JSON.parse(design)
-                         designInfo = JSON.parse(designInfo)
-                     }
- 
-                     if (design.length <= 0) {
-                         alert('暂无预览图')
-                         return
-                     }
+                    if (JSON.parse(design)) {
+                        design = JSON.parse(design)
+                        designInfo = JSON.parse(designInfo)
+                    }
+
+                    if (design.length <= 0) {
+                        alert('暂无预览图')
+                        return
+                    }
 
                     let baseImg = []
                     const ops = {
@@ -17700,7 +17693,7 @@ jQuery(document).ready(function ($) {
                         include_base: false,
                         orien: 'portrait',
                         type: 'png',
-                        width: designInfo.height,
+                        width: designInfo.width,
                     }
 
                     function down(canvas, ops, stage) {
@@ -17916,8 +17909,6 @@ jQuery(document).ready(function ($) {
                         return arr
                     }
 
-                   
-
                     if (design) {
                         LoadShow()
 
@@ -17930,7 +17921,9 @@ jQuery(document).ready(function ($) {
                                 const psdLayer = []
                                 const imageUrls = []
                                 tm.forEach((i) => {
-                                    for (const [key, value] of Object.entries(i)) {
+                                    for (const [key, value] of Object.entries(
+                                        i
+                                    )) {
                                         dealImage(value, 4000, (newBase64) => {
                                             psdLayer.push(key)
                                             imageUrls.push(newBase64)
@@ -17939,30 +17932,34 @@ jQuery(document).ready(function ($) {
                                                 imageUrls,
                                             }
                                             resolve(resp)
-                                        });
+                                        })
                                     }
                                 })
-                            }).then((resp)=>{
+                            }).then((resp) => {
                                 lumise.fn
-                                .isDesign({
-                                    psdUrl: c.upload,
-                                    psdLayer:resp.psdLayer,
-                                    imageUrls:resp.imageUrls,
-                                    width:designInfo.width,
-                                    height:designInfo.height
-                                })
-                                .then((resp) => {
-                                    previewImg.push(resp.data)
-                                    if (previewImg.length === designLen) {
-                                        previewImg.length > 0 ? LoadHide() : ''
-                                        if (previewImg.length <= 0) return
-                                        createPreviewNode(previewImg.reverse())
-                                    }
-                                })
-                                .catch((err) => {
-                                    LoadHide()
-                                    console.log(err)
-                                })
+                                    .isDesign({
+                                        psdUrl: c.upload,
+                                        psdLayer: resp.psdLayer,
+                                        imageUrls: resp.imageUrls,
+                                        width: designInfo.width,
+                                        height: designInfo.height,
+                                    })
+                                    .then((resp) => {
+                                        previewImg.push(resp.data)
+                                        if (previewImg.length === designLen) {
+                                            previewImg.length > 0
+                                                ? LoadHide()
+                                                : ''
+                                            if (previewImg.length <= 0) return
+                                            createPreviewNode(
+                                                previewImg.reverse()
+                                            )
+                                        }
+                                    })
+                                    .catch((err) => {
+                                        LoadHide()
+                                        console.log(err)
+                                    })
                             })
                         })
                     }
@@ -18011,7 +18008,7 @@ jQuery(document).ready(function ($) {
                             ) {
                                 has_design++
                             }
-                        }   
+                        }
                     }
                 })
 
@@ -18167,13 +18164,15 @@ jQuery(document).ready(function ($) {
                                             null,
                                             true
                                         )
-                                        cart_design.stages[s].print_file = data
+                                        // cart_design.stages[s].print_file = data
+                                        // curIdx++
+                                        // if (curIdx === 1) {
+                                        //     lumise.data.$cart_design =
+                                        //         cart_design
+                                        // }
+                                        // return
                                         curIdx++
-                                        if (curIdx === 1) {
-                                            lumise.data.$cart_design =
-                                                cart_design
-                                        }
-                                        return
+
                                         if (
                                             Object.keys(lumise.data.stages)[
                                                 start_render
@@ -18186,14 +18185,13 @@ jQuery(document).ready(function ($) {
                                             )
                                         } else {
                                             lumise.active_stage(current_stage)
-                                            curIdx++
                                             if (curIdx === 1) {
                                                 lumise.data.$cart_design =
                                                     cart_design
                                             }
-                                            // return lumise.cart.process_add_cart(
-                                            //     cart_design
-                                            // )
+                                            return lumise.cart.process_add_cart(
+                                                cart_design
+                                            )
                                         }
                                     },
                                 })
@@ -18213,117 +18211,195 @@ jQuery(document).ready(function ($) {
             },
 
             process_add_cart: function (cart_design) {
-                console.log('pro init')
                 lumise.f(false)
                 var values = [],
-                    cmy_data = '',
-                    p_id = cart_design['id'],
                     id = lumise.fn.url_var(
                         'cart',
                         new Date().getTime().toString(36).toUpperCase()
+                    ),
+                    cart_data = JSON.parse(
+                        localStorage.getItem('LUMISE-CART-DATA') || '{}'
                     )
-                var cart_data1 = JSON.parse(
-                    localStorage.getItem('LUMISE-CART-DATA') || '{}'
+                cart_data[id] = {
+                    id: id,
+                    screenshot: '',
+                    stages: 0,
+                    name: lumise.ops.product_data.name,
+                    updated: new Date().getTime(),
+                    product: lumise.ops.product_data.id,
+                    product_cms: lumise.ops.product_data.product,
+                    printing: lumise.cart.printing.current,
+                    printings_cfg: lumise.data.printings_cfg,
+                    options: $.extend(true, {}, lumise.cart.data.options),
+                    attributes: $.extend(
+                        true,
+                        {},
+                        lumise.ops.product_data.attributes
+                    ),
+                    price_total: lumise.cart.get_price(),
+                    extra: $.extend(true, {}, lumise.cart.price.extra),
+                    states_data: $.extend(
+                        true,
+                        {},
+                        lumise.cart.printing.states_data
+                    ),
+                    variation: lumise.data.variation,
+                    template: {
+                        stages: lumise.cart.template,
+                        price: lumise.cart.price.template,
+                    },
+                    system_version: lumise.data.version,
+                }
+
+                Object.keys(lumise.data.stages).map(function (s) {
+                    cart_data[id].stages++
+                    if (cart_data[id].screenshot === '') {
+                        cart_data[id].screenshot = lumise.data.stages[s].image
+                    }
+                })
+
+                Object.keys(lumise.cart.data.options).map(function (i) {
+                    values.push(lumise.cart.data.options[i])
+                })
+
+                lumise.cart.qty = parseInt(lumise.cart.qty)
+
+                if (isNaN(lumise.cart.qty) || lumise.cart.qty == 0)
+                    lumise.cart.qty = 1
+
+                cart_data = lumise.apply_filters('cart_data', cart_data)
+                cart_design = lumise.apply_filters('cart_design', cart_design)
+
+                localStorage.setItem(
+                    'LUMISE-CART-DATA',
+                    JSON.stringify(cart_data)
                 )
 
-                var te = localStorage.getItem('LUMISE-CART-DATA')
-                var user_id = lumise.data.user_id
-                $.ajax({
-                    cache: true,
-                    type: 'POST',
-                    url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax_get',
-                    data: {
-                        user_id: user_id,
-                    },
-                    async: false,
-                    success: function (res, status) {
-                        var cart_data = res.data
-                        if (cart_data == '[]') {
-                            cart_data = new Object()
-                        } else {
-                            cart_data = JSON.parse(cart_data || '{}')
-                        }
+                lumise.data.$data_design = cart_data
+                cart_design.id = id
 
-                        cart_data[id] = {
-                            id: id,
-                            screenshot: '',
-                            stages: 0,
-                            name: lumise.ops.product_data.name,
-                            updated: new Date().getTime(),
-                            product: lumise.ops.product_data.id,
-                            product_cms: lumise.ops.product_data.product,
-                            printing: lumise.cart.printing.current,
-                            printings_cfg: lumise.data.printings_cfg,
-                            options: $.extend(
-                                true,
-                                {},
-                                lumise.cart.data.options
-                            ),
-                            attributes: $.extend(
-                                true,
-                                {},
-                                lumise.ops.product_data.attributes
-                            ),
-                            price_total: lumise.cart.get_price(),
-                            extra: $.extend(true, {}, lumise.cart.price.extra),
-                            states_data: $.extend(
-                                true,
-                                {},
-                                lumise.cart.printing.states_data
-                            ),
-                            variation: lumise.data.variation,
-                            template: {
-                                stages: lumise.cart.template,
-                                price: lumise.cart.price.template,
-                            },
-                            system_version: lumise.data.version,
-                        }
-                        var r = lumise.data.stages
+                lumise.indexed.save([cart_design], 'cart')
 
-                        Object.keys(r).map(function (s) {
-                            cart_data[id].stages++
-                            if (cart_data[id].screenshot === '') {
-                                cart_data[id].screenshot =
-                                    lumise.data.stages[s].image
-                            }
-                        })
+                delete cart_design
+                delete cart_data
 
-                        Object.keys(lumise.cart.data.options).map(function (i) {
-                            values.push(lumise.cart.data.options[i])
-                        })
+                lumise.render.cart_confirm()
+                lumise.render.cart_change()
+                lumise.actions.do('add-cart', id)
 
-                        lumise.cart.qty = parseInt(lumise.cart.qty)
+                return true
 
-                        if (isNaN(lumise.cart.qty) || lumise.cart.qty == 0)
-                            lumise.cart.qty = 1
+                //     console.log('pro init')
+                //     lumise.f(false)
+                //     var values = [],
+                //         cmy_data = '',
+                //         p_id = cart_design['id'],
+                //         id = lumise.fn.url_var(
+                //             'cart',
+                //             new Date().getTime().toString(36).toUpperCase()
+                //         )
+                //     var cart_data1 = JSON.parse(
+                //         localStorage.getItem('LUMISE-CART-DATA') || '{}'
+                //     )
 
-                        cart_data = lumise.apply_filters('cart_data', cart_data)
+                //     var te = localStorage.getItem('LUMISE-CART-DATA')
+                //     var user_id = lumise.data.user_id
+                //     $.ajax({
+                //         cache: true,
+                //         type: 'POST',
+                //         url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax_get',
+                //         data: {
+                //             user_id: user_id,
+                //         },
+                //         async: false,
+                //         success: function (res, status) {
+                //             var cart_data = res.data
+                //             if (cart_data == '[]') {
+                //                 cart_data = new Object()
+                //             } else {
+                //                 cart_data = JSON.parse(cart_data || '{}')
+                //             }
 
-                        cart_design = lumise.apply_filters(
-                            'cart_design',
-                            cart_design
-                        )
+                //             cart_data[id] = {
+                //                 id: id,
+                //                 screenshot: '',
+                //                 stages: 0,
+                //                 name: lumise.ops.product_data.name,
+                //                 updated: new Date().getTime(),
+                //                 product: lumise.ops.product_data.id,
+                //                 product_cms: lumise.ops.product_data.product,
+                //                 printing: lumise.cart.printing.current,
+                //                 printings_cfg: lumise.data.printings_cfg,
+                //                 options: $.extend(
+                //                     true,
+                //                     {},
+                //                     lumise.cart.data.options
+                //                 ),
+                //                 attributes: $.extend(
+                //                     true,
+                //                     {},
+                //                     lumise.ops.product_data.attributes
+                //                 ),
+                //                 price_total: lumise.cart.get_price(),
+                //                 extra: $.extend(true, {}, lumise.cart.price.extra),
+                //                 states_data: $.extend(
+                //                     true,
+                //                     {},
+                //                     lumise.cart.printing.states_data
+                //                 ),
+                //                 variation: lumise.data.variation,
+                //                 template: {
+                //                     stages: lumise.cart.template,
+                //                     price: lumise.cart.price.template,
+                //                 },
+                //                 system_version: lumise.data.version,
+                //             }
+                //             var r = lumise.data.stages
 
-                        var cmy_data = JSON.stringify(cart_data)
-                        localStorage.setItem('LUMISE-CART-DATA', cmy_data)
-                        cart_design.id = id
+                //             Object.keys(r).map(function (s) {
+                //                 cart_data[id].stages++
+                //                 if (cart_data[id].screenshot === '') {
+                //                     cart_data[id].screenshot =
+                //                         lumise.data.stages[s].image
+                //                 }
+                //             })
 
-                        lumise.indexed.save([cart_design], 'cart')
+                //             Object.keys(lumise.cart.data.options).map(function (i) {
+                //                 values.push(lumise.cart.data.options[i])
+                //             })
 
-                        delete cart_design
-                        delete cart_data
+                //             lumise.cart.qty = parseInt(lumise.cart.qty)
 
-                        lumise.render.cart_confirm()
-                        lumise.render.cart_change()
-                        lumise.actions.do('add-cart', id)
+                //             if (isNaN(lumise.cart.qty) || lumise.cart.qty == 0)
+                //                 lumise.cart.qty = 1
 
-                        return true
-                    },
-                    error: function () {
-                        // alert('Error: could not checkout this time');
-                        alert('系统超时，请重新操作!')
-                    },
-                })
+                //             cart_data = lumise.apply_filters('cart_data', cart_data)
+
+                //             cart_design = lumise.apply_filters(
+                //                 'cart_design',
+                //                 cart_design
+                //             )
+
+                //             var cmy_data = JSON.stringify(cart_data)
+                //             localStorage.setItem('LUMISE-CART-DATA', cmy_data)
+                //             cart_design.id = id
+
+                //             lumise.indexed.save([cart_design], 'cart')
+
+                //             delete cart_design
+                //             delete cart_data
+
+                //             lumise.render.cart_confirm()
+                //             lumise.render.cart_change()
+                //             lumise.actions.do('add-cart', id)
+
+                //             return true
+                //         },
+                //         error: function () {
+                //             // alert('Error: could not checkout this time');
+                //             alert('系统超时，请重新操作!')
+                //         },
+                //     })
             },
 
             variations: function (el) {
@@ -18542,17 +18618,17 @@ jQuery(document).ready(function ($) {
                 })
 
                 /*
-				*	Don't auto change quantity by variation,
-				*	will notice error when add to cart if dont valid min-max qty of variation
-				*
-				try {
-					var vari = lumise.ops.product_data.variations.variations[lumise.data.variation];
-					if (parseFloat(lumise.cart.qty) < parseFloat(vari.minqty))
-						lumise.cart.qty = parseFloat(vari.minqty);
-					if (parseFloat(lumise.cart.qty) > parseFloat(vari.maxqty))
-						lumise.cart.qty = parseFloat(vari.maxqty);
-				} catch(ex) {};
-				*/
+                    *	Don't auto change quantity by variation,
+                    *	will notice error when add to cart if dont valid min-max qty of variation
+                    *
+                    try {
+                        var vari = lumise.ops.product_data.variations.variations[lumise.data.variation];
+                        if (parseFloat(lumise.cart.qty) < parseFloat(vari.minqty))
+                            lumise.cart.qty = parseFloat(vari.minqty);
+                        if (parseFloat(lumise.cart.qty) > parseFloat(vari.maxqty))
+                            lumise.cart.qty = parseFloat(vari.maxqty);
+                    } catch(ex) {};
+                    */
 
                 if (lumise.cart.qty === 0) lumise.cart.qty = 1
 
@@ -18755,11 +18831,11 @@ jQuery(document).ready(function ($) {
                                     '<input type="hidden" name="file" value="' +
                                     res.success +
                                     '"/>\
-				                		 <input type="hidden" name="datalen" value="' +
+                                            <input type="hidden" name="datalen" value="' +
                                     data.length +
                                     '"/>\
-				                		 <input type="hidden" name="action" value="process"/>\
-				                		 <input type="hidden" name="nonce" value="LUMISE-SECURITY:' +
+                                            <input type="hidden" name="action" value="process"/>\
+                                            <input type="hidden" name="nonce" value="LUMISE-SECURITY:' +
                                     lumise.data.nonce +
                                     '"/>',
                                 action: lumise.data.checkout_url,
@@ -18947,45 +19023,45 @@ jQuery(document).ready(function ($) {
                             lumise.tools.lightbox({
                                 content:
                                     '<div class="lumise_content lumise_wrapper_table">\
-								<h3 class="title">' +
+                                    <h3 class="title">' +
                                     lumise.i(180) +
                                     '</h3>\
-								<div id="lumise-formula-detail">\
-									' +
+                                    <div id="lumise-formula-detail">\
+                                        ' +
                                     varitxt +
                                     '\
-									<table>\
-										<tr>\
-											<td style="width:20%;text-align: left">' +
+                                        <table>\
+                                            <tr>\
+                                                <td style="width:20%;text-align: left">' +
                                     lumise.i(182) +
                                     '</td>\
-											<td>' +
+                                                <td>' +
                                     lumise.fn.price(
                                         sum.base - lumise.cart.price.attr
                                     ) +
                                     '</td>\
-										</tr>\
-										<tr>\
-											<td style="width:20%;text-align: left">' +
+                                            </tr>\
+                                            <tr>\
+                                                <td style="width:20%;text-align: left">' +
                                     lumise.i(199) +
                                     '</td>\
-											<td>' +
+                                                <td>' +
                                     lumise.fn.price(lumise.cart.price.attr) +
                                     '</td>\
-										</tr>\
-										<tr>\
-											<td style="width:20%;text-align: left">' +
+                                            </tr>\
+                                            <tr>\
+                                                <td style="width:20%;text-align: left">' +
                                     lumise.i(91) +
                                     '</td>\
-											<td>' +
+                                                <td>' +
                                     lumise.fn.price(sum.template) +
                                     '</td>\
-										</tr>\
-										<tr>\
-											<td style="width:20%;text-align: left">' +
+                                            </tr>\
+                                            <tr>\
+                                                <td style="width:20%;text-align: left">' +
                                     lumise.i(108) +
                                     '</td>\
-											<td>' +
+                                                <td>' +
                                     lumise.fn.price(
                                         lumise.cart.printing.calc(
                                             lumise.cart.qty
@@ -18999,20 +19075,20 @@ jQuery(document).ready(function ($) {
                                           ' <i class="lumisex-android-open"></i></a>'
                                         : '') +
                                     '</td>\
-                                </tr>\
-                                <tr>\
-                                    <td style="width:20%;text-align: left">' +
+                                    </tr>\
+                                    <tr>\
+                                        <td style="width:20%;text-align: left">' +
                                     lumise.i(183) +
                                     '</td>\
-											<td>' +
+                                                <td>' +
                                     lumise.fn.price(sum.ext) +
                                     '</td>\
-										</tr>\
-										<tr>\
-											<td style="width:20%;text-align: left">' +
+                                            </tr>\
+                                            <tr>\
+                                                <td style="width:20%;text-align: left">' +
                                     lumise.i(74) +
                                     '</td>\
-											<td>' +
+                                                <td>' +
                                     lumise.fn.price(item_price) +
                                     ' x ' +
                                     lumise.cart.qty +
@@ -19021,15 +19097,15 @@ jQuery(document).ready(function ($) {
                                         item_price * lumise.cart.qty
                                     ) +
                                     '</strong></td>\
-										</tr>\
-										' +
+                                            </tr>\
+                                            ' +
                                     (lumise.cart.price.fixed !== 0
                                         ? '\
-										<tr>\
-											<td style="width:20%;text-align: left">' +
+                                            <tr>\
+                                                <td style="width:20%;text-align: left">' +
                                           lumise.i(198) +
                                           '</td>\
-											<td>' +
+                                                <td>' +
                                           lumise.i(74) +
                                           ' + ' +
                                           lumise.fn.price(
@@ -19041,13 +19117,13 @@ jQuery(document).ready(function ($) {
                                                   lumise.cart.price.fixed
                                           ) +
                                           '</strong></td>\
-										</tr>\
-										'
+                                            </tr>\
+                                            '
                                         : '') +
                                     '\
-									</table>\
-								</div>\
-							</div>',
+                                        </table>\
+                                    </div>\
+                                </div>',
                             })
 
                             $('#lumise-formula-detail a[data-print]').on(
@@ -19189,18 +19265,18 @@ jQuery(document).ready(function ($) {
                                 '" data-id="' +
                                 (data.id !== undefined ? data.id : '') +
                                 '" class="lumise-cart-field field-inline">\
-							<div class="lumise_form_group">\
-								<span class="lumise-cart-field-label">' +
+                                <div class="lumise_form_group">\
+                                    <span class="lumise-cart-field-label">' +
                                 data.name +
                                 ': ' +
                                 (data.required
                                     ? ' <em class="required">*</em>'
                                     : '') +
                                 '\
-								</span>\
-								<div class="lumise_form_content"></div>\
-							</div>\
-						</div>'
+                                    </span>\
+                                    <div class="lumise_form_content"></div>\
+                                </div>\
+                            </div>'
                         ),
                         inp = lac.frontend_render(data, $, lumise)
 
@@ -19212,11 +19288,11 @@ jQuery(document).ready(function ($) {
                 printing: function (data) {
                     var field_tpml = $(
                             '<div class="lumise_radios">\
-										<div class="lumise-radio">\
-				                			<input type="radio" class="lumise-cart-param" name="printing" value="1" id="" required>\
-							                <label class="lumise-cart-option-label" for=""></label>\
-							            </div>\
-									</div>'
+                                            <div class="lumise-radio">\
+                                                <input type="radio" class="lumise-cart-param" name="printing" value="1" id="" required>\
+                                                <label class="lumise-cart-option-label" for=""></label>\
+                                            </div>\
+                                        </div>'
                         ),
                         label = field_tpml.find('.lumise-cart-field-label'),
                         inp = field_tpml.find('.lumise-cart-param')
@@ -19246,7 +19322,7 @@ jQuery(document).ready(function ($) {
                 )
                 $('#lumise-product-attributes .lumise-product-price').append(
                     '<avg>\
-						<strong>' +
+                            <strong>' +
                         lumise.i(156) +
                         ':</strong> ' +
                         lumise.fn.price((price[0] / price[1]).toFixed(1)) +
@@ -19276,15 +19352,15 @@ jQuery(document).ready(function ($) {
 
                     var wrp = $(
                         '<div class="lumise-cart-field">\
-						<div class="lumise_form_group">\
-							<span class="lumise-cart-field-label">' +
+                            <div class="lumise_form_group">\
+                                <span class="lumise-cart-field-label">' +
                             lumise.i(64) +
                             ' <em class="required">*</em></span>\
-							<div class="lumise_form_content">\
-								<div class="lumise_radios"></div>\
-							</div>\
-						</div>\
-					</div>'
+                                <div class="lumise_form_content">\
+                                    <div class="lumise_radios"></div>\
+                                </div>\
+                            </div>\
+                        </div>'
                     )
 
                     lumise.data.printings.map(function (print, index) {
@@ -19303,23 +19379,23 @@ jQuery(document).ready(function ($) {
                                     : false,
                             new_op = $(
                                 '<div class="lumise-radio">\
-	                			<input type="radio" class="lumise-cart-param" name="printing" value="' +
+                                    <input type="radio" class="lumise-cart-param" name="printing" value="' +
                                     print.id +
                                     '" data-id="' +
                                     print.id +
                                     '" id="' +
                                     id +
                                     '" required>\
-				                <label class="lumise-cart-option-label" for="' +
+                                    <label class="lumise-cart-option-label" for="' +
                                     id +
                                     '">\
-				                	<div class="lumise-cart-option-thumb">\
-				                		<img src="' +
+                                        <div class="lumise-cart-option-thumb">\
+                                            <img src="' +
                                     print.thumbnail +
                                     '" alt="" />\
-				                	</div>\
-									<div class="lumise-desc">\
-										<span>' +
+                                        </div>\
+                                        <div class="lumise-desc">\
+                                            <span>' +
                                     print.title +
                                     '</span>' +
                                     (show_link
@@ -19330,8 +19406,8 @@ jQuery(document).ready(function ($) {
                                           '</a>'
                                         : '') +
                                     '</div>\
-				                </label>\
-							</div>'
+                                    </label>\
+                                </div>'
                             )
 
                         lumise.trigger({
@@ -19534,30 +19610,38 @@ jQuery(document).ready(function ($) {
                     return price
                 },
             },
-
-            // TODO edit
+            // TODO cart edit
             edit_item: function (id, e) {
-                    
-				var items = JSON.parse(localStorage.getItem('LUMISE-CART-DATA')),
-                cart = items[id];
+                var items = JSON.parse(
+                        localStorage.getItem('LUMISE-CART-DATA')
+                    ),
+                    cart = items[id]
 
                 if (cart) {
-                    lumise.get.el('general-status').html(
-                        '<span>\
-                            <text><i class="lumisex-android-alert"></i> '+lumise.i(115)+'</text> \
-                            <a href="#clear-designs" data-btn="cancel" data-func="clear-designs">\
-                                '+lumise.i(185)+'\
-                            </a>\
-                        </span>'
-                    );
+                    lumise.get
+                        .el('general-status')
+                        .html(
+                            '<span>\
+                                <text><i class="lumisex-android-alert"></i> ' +
+                                lumise.i(115) +
+                                '</text> \
+                                <a href="#clear-designs" data-btn="cancel" data-func="clear-designs">\
+                                    ' +
+                                lumise.i(185) +
+                                '\
+                                </a>\
+                            </span>'
+                        )
 
-                    lumise.actions.do('cart_edit', lumise.apply_filters('cart_edit', cart));
-
-                    delete data;
-                };
+                    lumise.actions.do(
+                        'cart_edit',
+                        lumise.apply_filters('cart_edit', cart)
+                    )
+                    delete data
+                }
 
                 if (e && typeof e.preventDefault == 'function')
-                    e.preventDefault();
+                    e.preventDefault()
             },
 
             do_checkout: function (e) {
@@ -20025,11 +20109,15 @@ jQuery(document).ready(function ($) {
             })
 
             this.actions.add('save', lumise.fn.update_state)
-
+            // TODO actions cart_edit
             this.actions.add('cart_edit', function (ops) {
+                console.log(121)
                 $('.lumise-lightbox').remove()
-
-                lumise.indexed.get(ops.id, 'cart', function (res) {
+                function setView(ops) {
+                    let res = localStorage.getItem('designInfo')
+                    if (res) {
+                        res = JSON.parse(res).data
+                    }
                     lumise.fn.load_product({
                         id: ops.product,
                         cms: ops.product_cms,
@@ -20051,27 +20139,26 @@ jQuery(document).ready(function ($) {
                                     .el('general-status')
                                     .html(
                                         '<span>\
-										<text>\
-											<i class="lumisex-android-alert"></i> ' +
+                                            <text>\
+                                                <i class="lumisex-android-alert"></i> ' +
                                             lumise.i(186) +
                                             ' <strong>#' +
                                             ops.id +
                                             '</strong></text>\
-										<a href="#cancel-design" data-btn="cancel" data-func="cancel-design">\
-											' +
+                                            <a href="#cancel-design" data-btn="cancel" data-func="cancel-design">\
+                                                ' +
                                             lumise.i(187) +
                                             '\
-										</a>\
-									</span>'
+                                            </a>\
+                                        </span>'
                                     )
                             }
                         },
                     })
-                })
-
+                }
+                setView(ops)
                 lumise.fn.clear_url()
                 lumise.fn.set_url('cart', ops.id)
-
                 lumise.render.cart_change()
             })
 
@@ -20103,94 +20190,83 @@ jQuery(document).ready(function ($) {
                     })
             })
 
-
             // TODO 加载
             this.actions.add('db-ready', function () {
-                lumise.fn.productInit().then((carts) => {
-                    
-				try {
-					var cart_data = JSON.parse(carts)
-				} 
-                catch(ex){
-					var cart_data = null;
-				};
+                lumise.fn.productInit().then((res) => {
+                    const { width, height, data, design, data_design } = res
+                    sessionStorage.setItem('design', JSON.stringify(design))
+                    sessionStorage.setItem(
+                        'designInfo',
+                        JSON.stringify({
+                            width,
+                            height,
+                            data,
+                            data_design,
+                        })
+                    )
+                    localStorage.setItem(
+                        'LUMISE-CART-DATA',
+                        JSON.stringify({
+                            [data_design.id]: data_design,
+                        })
+                    )
+                    var has_cart = false
+                    if (has_cart === true) {
+                        lumise.cart.edit_item(data_design.id)
+                    } else if (lumise.data.onload) {
+                        lumise.f(lumise.i('importing') + '..1')
+                        lumise.fn.set_url('cart', null)
+                        setTimeout(function () {
+                            if (lumise.data.share !== undefined) {
+                                Object.keys(lumise.data.onload.stages).map(
+                                    function (s) {
+                                        delete lumise.data.onload.stages[s]
+                                            .template
+                                    }
+                                )
+                            }
 
-				var has_cart = false;
+                            lumise.render.product(lumise.data.onload)
+                            delete lumise.data.onload
+                        }, 100)
+                    } else if (
+                        lumise.fn.url_var('reorder', '') === '' &&
+                        lumise.get.el('no-product').length > 0
+                    ) {
+                        lumise.f(false)
+                        lumise.actions.do('noproduct')
+                    }
 
-				if (lumise.fn.url_var('cart', '') !== '') {
+                    if (lumise.data.share_invalid !== undefined) {
+                        lumise.fn.confirm({
+                            title: lumise.data.share_invalid,
+                            primary: {},
+                            second: {
+                                text: 'Ok',
+                            },
+                            type: 'error',
+                        })
+                    }
 
-					if (cart_data !== null && cart_data[lumise.fn.url_var('cart')] !== undefined)
-						has_cart = true;
-					else lumise.fn.notice(lumise.i(120), 'error', 3500);
+                    /* Clear unuse cart data in DB */
+                    var carts = localStorage.getItem('LUMISE-CART-DATA')
 
-				};
-
-                lumise.cart.edit_item('L1U6G1W7');
-				if (has_cart === true) {
-
-					lumise.cart.edit_item(lumise.fn.url_var('cart'));
-
-				} else if (lumise.data.onload) {
-
-					lumise.f(lumise.i('importing')+'..1');
-
-					lumise.fn.set_url('cart', null);
-
-					setTimeout(function(){
-
-						if (lumise.data.share !== undefined) {
-							Object.keys(lumise.data.onload.stages).map(function(s){
-								delete lumise.data.onload.stages[s].template;
-							});
-						};
-
-						lumise.render.product(lumise.data.onload);
-
-						delete lumise.data.onload;
-
-					}, 100);
-
-				} else if (lumise.fn.url_var('reorder', '') === '' && lumise.get.el('no-product').length > 0) {
-
-					lumise.f(false);
-					lumise.actions.do('noproduct');
-
-				};
-
-				if (lumise.data.share_invalid !== undefined) {
-					lumise.fn.confirm({
-						title: lumise.data.share_invalid,
-						primary: {},
-						second: {
-							text: 'Ok'
-						},
-						type: 'error'
-					});
-				};
-
-				/* Clear unuse cart data in DB */
-				var carts = localStorage.getItem('LUMISE-CART-DATA');
-
-				if (carts && carts !== '') {
-					carts = Object.keys(JSON.parse(carts));
-					lumise.indexed.list(function(data){
-						if (carts.indexOf(data.id) === -1)
-							lumise.indexed.delete(data.id, 'cart');
-					}, 'cart', function(st){
-						if (st == 'done') {
-							lumise.ops.cart_cursor = null;
-						}
-					});
-				}
-                    
+                    if (carts && carts !== '') {
+                        carts = Object.keys(JSON.parse(carts))
+                        lumise.indexed.list(
+                            function (data) {
+                                if (carts.indexOf(data.id) === -1)
+                                    lumise.indexed.delete(data.id, 'cart')
+                            },
+                            'cart',
+                            function (st) {
+                                if (st == 'done') {
+                                    lumise.ops.cart_cursor = null
+                                }
+                            }
+                        )
+                    }
                 })
-
-
-
-			
-
-
-
 
                 // try {
                 //     var cart_data1 = JSON.parse(
@@ -20347,26 +20423,26 @@ jQuery(document).ready(function ($) {
                         .el('general-status')
                         .html(
                             '<span>\
-							<text><i class="lumisex-android-alert"></i> ' +
+                                <text><i class="lumisex-android-alert"></i> ' +
                                 lumise.i(115) +
                                 '</text> \
-							<a href="#clear-designs" data-btn="cancel" data-func="clear-designs">\
-								' +
+                                <a href="#clear-designs" data-btn="cancel" data-func="clear-designs">\
+                                    ' +
                                 lumise.i(185) +
                                 '\
-							</a>\
-						</span>'
+                                </a>\
+                            </span>'
                         )
                 } else if (lumise.fn.url_var('order_print', '') !== '') {
                     $('#lumise-general-status').html(
                         '<span>\
-							<text>\
-								<i class="lumisex-android-alert"></i> ' +
+                                <text>\
+                                    <i class="lumisex-android-alert"></i> ' +
                             lumise.i(122) +
                             ' #' +
                             lumise.fn.url_var('order_print') +
                             '</text>\
-                    </span>'
+                        </span>'
                     )
                     if (lumise.fn.url_var('design_print', '') !== '') {
                         lumise.f('Loading..')
@@ -20434,15 +20510,15 @@ jQuery(document).ready(function ($) {
                                                     .el('general-status')
                                                     .html(
                                                         '<span>\
-														<text>\
-															<i class="lumisex-android-alert"></i> ' +
+                                                            <text>\
+                                                                <i class="lumisex-android-alert"></i> ' +
                                                             lumise.i(192) +
                                                             ' <strong>#' +
                                                             lumise.fn.url_var(
                                                                 'order_print'
                                                             ) +
                                                             '</strong></text>\
-													</span>'
+                                                        </span>'
                                                     )
 
                                                 //lumise.get.el('navigations').find('li[data-tool="print"]').trigger('click');
@@ -20464,18 +20540,18 @@ jQuery(document).ready(function ($) {
 
                 $('#lumise-general-status').html(
                     '<span>\
-						<text>\
-							<i class="lumisex-android-alert"></i> ' +
+                            <text>\
+                                <i class="lumisex-android-alert"></i> ' +
                         lumise.i(116) +
                         ': ' +
                         lumise.fn.date('h:m d M, Y', new Date().getTime()) +
                         '</text>\
-                    <a href="#cancel-cart" data-btn="cancel" data-func="cancel-cart">\
-                        ' +
+                        <a href="#cancel-cart" data-btn="cancel" data-func="cancel-cart">\
+                            ' +
                         lumise.i(117) +
                         '\
-						</a>\
-					</span>'
+                            </a>\
+                        </span>'
                 )
 
                 //$('#lumise-general-status button[data-func="save-cart"]').on('click', lumise.cart.add_cart);
@@ -20484,14 +20560,14 @@ jQuery(document).ready(function ($) {
             this.actions.add('add-cart', function () {
                 $('#lumise-general-status').html(
                     '<span>\
-						<text>' +
+                            <text>' +
                         lumise.i(118) +
                         '!</text> \
-						<a href="#checkout">' +
+                            <a href="#checkout">' +
                         lumise.i(75) +
                         ' <i class="lumisex-android-arrow-forward"></i>\
-						</a>\
-					</span>'
+                            </a>\
+                        </span>'
                 )
 
                 $('#lumise-general-status a[href="#checkout"]').on(
@@ -20535,13 +20611,13 @@ jQuery(document).ready(function ($) {
                         .el('general-status')
                         .html(
                             '<span>\
-							<text><i class="lumisex-android-alert"></i> ' +
+                                <text><i class="lumisex-android-alert"></i> ' +
                                 lumise.i(189) +
                                 '</text>\
-							<a href="#save-design" data-func="save-design"><i class="lumisex-floppy"></i> ' +
+                                <a href="#save-design" data-func="save-design"><i class="lumisex-floppy"></i> ' +
                                 lumise.i(190) +
                                 '</a>\
-						</span>'
+                            </span>'
                         )
                 }
             })

@@ -17742,10 +17742,9 @@ jQuery(document).ready(function ($) {
                 })
 
                 lumise.actions.add('checkout', lumise.cart.checkout)
-
-
 				function sendSave(data) {
                     return new Promise((resolve, reject) => {
+                     const data_design =  JSON.parse(localStorage.getItem('LUMISE-CART-DATA'))[data.id]
                         $.ajax({
                             cache: true,
                             type: 'POST',
@@ -17758,7 +17757,7 @@ jQuery(document).ready(function ($) {
                                 user_id: lumise.data.user_id,
                                 design_id: data.id,
                                 data,
-                                data_design: lumise.data.$data_design[data.id],
+                                data_design,
                             }),
                             async: true,
                             dataType: 'json',
@@ -17769,36 +17768,10 @@ jQuery(document).ready(function ($) {
                         })
                     })
                 }
+                // TODO 保存
                 $('#lumise-cart-action').on('click', function (e) {
-
-
-                    $('#LumiseDesign').attr({
-                        'data-processing': 'false',
-                        'data-msg': '',
-                    })
-
                     setTimeout(() => {
-                        $('#LumiseDesign').attr({
-                            'data-processing': 'true',
-                            'data-msg': '请稍候..',
-                        })
-                    }, 1500)
-
-                    setTimeout(() => {
-                        sendSave(lumise.data.$cart_design).then((r) => {
-                            if (r.state === 1) {
-                                $('#LumiseDesign').attr({
-                                    'data-processing': 'true',
-                                    'data-msg': '操作成功',
-                                })
-                                setTimeout(() => {
-                                    $('#LumiseDesign').attr({
-                                        'data-processing': 'false',
-                                        'data-msg': '',
-                                    })
-                                }, 1500)
-                            }
-                        })
+                        sendSave(lumise.data._dataDesign).then((r) => {})
                     }, 1000)
                 
                     lumise.cart.add_cart('button add cart click')
@@ -17809,9 +17782,6 @@ jQuery(document).ready(function ($) {
             },
 
             add_cart: function (e) {
-                // alert(2);exit;
-                // 				console.log(1)
-                //
                 if (lumise.fn.url_var('product_cms', '') == '0') {
                     alert('Could not add to cart, missing product_cms id')
                     return
@@ -18037,22 +18007,9 @@ jQuery(document).ready(function ($) {
                                                 ]
                                             )
                                         } else {
-                                            console.log(lumise.data.stages)
-                                            function getQueryString(name) {
-                                                var reg = new RegExp(
-                                                    '(^|&)' +
-                                                        name +
-                                                        '=([^&]*)(&|$)',
-                                                    'i'
-                                                )
-                                                var r = window.location.search
-                                                    .substr(1)
-                                                    .match(reg)
-                                                if (r != null)
-                                                    return unescape(r[2])
-                                                return null
-                                            }
-                                            console.log(getQueryString('cart'))
+                                       
+                                            console.log(cart_design);
+                                            lumise.data._dataDesign = cart_design
                                             lumise.active_stage(current_stage)
                                             return lumise.cart.process_add_cart(
                                                 cart_design

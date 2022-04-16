@@ -9519,6 +9519,7 @@ jQuery(document).ready(function ($) {
                                 [data.id]:data_design
                             }))
 
+                            localStorage.setItem('design',JSON.stringify(design))
                             localStorage.setItem('LUMISE-CART-DATA-LAY',JSON.stringify(data))
                             localStorage.setItem('CANVAS-INFO',JSON.stringify({width,height}))
                             resolve(resp)
@@ -17729,6 +17730,74 @@ jQuery(document).ready(function ($) {
             },
 
             init: function () {
+
+
+                function addLoad() {
+                    const bg = document.createElement('div')
+                    bg.className = 'bg'
+                    bg.style.display = 'none'
+                    bg.style.width = '100%'
+                    bg.style.height = '100vh'
+                    bg.style.justifyContent = 'center'
+                    bg.style.alignItems = 'center'
+                    bg.style.backgroundColor = 'rgba(0,0,0,0.5)'
+                    bg.style.position = 'fixed'
+                    bg.style.top = 0
+                    bg.style.left = 0
+                    bg.style.right = 0
+                    bg.style.bottom = 0
+                    bg.style.zIndex = 10000000
+
+                    const styleTag = document.createElement('style')
+                    styleTag.innerHTML = `
+                        .loading-img{
+                            width: 100px;
+                            height: 100px;
+                            animation: loading 1s linear infinite;
+                        }
+                        @keyframes loading{
+                            0%{
+                                transform: rotate(0deg);
+                            }
+                            100%{
+                                transform: rotate(360deg);
+                            }
+                        }
+                    `
+                    document.querySelector('head').appendChild(styleTag)
+                    const img = document.createElement('img')
+                    img.src =
+                        'https://images.weserv.nl/?url=https://article.biliimg.com/bfs/article/7e35bd0acd457b1ef9c60295b007f3084d5ea8de.png'
+                    img.style.width = '100px'
+                    img.style.height = '100px'
+                    img.className = 'loading-img'
+
+                    const text = document.createElement('p')
+                    text.innerHTML = '正在加载中...'
+                    text.style.color = 'white'
+                    text.style.fontSize = '20px'
+
+                    const parcel = document.createElement('div')
+                    parcel.className = 'parcel'
+                    parcel.appendChild(img)
+                    parcel.appendChild(text)
+                    parcel.style.display = 'none'
+                    bg.appendChild(parcel)
+                    document.querySelector('body').appendChild(bg)
+                }
+                addLoad()
+
+                function LoadShow() {
+                    console.log(document.querySelector('.parcel'))
+                    document.querySelector('.parcel').style.display = 'block'
+                    document.querySelector('.bg').style.display = 'flex'
+                }
+
+                function LoadHide() {
+                    console.log(1212)
+                    document.querySelector('.parcel').style.display = 'none'
+                    document.querySelector('.bg').style.display = 'none'
+                }
                 if (lumise.onload == undefined) lumise.cart.render()
 
                 /*
@@ -17781,6 +17850,49 @@ jQuery(document).ready(function ($) {
                         })
                     })
                 }
+
+
+
+                function dealImage(base64, w, callback) {
+                    var newImage = new Image()
+                    var quality = 0.6 //压缩系数0-1之间
+                    newImage.src = base64
+                    newImage.setAttribute('crossOrigin', 'Anonymous') //url为外域时需要
+                    var imgWidth, imgHeight
+                    newImage.onload = function () {
+                        imgWidth = this.width
+                        imgHeight = this.height
+                        var canvas = document.createElement('canvas')
+                        var ctx = canvas.getContext('2d')
+                        if (Math.max(imgWidth, imgHeight) > w) {
+                            if (imgWidth > imgHeight) {
+                                canvas.width = w
+                                canvas.height = (w * imgHeight) / imgWidth
+                            } else {
+                                canvas.height = w
+                                canvas.width = (w * imgWidth) / imgHeight
+                            }
+                        } else {
+                            canvas.width = imgWidth
+                            canvas.height = imgHeight
+                            quality = 0.6
+                        }
+                        ctx.clearRect(0, 0, canvas.width, canvas.height)
+                        ctx.drawImage(this, 0, 0, canvas.width, canvas.height)
+                        var base64 = canvas.toDataURL('image/jpeg', quality) //压缩语句
+                        // 如想确保图片压缩到自己想要的尺寸,如要求在50-150kb之间，请加以下语句，quality初始值根据情况自定
+                        // while (base64.length / 1024 > 150) {
+                        // 	quality -= 0.01;
+                        // 	base64 = canvas.toDataURL("image/jpeg", quality);
+                        // }
+                        // 防止最后一次压缩低于最低尺寸，只要quality递减合理，无需考虑
+                        // while (base64.length / 1024 < 50) {
+                        // 	quality += 0.001;
+                        // 	base64 = canvas.toDataURL("image/jpeg", quality);
+                        // }
+                        callback(base64) //必须通过回调函数返回，否则无法及时拿到该值
+                    }
+                }
                 // TODO 保存
                 $('#lumise-cart-action').on('click', function (e) {
                     setTimeout(() => {
@@ -17791,6 +17903,302 @@ jQuery(document).ready(function ($) {
                     e.preventDefault()
                 })
 
+                // TODO 预览
+                $('#lumise-cart-action1').on('click', function (e) {
+                    
+                    let design = localStorage.getItem('design')
+                    let designInfo = localStorage.getItem('CANVAS-INFO')
+
+                    const previewImg = []
+
+                    if (JSON.parse(design)) {
+                        design = JSON.parse(design)
+                        designInfo = JSON.parse(designInfo)
+                    }
+
+                    if (design.length <= 0) {
+                        alert('暂无预览图')
+                        return
+                    }
+
+                    let baseImg = []
+                    const ops = {
+                        height: designInfo.height,
+                        include_base: false,
+                        orien: 'portrait',
+                        type: 'png',
+                        width: designInfo.width,
+                    }
+
+                    function down(canvas, ops, stage) {
+                        var type = ops.type,
+                            include_base = ops.include_base,
+                            stage = stage,
+                            canvas = canvas
+                        if (!canvas) {
+                            baseImg[stage.name] = null
+                            return
+                        }
+
+                        if (type === 'png') {
+                            var h = ops.height,
+                                w = ops.width,
+                                o = ops.orien,
+                                bg = canvas.backgroundColor,
+                                multiplier = h / stage.limit_zone.height,
+                                mp =
+                                    o != 'landscape'
+                                        ? multiplier
+                                        : multiplier *
+                                          (canvas.width / canvas.height),
+                                dops = {
+                                    stage: stage,
+                                    top: stage.limit_zone.top,
+                                    left: stage.limit_zone.left,
+                                    width: stage.limit_zone.width,
+                                    height: stage.limit_zone.height,
+                                    multiplier: mp, //Math.ceil(mp),
+                                    is_bg:
+                                        include_base === true ? 'full' : false,
+                                },
+                                data = lumise.tools.toImage(dops),
+                                _canvas = document.createElement('canvas'),
+                                ctx = _canvas.getContext('2d'),
+                                img = new Image()
+                            ctx.fillStyle = '#fff'
+                            ctx.fillRect(0, 0, canvas.width, canvas.height)
+                            if (multiplier > 33) multiplier = 33
+                            if (typeof ops.callback != 'function') {
+                                ops.callback = function (data) {
+                                    lumise.fn.download(data, name + '.png')
+                                }
+                            }
+
+                            if (o != 'landscape') {
+                                _canvas.width = w
+                                _canvas.height = h
+
+                                img.onload = function () {
+                                    var _w = this.width,
+                                        _h = this.height
+
+                                    if (_w != w) {
+                                        _h = (_h / _w) * w
+                                        _w = w
+                                    }
+
+                                    if (_h > h) {
+                                        _w = (_w / _h) * h
+                                        _h = h
+                                    }
+                                    ctx.drawImage(
+                                        this,
+                                        (w - _w) / 2,
+                                        (h - _h) / 2,
+                                        _w,
+                                        _h
+                                    )
+
+                                    lumise.f('false')
+                                    ops.callback(_canvas.toDataURL())
+
+                                    delete _canvas
+                                    delete ctx
+                                }
+                                baseImg[stage.name] = data
+                            }
+                        }
+                    }
+                    Object.keys(lumise.data.stages).map(function (s, i) {
+                        down(
+                            lumise.data.stages[s].canvas,
+                            ops,
+                            lumise.data.stages[s]
+                        )
+                    })
+
+                    function createPreviewNode(arr) {
+                        function createEle(baseArr) {
+                            const make = document.createElement('div')
+                            make.className = 'make'
+                            document.querySelector('body').appendChild(make)
+
+                            const makeContent = document.createElement('div')
+                            makeContent.className = 'make-content'
+                            document
+                                .querySelector('body')
+                                .appendChild(makeContent)
+
+                            const whiteBgContent = document.createElement('div')
+                            whiteBgContent.className = 'white-bg-content'
+                            makeContent.appendChild(whiteBgContent)
+
+                            const wrap = document.createElement('div')
+                            wrap.className = 'wrap'
+                            whiteBgContent.appendChild(wrap)
+
+                            const wrapUl = document.createElement('ul')
+                            wrapUl.className = 'wrap-ul'
+                            wrapUl.id = 'wrap-ul'
+                            wrap.appendChild(wrapUl)
+
+                            for (let i = 0; i < baseArr.length; i++) {
+                                const b1 = document.createElement('li')
+                                b1.className = 'b1'
+                                wrapUl.appendChild(b1)
+                                const img = document.createElement('img')
+                                img.src = baseArr[i]
+                                b1.appendChild(img)
+                            }
+
+                            const close = document.createElement('div')
+                            close.className = 'close close-my-btn-l'
+
+                            const closeImg = document.createElement('img')
+                            closeImg.src =
+                                'http://diy.cmygx.cn/public/close.jpg'
+                            close.appendChild(closeImg)
+
+                            const lf = document.createElement('span')
+                            lf.id = 'toleft1'
+                            lf.innerHTML = '&lt;'
+
+                            const rg = document.createElement('span')
+                            rg.id = 'right-btn1'
+                            rg.innerHTML = '&gt;'
+
+                            wrap.appendChild(lf)
+                            wrap.appendChild(rg)
+                            whiteBgContent.appendChild(close)
+                        }
+
+                        createEle(arr)
+
+                        const rightBnt = document.querySelector('#right-btn1')
+                        const lfBnt = document.querySelector('#toleft1')
+
+                        const node = document.querySelectorAll('.b1')
+                        let cur = 0
+
+                        function clearZindex() {
+                            const node = document.querySelectorAll('.b1')
+                            for (let i = 0; i < node.length; i++) {
+                                const ele = node[i]
+                                ele.style.display = 'none'
+                            }
+                        }
+                        function initZindex() {
+                            const node = document.querySelectorAll('.b1')
+                            node[0].style.display = 'block'
+                            console.log()
+                        }
+                        clearZindex()
+                        initZindex()
+                        function lfMove() {
+                            if (cur <= 0) return
+                            cur--
+
+                            clearZindex()
+                            node[cur].style.display = 'block'
+                        }
+                        function rgMove() {
+                            console.log(cur)
+                            if (cur >= node.length - 1) return
+                            cur++
+
+                            clearZindex()
+                            node[cur].style.display = 'block'
+                        }
+
+                        lfBnt.addEventListener('click', lfMove)
+                        rightBnt.addEventListener('click', rgMove)
+
+                        function closeMake() {
+                            document.querySelector(
+                                '.make-content'
+                            ).style.display = 'none'
+                            document.querySelector('.make').style.display =
+                                'none'
+
+                            document.querySelector('.make-content').remove()
+                            document.querySelector('.make').remove()
+                        }
+
+                        const closeBtn =
+                            document.querySelector('.close-my-btn-l')
+                        closeBtn.addEventListener('click', closeMake)
+                    }
+
+                    function createBaseImg(design) {
+                        let arr = []
+                        design.forEach((i) => {
+                            let tpObj = {}
+                            i.stage.forEach((c, cid) => {
+                                tpObj[c] = {
+                                    [i['psdLayer'][cid]]: baseImg[c],
+                                }
+                            })
+                            arr.push(tpObj)
+                        })
+                        return arr
+                    }
+
+                    if (design) {
+                        LoadShow()
+
+                        const tpObj = createBaseImg(design)
+                        const designLen = design.length
+
+                        design.forEach((c, cid) => {
+                            new Promise((resolve, reject) => {
+                                const tm = Object.values(tpObj[cid])
+                                const psdLayer = []
+                                const imageUrls = []
+                                tm.forEach((i) => {
+                                    for (const [key, value] of Object.entries(
+                                        i
+                                    )) {
+                                        dealImage(value, 4000, (newBase64) => {
+                                            psdLayer.push(key)
+                                            imageUrls.push(newBase64)
+                                            const resp = {
+                                                psdLayer,
+                                                imageUrls,
+                                            }
+                                            resolve(resp)
+                                        })
+                                    }
+                                })
+                            }).then((resp) => {
+                                lumise.fn
+                                    .isDesign({
+                                        psdUrl: c.upload,
+                                        psdLayer: resp.psdLayer,
+                                        imageUrls: resp.imageUrls,
+                                        width: designInfo.width,
+                                        height: designInfo.height,
+                                    })
+                                    .then((resp) => {
+                                        previewImg.push(resp.data)
+                                        if (previewImg.length === designLen) {
+                                            previewImg.length > 0
+                                                ? LoadHide()
+                                                : ''
+                                            if (previewImg.length <= 0) return
+                                            createPreviewNode(
+                                                previewImg.reverse()
+                                            )
+                                        }
+                                    })
+                                    .catch((err) => {
+                                        LoadHide()
+                                        console.log(err)
+                                    })
+                            })
+                        })
+                    }
+                
+                })
                 lumise.render.cart_change()
             },
 
@@ -19884,7 +20292,9 @@ jQuery(document).ready(function ($) {
           
             // TODO db-ready
             this.actions.add('db-ready', function () {
+
                 localStorage.setItem('lumise_color_presets','"#546e7a@#546e7a,#757575@#757575,#6d4c41@#6d4c41,#f4511e@#f4511e,#ffb300@#ffb300,#fdd835@#fdd835,#c0ca33@#c0cA33,#a0ce4e@#a0ce4e,#7cb342@#7cb342,#43a047@#43a047,#00acc1@#00acc1,#3fc7ba@#3fc7ba,#039be5@#039be5,#3949ab@#3949ab,#5e35b1@#5e35b1,#d81b60@#d81b60,#eeeeee@#eeeeee,#3a3a3a@#3a3a3a,#1e90ff@dodgerblue,#00ff7f@springgreen"')
+                localStorage.setItem('LUMISE_FONTS','{"Oswald":["vietnamese%2Ccyrillic%2Clatin-ext%2Clatin","200%2C300%2Cregular%2C500%2C600%2C700"],"Anton":["vietnamese%2Clatin-ext%2Clatin","regular"],"Pacifico":["latin-ext%2Cvietnamese%2Clatin","regular"],"Quicksand":["latin-ext%2Cvietnamese%2Clatin","300%2Cregular%2C500%2C700"],"Righteous":["latin-ext%2Clatin","regular"],"Fredoka%20One":["latin","regular"],"Monoton":["latin","regular"],"Alex%20Brush":["latin-ext%2Clatin","regular"],"Petit%20Formal%20Script":["latin-ext%2Clatin","regular"],"Baloo%20Bhaina":["latin-ext%2Cvietnamese%2Coriya%2Clatin","regular"],"Oleo%20Script%20Swash%20Caps":["latin-ext%2Clatin","regular%2C700"],"Arizonia":["latin-ext%2Clatin","regular"],"Bungee%20Shade":["latin-ext%2Cvietnamese%2Clatin","regular"],"Pattaya":["latin-ext%2Cvietnamese%2Ccyrillic%2Cthai%2Clatin","regular"],"Spirax":["latin","regular"],"Flavors":["latin","regular"]}')
                 lumise.fn.productInit((resp)=>{})
 
                 if (JSON.parse(localStorage.getItem('LUMISE-CART-DATA-LAY')).id) {

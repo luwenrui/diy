@@ -9493,9 +9493,6 @@ jQuery(document).ready(function ($) {
         },
 
         fn: {
-
-
-
 			productInit: function () {
                 const data = {
                     user_id: lumise.data.user_id,
@@ -9503,7 +9500,6 @@ jQuery(document).ready(function ($) {
                     is_child: lumise.fn.getQueryString('is_child'),
                     this_id: lumise.fn.getQueryString('this_id'),
                 }
-
                 return new Promise((resolve, reject) => {
                     $.ajax({
                         cache: true,
@@ -9511,25 +9507,15 @@ jQuery(document).ready(function ($) {
                         url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax_get',
                         data,
                         async: false,
-                        success: function (res, status) {
-                            const { width, height, data, design, data_design } = res
-                            sessionStorage.setItem('design', JSON.stringify(design))
-                            sessionStorage.setItem(
-                                'designInfo',
-                                JSON.stringify({
-                                    width,
-                                    height,
-                                    data,
-                                    data_design,
-                                })
-                            )
-                            localStorage.setItem(
-                                'LUMISE-CART-DATA',
-                                JSON.stringify({
-                                    [data_design.id]: data_design,
-                                })
-                            )
-                            resolve(res)
+                        success: function (resp) {
+                            const {data,design,width,height,data_design} = resp
+                            localStorage.setItem('LUMISE-CART-DATA',JSON.stringify({
+                                [data.id]:data_design
+                            }))
+
+                            localStorage.setItem('LUMISE-CART-DATA-LAY',JSON.stringify(data))
+                            localStorage.setItem('CANVAS-INFO',JSON.stringify({width,height}))
+                            resolve(resp)
                         },
                         error: function () {
                             reject()
@@ -15646,6 +15632,7 @@ jQuery(document).ready(function ($) {
                             qty = item.options.quantity
                                 ? item.options.quantity
                                 : 1
+                            // qty = 1
                             if (
                                 typeof item.attributes == 'object' &&
                                 typeof item.options == 'object' &&
@@ -17792,10 +17779,6 @@ jQuery(document).ready(function ($) {
                     invalids = [],
                     inv = null,
                     attrs = $('.lumise-cart-attributes')
-                // console.log(attrs);exit;
-                /*
-                 *	Check cart_design empty
-                 */
 
                 Object.keys(lumise.data.stages).map(function (s) {
                     if (typeof lumise.data.stages[s] !== 'undefined') {
@@ -19794,8 +19777,8 @@ jQuery(document).ready(function ($) {
 
             this.actions.add('cart_edit', function (ops) {
                 $('.lumise-lightbox').remove()
-
                 lumise.indexed.get(ops.id, 'cart', function (res) {
+                    const layData = JSON.parse(localStorage.getItem('LUMISE-CART-DATA-LAY'))
                     lumise.fn.load_product({
                         id: ops.product,
                         cms: ops.product_cms,
@@ -19837,7 +19820,6 @@ jQuery(document).ready(function ($) {
 
                 lumise.fn.clear_url()
                 lumise.fn.set_url('cart', ops.id)
-
                 lumise.render.cart_change()
             })
 
@@ -19869,84 +19851,149 @@ jQuery(document).ready(function ($) {
                     })
             })
 
+          
+            // TODO db-ready
             this.actions.add('db-ready', function () {
-                console.log(1, lumise.data.stages)
-                try {
-                    var cart_data = JSON.parse(
-                        localStorage.getItem('LUMISE-CART-DATA')
-                    )
-                } catch (ex) {
-                    var cart_data = null
-                }
-                console.log(2, cart_data, lumise.data.stages)
-                var has_cart = false
+                lumise.fn.productInit((resp)=>{})
 
-                if (lumise.fn.url_var('cart', '') !== '') {
-                    if (
-                        cart_data !== null &&
-                        cart_data[lumise.fn.url_var('cart')] !== undefined
-                    )
-                        has_cart = true
-                    else lumise.fn.notice(lumise.i(120), 'error', 3500)
-                }
+                // let cart_data
+                // let cart_data_lay_id 
+                // try {
+                //      cart_data = JSON.parse(localStorage.getItem('LUMISE-CART-DATA'))
+                //      cart_data_lay_id = JSON.parse(localStorage.getItem('LUMISE-CART-DATA-LAY')).id
+                // } catch (ex) {
+                //      cart_data = null
+                //      cart_data_lay_id = null
+                // }
 
-                if (has_cart === true) {
-                    lumise.cart.edit_item(lumise.fn.url_var('cart'))
-                } else if (lumise.data.onload) {
-                    lumise.f(lumise.i('importing') + '..1')
+                // var has_cart = true
+                // if (cart_data_lay_id !== null) {
+                //     if (
+                //         cart_data !== null &&
+                //         cart_data[cart_data_lay_id] !== undefined
+                //     )
+                //         has_cart = true
+                //     else lumise.fn.notice(lumise.i(120), 'error', 3500)
+                // }
 
-                    lumise.fn.set_url('cart', null)
+                // if (has_cart === true) {
+                //     lumise.cart.edit_item(cart_data_lay_id)
+                //     lumise.fn.set_url('cart', cart_data_lay_id)
 
-                    setTimeout(function () {
-                        if (lumise.data.share !== undefined) {
-                            Object.keys(lumise.data.onload.stages).map(
-                                function (s) {
-                                    delete lumise.data.onload.stages[s].template
-                                }
-                            )
-                        }
+                // } else if (lumise.data.onload) {
+                //     lumise.f(lumise.i('importing') + '..1')
 
-                        lumise.render.product(lumise.data.onload)
+                //     lumise.fn.set_url('cart', null)
 
-                        delete lumise.data.onload
-                    }, 100)
-                } else if (
-                    lumise.fn.url_var('reorder', '') === '' &&
-                    lumise.get.el('no-product').length > 0
-                ) {
-                    lumise.f(false)
-                    lumise.actions.do('noproduct')
-                }
+                //     setTimeout(function () {
+                //         if (lumise.data.share !== undefined) {
+                //             Object.keys(lumise.data.onload.stages).map(
+                //                 function (s) {
+                //                     delete lumise.data.onload.stages[s].template
+                //                 }
+                //             )
+                //         }
 
-                if (lumise.data.share_invalid !== undefined) {
-                    lumise.fn.confirm({
-                        title: lumise.data.share_invalid,
-                        primary: {},
-                        second: {
-                            text: 'Ok',
-                        },
-                        type: 'error',
-                    })
-                }
+                //         lumise.render.product(lumise.data.onload)
 
-                /* Clear unuse cart data in DB */
-                var carts = localStorage.getItem('LUMISE-CART-DATA')
+                //         delete lumise.data.onload
+                //     }, 100)
+                // } else if (
+                //     lumise.fn.url_var('reorder', '') === '' &&
+                //     lumise.get.el('no-product').length > 0
+                // ) {
+                //     lumise.f(false)
+                //     lumise.actions.do('noproduct')
+                // }
 
-                if (carts && carts !== '') {
-                    carts = Object.keys(JSON.parse(carts))
-                    lumise.indexed.list(
-                        function (data) {
-                            if (carts.indexOf(data.id) === -1)
-                                lumise.indexed.delete(data.id, 'cart')
-                        },
-                        'cart',
-                        function (st) {
-                            if (st == 'done') {
-                                lumise.ops.cart_cursor = null
-                            }
-                        }
-                    )
-                }
+                // if (lumise.data.share_invalid !== undefined) {
+                //     lumise.fn.confirm({
+                //         title: lumise.data.share_invalid,
+                //         primary: {},
+                //         second: {
+                //             text: 'Ok',
+                //         },
+                //         type: 'error',
+                //     })
+                // }
+
+
+                
+
+				console.log(1,lumise.data.stages)
+				try {
+					var cart_data = JSON.parse(localStorage.getItem('LUMISE-CART-DATA'));
+				}catch(ex){
+					var cart_data = null;
+				};
+				console.log(2,cart_data,lumise.data.stages)
+				var has_cart = false;
+
+				if (lumise.fn.url_var('cart', '') !== '') {
+
+					if (cart_data !== null && cart_data[lumise.fn.url_var('cart')] !== undefined)
+						has_cart = true;
+					else lumise.fn.notice(lumise.i(120), 'error', 3500);
+
+				};
+
+				if (has_cart === true) {
+
+					lumise.cart.edit_item(lumise.fn.url_var('cart'));
+
+				} else if (lumise.data.onload) {
+					lumise.f(lumise.i('importing')+'..1');
+
+					lumise.fn.set_url('cart', null);
+
+					setTimeout(function(){
+
+						if (lumise.data.share !== undefined) {
+							Object.keys(lumise.data.onload.stages).map(function(s){
+								delete lumise.data.onload.stages[s].template;
+							});
+						};
+
+						lumise.render.product(lumise.data.onload);
+
+						delete lumise.data.onload;
+
+					}, 100);
+
+				} else if (lumise.fn.url_var('reorder', '') === '' && lumise.get.el('no-product').length > 0) {
+
+					lumise.f(false);
+					lumise.actions.do('noproduct');
+
+				};
+
+				if (lumise.data.share_invalid !== undefined) {
+					lumise.fn.confirm({
+						title: lumise.data.share_invalid,
+						primary: {},
+						second: {
+							text: 'Ok'
+						},
+						type: 'error'
+					});
+				};
+
+				/* Clear unuse cart data in DB */
+				var carts = localStorage.getItem('LUMISE-CART-DATA');
+
+				if (carts && carts !== '') {
+					carts = Object.keys(JSON.parse(carts));
+					lumise.indexed.list(function(data){
+						if (carts.indexOf(data.id) === -1)
+							lumise.indexed.delete(data.id, 'cart');
+					}, 'cart', function(st){
+						if (st == 'done') {
+							lumise.ops.cart_cursor = null;
+						}
+					});
+				}
+
+			
             })
 
             this.actions.add('first-completed', function () {

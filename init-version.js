@@ -9493,6 +9493,77 @@ jQuery(document).ready(function ($) {
         },
 
         fn: {
+
+
+
+			productInit: function () {
+                const data = {
+                    user_id: lumise.data.user_id,
+                    product_base: lumise.fn.getQueryString('product_base'),
+                    is_child: lumise.fn.getQueryString('is_child'),
+                    this_id: lumise.fn.getQueryString('this_id'),
+                }
+
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        cache: true,
+                        type: 'POST',
+                        url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax_get',
+                        data,
+                        async: false,
+                        success: function (res, status) {
+                            const { width, height, data, design, data_design } = res
+                            sessionStorage.setItem('design', JSON.stringify(design))
+                            sessionStorage.setItem(
+                                'designInfo',
+                                JSON.stringify({
+                                    width,
+                                    height,
+                                    data,
+                                    data_design,
+                                })
+                            )
+                            localStorage.setItem(
+                                'LUMISE-CART-DATA',
+                                JSON.stringify({
+                                    [data_design.id]: data_design,
+                                })
+                            )
+                            resolve(res)
+                        },
+                        error: function () {
+                            reject()
+                            alert('系统超时，请重新操作!')
+                        },
+                    })
+                })
+            },
+            getQueryString: function (name) {
+                var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+                var r = window.location.search.substr(1).match(reg)
+                if (r != null) return unescape(r[2])
+                return null
+            },
+            isDesign(data) {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        cache: true,
+                        type: 'POST',
+                        url: 'http://42.192.45.188/api/psd/replace',
+                        data: JSON.stringify(data),
+                        async: true,
+                        dataType: 'JSON',
+                        contentType: 'application/json',
+                        success: function (res) {
+                            resolve(res)
+                        },
+                        error: function () {
+                            reject()
+                            console.log('预览请求错误')
+                        },
+                    })
+                })
+            },
             version_compare: function (a, b) {
                 if (a === undefined || b === undefined) return 0
 
@@ -15539,16 +15610,16 @@ jQuery(document).ready(function ($) {
                     keys,
                     color
 
-                if (btn.length > 0) {
-                    if (current_id === '')
-                        btn.attr({ 'data-action': 'add-cart' })
-                            .find('>span')
-                            .html(btn.data('add'))
-                    else
-                        btn.attr({ 'data-action': 'update-cart' })
-                            .find('>span')
-                            .html(btn.data('update'))
-                }
+                // if (btn.length > 0) {
+                //     if (current_id === '')
+                //         btn.attr({ 'data-action': 'add-cart' })
+                //             .find('>span')
+                //             .html(btn.data('add'))
+                //     else
+                //         btn.attr({ 'data-action': 'update-cart' })
+                //             .find('>span')
+                //             .html(btn.data('update'))
+                // }
 
                 ul.html('')
 
@@ -17672,11 +17743,65 @@ jQuery(document).ready(function ($) {
 
                 lumise.actions.add('checkout', lumise.cart.checkout)
 
-                $('#lumise-cart-action').on('click', function (e) {
-                    // alert(3);exit;
-                    //
-                    lumise.cart.add_cart('button add cart click')
 
+				function sendSave(data) {
+                    return new Promise((resolve, reject) => {
+                        $.ajax({
+                            cache: true,
+                            type: 'POST',
+                            url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax',
+                            data: JSON.stringify({
+                                product_base:
+                                    lumise.fn.getQueryString('product_base'),
+                                is_child: lumise.fn.getQueryString('is_child'),
+                                this_id: lumise.fn.getQueryString('this_id'),
+                                user_id: lumise.data.user_id,
+                                design_id: data.id,
+                                data,
+                                data_design: lumise.data.$data_design[data.id],
+                            }),
+                            async: true,
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            success: function (res, status) {
+                                resolve(res)
+                            },
+                        })
+                    })
+                }
+                $('#lumise-cart-action').on('click', function (e) {
+
+
+                    $('#LumiseDesign').attr({
+                        'data-processing': 'false',
+                        'data-msg': '',
+                    })
+
+                    setTimeout(() => {
+                        $('#LumiseDesign').attr({
+                            'data-processing': 'true',
+                            'data-msg': '请稍候..',
+                        })
+                    }, 1500)
+
+                    setTimeout(() => {
+                        sendSave(lumise.data.$cart_design).then((r) => {
+                            if (r.state === 1) {
+                                $('#LumiseDesign').attr({
+                                    'data-processing': 'true',
+                                    'data-msg': '操作成功',
+                                })
+                                setTimeout(() => {
+                                    $('#LumiseDesign').attr({
+                                        'data-processing': 'false',
+                                        'data-msg': '',
+                                    })
+                                }, 1500)
+                            }
+                        })
+                    }, 1000)
+                
+                    lumise.cart.add_cart('button add cart click')
                     e.preventDefault()
                 })
 

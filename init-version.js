@@ -22,11 +22,7 @@ jQuery(document).ready(function ($) {
         },
 
         i: function (s) {
-
-            if (s) {
             return lumise.data.js_lang[s.toString()]
-            }
-
         },
 
         f: function (msg) {
@@ -3773,7 +3769,6 @@ jQuery(document).ready(function ($) {
                             props['clipTo'] = function (ctx) {
                                 return lumise.objects.clipto(ctx, newobj)
                             }
-
                             ;[
                                 ['textAlign', 'center'],
                                 ['radius', 50],
@@ -3844,7 +3839,6 @@ jQuery(document).ready(function ($) {
                             props['clipTo'] = function (ctx) {
                                 return lumise.objects.clipto(ctx, newobj)
                             }
-
                             ;[
                                 ['textAlign', 'center'],
                                 ['radius', 50],
@@ -4002,17 +3996,13 @@ jQuery(document).ready(function ($) {
                                     'textAlign',
                                     _this.getAttribute('data-align')
                                 )
-                                lumise.get
-                                    .el('text-align')
-                                    .attr({
-                                        class:
-                                            'lumisex-align-' +
-                                            (_this.getAttribute('data-align')
-                                                ? _this.getAttribute(
-                                                      'data-align'
-                                                  )
-                                                : 'center'),
-                                    })
+                                lumise.get.el('text-align').attr({
+                                    class:
+                                        'lumisex-align-' +
+                                        (_this.getAttribute('data-align')
+                                            ? _this.getAttribute('data-align')
+                                            : 'center'),
+                                })
                             } else if (fm) {
                                 if (fm == 'upper') {
                                     if (
@@ -4263,12 +4253,10 @@ jQuery(document).ready(function ($) {
                             lockMovementY: this.checked,
                         })
 
-                        lumise.get
-                            .el('position-wrp')
-                            .attr({
-                                'data-lock':
-                                    this.checked === true ? 'true' : 'false',
-                            })
+                        lumise.get.el('position-wrp').attr({
+                            'data-lock':
+                                this.checked === true ? 'true' : 'false',
+                        })
 
                         canvas.renderAll()
                     },
@@ -7899,7 +7887,6 @@ jQuery(document).ready(function ($) {
                 data.product_width = stage.product.width
                 data.product_height = stage.product.height
                 data.screenshot = stage.screenshot
-
                 ;['width', 'height', 'top', 'left'].map(function (f) {
                     data.limit_zone[f] = stage.limit_zone
                         ? stage.limit_zone[f]
@@ -8382,7 +8369,6 @@ jQuery(document).ready(function ($) {
                     err = false
 
                 if (stage.limit_zone === undefined) return callback()
-
                 ;(xCenter =
                     data.limit_zone !== undefined
                         ? data.limit_zone.left + data.limit_zone.width / 2
@@ -9457,7 +9443,6 @@ jQuery(document).ready(function ($) {
                             size = lumise.data.size_default[s].px.split('x')
                         }
                     })
-
                     ;(w = parseFloat(size[0].trim())),
                         (h = parseFloat(size[1] ? size[1].trim() : 0))
                 } else if (typeof stage.size == 'object') {
@@ -9497,7 +9482,25 @@ jQuery(document).ready(function ($) {
         },
 
         fn: {
-			productInit: function () {
+            getToken(data = {}) {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        cache: true,
+                        type: 'POST',
+                        url: 'http://diy.cmygx.cn/index.php?s=/api/index/qiniuy',
+                        data,
+                        async: false,
+                        success: function (res, status) {
+                            resolve(res)
+                        },
+                        error: function () {
+                            reject()
+                            console.log('get token error')
+                        },
+                    })
+                })
+            },
+            productInit: function () {
                 const data = {
                     user_id: lumise.data.user_id,
                     product_base: lumise.fn.getQueryString('product_base'),
@@ -9509,19 +9512,32 @@ jQuery(document).ready(function ($) {
                         cache: true,
                         type: 'POST',
                         url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax_get',
-                        data:JSON.stringify(data),
+                        data: JSON.stringify(data),
                         async: false,
                         dataType: 'json',
                         contentType: 'application/json',
                         success: function (resp) {
-                            const {data,design,width,height,data_design} = resp
-                            localStorage.setItem('LUMISE-CART-DATA',JSON.stringify({
-                                [data.id]:data_design
-                            }))
+                            const { data, design, width, height, data_design } =
+                                resp
+                            localStorage.setItem(
+                                'LUMISE-CART-DATA',
+                                JSON.stringify({
+                                    [data.id]: data_design,
+                                })
+                            )
 
-                            localStorage.setItem('design',JSON.stringify(design))
-                            localStorage.setItem('LUMISE-CART-DATA-LAY',JSON.stringify(data))
-                            localStorage.setItem('CANVAS-INFO',JSON.stringify({width,height}))
+                            localStorage.setItem(
+                                'design',
+                                JSON.stringify(design)
+                            )
+                            localStorage.setItem(
+                                'LUMISE-CART-DATA-LAY',
+                                JSON.stringify(data)
+                            )
+                            localStorage.setItem(
+                                'CANVAS-INFO',
+                                JSON.stringify({ width, height })
+                            )
                             resolve(resp)
                         },
                         error: function () {
@@ -12438,7 +12454,6 @@ jQuery(document).ready(function ($) {
                 stage.lineY = $(
                     '#lumise-stage-' + name + ' .lumise-snap-line-y'
                 )
-
                 ;[
                     [
                         'dragover',
@@ -14770,15 +14785,12 @@ jQuery(document).ready(function ($) {
         },
 
         render: {
-
-
-            
             colorPresets: function () {
+                localStorage.setItem(
+                    'lumise_color_presets',
+                    '"#546e7a@#546e7a,#757575@#757575,#6d4c41@#6d4c41,#f4511e@#f4511e,#ffb300@#ffb300,#fdd835@#fdd835,#c0ca33@#c0cA33,#a0ce4e@#a0ce4e,#7cb342@#7cb342,#43a047@#43a047,#00acc1@#00acc1,#3fc7ba@#3fc7ba,#039be5@#039be5,#3949ab@#3949ab,#5e35b1@#5e35b1,#d81b60@#d81b60,#eeeeee@#eeeeee,#3a3a3a@#3a3a3a,#1e90ff@dodgerblue,#00ff7f@springgreen"'
+                )
 
-
-
-                localStorage.setItem('lumise_color_presets','"#546e7a@#546e7a,#757575@#757575,#6d4c41@#6d4c41,#f4511e@#f4511e,#ffb300@#ffb300,#fdd835@#fdd835,#c0ca33@#c0cA33,#a0ce4e@#a0ce4e,#7cb342@#7cb342,#43a047@#43a047,#00acc1@#00acc1,#3fc7ba@#3fc7ba,#039be5@#039be5,#3949ab@#3949ab,#5e35b1@#5e35b1,#d81b60@#d81b60,#eeeeee@#eeeeee,#3a3a3a@#3a3a3a,#1e90ff@dodgerblue,#00ff7f@springgreen"')
-                
                 var colors = lumise.data.colors,
                     el = $('.lumise-color-presets'),
                     lb
@@ -14987,6 +14999,11 @@ jQuery(document).ready(function ($) {
             },
 
             fonts: function (fonts) {
+                localStorage.setItem(
+                    'LUMISE_FONTS',
+                    '{"Oswald":["vietnamese%2Ccyrillic%2Clatin-ext%2Clatin","200%2C300%2Cregular%2C500%2C600%2C700"],"Anton":["vietnamese%2Clatin-ext%2Clatin","regular"],"Pacifico":["latin-ext%2Cvietnamese%2Clatin","regular"],"Quicksand":["latin-ext%2Cvietnamese%2Clatin","300%2Cregular%2C500%2C700"],"Righteous":["latin-ext%2Clatin","regular"],"Fredoka%20One":["latin","regular"],"Monoton":["latin","regular"],"Alex%20Brush":["latin-ext%2Clatin","regular"],"Petit%20Formal%20Script":["latin-ext%2Clatin","regular"],"Baloo%20Bhaina":["latin-ext%2Cvietnamese%2Coriya%2Clatin","regular"],"Oleo%20Script%20Swash%20Caps":["latin-ext%2Clatin","regular%2C700"],"Arizonia":["latin-ext%2Clatin","regular"],"Bungee%20Shade":["latin-ext%2Cvietnamese%2Clatin","regular"],"Pattaya":["latin-ext%2Cvietnamese%2Ccyrillic%2Cthai%2Clatin","regular"],"Spirax":["latin","regular"],"Flavors":["latin","regular"]}'
+                )
+
                 var uri = '//fonts.googleapis.com/css?family=',
                     txt = '',
                     id = '',
@@ -17730,8 +17747,6 @@ jQuery(document).ready(function ($) {
             },
 
             init: function () {
-
-
                 function addLoad() {
                     const bg = document.createElement('div')
                     bg.className = 'bg'
@@ -17788,7 +17803,6 @@ jQuery(document).ready(function ($) {
                 addLoad()
 
                 function LoadShow() {
-                    console.log(document.querySelector('.parcel'))
                     document.querySelector('.parcel').style.display = 'block'
                     document.querySelector('.bg').style.display = 'flex'
                 }
@@ -17812,35 +17826,26 @@ jQuery(document).ready(function ($) {
                 })
 
                 lumise.actions.add('checkout', lumise.cart.checkout)
-				function sendSave(data) {
+                function sendSave(data, main_img) {
                     return new Promise((resolve, reject) => {
-                     const data_design =  JSON.parse(localStorage.getItem('LUMISE-CART-DATA'))[data.id]
-                    //  const  font = JSON.parse(localStorage.getItem('LUMISE_FONTS'))
-                    //  const color = JSON.parse(localStorage.getItem('lumise_color_presets'))
-                    //  const 
-
-
+                        const data_design = JSON.parse(
+                            localStorage.getItem('LUMISE-CART-DATA')
+                        )[data.id]
                         $.ajax({
                             cache: true,
                             type: 'POST',
                             url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax',
-                            data: 
-                           JSON.stringify( {
-                            product_base:
-                                lumise.fn.getQueryString('product_base'),
-                            is_child: lumise.fn.getQueryString('is_child'),
-                            this_id: lumise.fn.getQueryString('this_id'),
-                            user_id: lumise.data.user_id,
-                            design_id: data.id,
-                            data,
-                            data_design,
-
-
-
-
-
-
-                        }),
+                            data: JSON.stringify({
+                                product_base:
+                                    lumise.fn.getQueryString('product_base'),
+                                is_child: lumise.fn.getQueryString('is_child'),
+                                this_id: lumise.fn.getQueryString('this_id'),
+                                user_id: lumise.data.user_id,
+                                design_id: data.id,
+                                data,
+                                data_design,
+                                main_img,
+                            }),
                             async: true,
                             dataType: 'json',
                             contentType: 'application/json',
@@ -17850,8 +17855,6 @@ jQuery(document).ready(function ($) {
                         })
                     })
                 }
-
-
 
                 function dealImage(base64, w, callback) {
                     var newImage = new Image()
@@ -17893,23 +17896,89 @@ jQuery(document).ready(function ($) {
                         callback(base64) //必须通过回调函数返回，否则无法及时拿到该值
                     }
                 }
-                // TODO 保存
-                $('#lumise-cart-action').on('click', function (e) {
-                    setTimeout(() => {
-                        sendSave(lumise.data._dataDesign).then((r) => {})
-                    }, 1000)
-                
-                    lumise.cart.add_cart('button add cart click')
-                    e.preventDefault()
-                })
 
-                // TODO 预览
-                $('#lumise-cart-action1').on('click', function (e) {
-                    
+                function down(canvas, ops, stage, baseImg) {
+                    var type = ops.type,
+                        include_base = ops.include_base,
+                        stage = stage,
+                        canvas = canvas
+                    if (!canvas) {
+                        baseImg[stage.name] = null
+                        return
+                    }
+
+                    if (type === 'png') {
+                        var h = ops.height,
+                            w = ops.width,
+                            o = ops.orien,
+                            bg = canvas.backgroundColor,
+                            multiplier = h / stage.limit_zone.height,
+                            mp =
+                                o != 'landscape'
+                                    ? multiplier
+                                    : multiplier *
+                                      (canvas.width / canvas.height),
+                            dops = {
+                                stage: stage,
+                                top: stage.limit_zone.top,
+                                left: stage.limit_zone.left,
+                                width: stage.limit_zone.width,
+                                height: stage.limit_zone.height,
+                                multiplier: mp, //Math.ceil(mp),
+                                is_bg: include_base === true ? 'full' : false,
+                            },
+                            data = lumise.tools.toImage(dops),
+                            _canvas = document.createElement('canvas'),
+                            ctx = _canvas.getContext('2d'),
+                            img = new Image()
+                        ctx.fillStyle = '#fff'
+                        ctx.fillRect(0, 0, canvas.width, canvas.height)
+                        if (multiplier > 33) multiplier = 33
+                        if (typeof ops.callback != 'function') {
+                            ops.callback = function (data) {
+                                lumise.fn.download(data, name + '.png')
+                            }
+                        }
+
+                        if (o != 'landscape') {
+                            _canvas.width = w
+                            _canvas.height = h
+
+                            img.onload = function () {
+                                var _w = this.width,
+                                    _h = this.height
+
+                                if (_w != w) {
+                                    _h = (_h / _w) * w
+                                    _w = w
+                                }
+
+                                if (_h > h) {
+                                    _w = (_w / _h) * h
+                                    _h = h
+                                }
+                                ctx.drawImage(
+                                    this,
+                                    (w - _w) / 2,
+                                    (h - _h) / 2,
+                                    _w,
+                                    _h
+                                )
+
+                                lumise.f('false')
+                                ops.callback(_canvas.toDataURL())
+
+                                delete _canvas
+                                delete ctx
+                            }
+                            baseImg[stage.name] = data
+                        }
+                    }
+                }
+
+                function createBase64() {
                     let design = localStorage.getItem('design')
                     let designInfo = localStorage.getItem('CANVAS-INFO')
-
-                    const previewImg = []
 
                     if (JSON.parse(design)) {
                         design = JSON.parse(design)
@@ -17917,7 +17986,7 @@ jQuery(document).ready(function ($) {
                     }
 
                     if (design.length <= 0) {
-                        alert('暂无预览图')
+                        alert('暂无设计图')
                         return
                     }
 
@@ -17929,205 +17998,182 @@ jQuery(document).ready(function ($) {
                         type: 'png',
                         width: designInfo.width,
                     }
-
-                    function down(canvas, ops, stage) {
-                        var type = ops.type,
-                            include_base = ops.include_base,
-                            stage = stage,
-                            canvas = canvas
-                        if (!canvas) {
-                            baseImg[stage.name] = null
-                            return
-                        }
-
-                        if (type === 'png') {
-                            var h = ops.height,
-                                w = ops.width,
-                                o = ops.orien,
-                                bg = canvas.backgroundColor,
-                                multiplier = h / stage.limit_zone.height,
-                                mp =
-                                    o != 'landscape'
-                                        ? multiplier
-                                        : multiplier *
-                                          (canvas.width / canvas.height),
-                                dops = {
-                                    stage: stage,
-                                    top: stage.limit_zone.top,
-                                    left: stage.limit_zone.left,
-                                    width: stage.limit_zone.width,
-                                    height: stage.limit_zone.height,
-                                    multiplier: mp, //Math.ceil(mp),
-                                    is_bg:
-                                        include_base === true ? 'full' : false,
-                                },
-                                data = lumise.tools.toImage(dops),
-                                _canvas = document.createElement('canvas'),
-                                ctx = _canvas.getContext('2d'),
-                                img = new Image()
-                            ctx.fillStyle = '#fff'
-                            ctx.fillRect(0, 0, canvas.width, canvas.height)
-                            if (multiplier > 33) multiplier = 33
-                            if (typeof ops.callback != 'function') {
-                                ops.callback = function (data) {
-                                    lumise.fn.download(data, name + '.png')
-                                }
-                            }
-
-                            if (o != 'landscape') {
-                                _canvas.width = w
-                                _canvas.height = h
-
-                                img.onload = function () {
-                                    var _w = this.width,
-                                        _h = this.height
-
-                                    if (_w != w) {
-                                        _h = (_h / _w) * w
-                                        _w = w
-                                    }
-
-                                    if (_h > h) {
-                                        _w = (_w / _h) * h
-                                        _h = h
-                                    }
-                                    ctx.drawImage(
-                                        this,
-                                        (w - _w) / 2,
-                                        (h - _h) / 2,
-                                        _w,
-                                        _h
-                                    )
-
-                                    lumise.f('false')
-                                    ops.callback(_canvas.toDataURL())
-
-                                    delete _canvas
-                                    delete ctx
-                                }
-                                baseImg[stage.name] = data
-                            }
-                        }
-                    }
                     Object.keys(lumise.data.stages).map(function (s, i) {
                         down(
                             lumise.data.stages[s].canvas,
                             ops,
-                            lumise.data.stages[s]
+                            lumise.data.stages[s],
+                            baseImg
                         )
                     })
+                    return baseImg
+                }
 
-                    function createPreviewNode(arr) {
-                        function createEle(baseArr) {
-                            const make = document.createElement('div')
-                            make.className = 'make'
-                            document.querySelector('body').appendChild(make)
+                function putb64(token, pic) {
+                    const url = `http://upload.qiniu.com`
+                    return new Promise((resolve, reject) => {
+                        const formData = new FormData()
+                        formData.append('file', pic)
+                        formData.append('token', token)
 
-                            const makeContent = document.createElement('div')
-                            makeContent.className = 'make-content'
-                            document
-                                .querySelector('body')
-                                .appendChild(makeContent)
+                        $.ajax({
+                            cache: true,
+                            type: 'POST',
+                            url,
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            async: true,
+                            success: function (res, status) {
+                                resolve(res)
+                            },
+                            error: function (e) {
+                                console.log(e)
+                            },
+                        })
+                    })
+                }
 
-                            const whiteBgContent = document.createElement('div')
-                            whiteBgContent.className = 'white-bg-content'
-                            makeContent.appendChild(whiteBgContent)
+                // TODO 保存
+                $('#lumise-cart-action').on('click', function (e) {
+                    e.preventDefault()
+                    const main_img = []
+                    lumise.fn.getToken().then(({ data, url }) => {
+                        Object.values(createBase64()).forEach((i) => {
+                            putb64(data, i).then((res) => {
+                                main_img.push(`${url}/${res.key}`)
+                            })
+                        })
+                    })
+                    setTimeout(() => {
+                        sendSave(lumise.data._dataDesign, main_img)
+                    }, 1000)
 
-                            const wrap = document.createElement('div')
-                            wrap.className = 'wrap'
-                            whiteBgContent.appendChild(wrap)
+                    lumise.cart.add_cart('button add cart click')
+                })
 
-                            const wrapUl = document.createElement('ul')
-                            wrapUl.className = 'wrap-ul'
-                            wrapUl.id = 'wrap-ul'
-                            wrap.appendChild(wrapUl)
+                function createPreviewNode(arr) {
+                    function createEle(baseArr) {
+                        const make = document.createElement('div')
+                        make.className = 'make'
+                        document.querySelector('body').appendChild(make)
 
-                            for (let i = 0; i < baseArr.length; i++) {
-                                const b1 = document.createElement('li')
-                                b1.className = 'b1'
-                                wrapUl.appendChild(b1)
-                                const img = document.createElement('img')
-                                img.src = baseArr[i]
-                                b1.appendChild(img)
-                            }
+                        const makeContent = document.createElement('div')
+                        makeContent.className = 'make-content'
+                        document.querySelector('body').appendChild(makeContent)
 
-                            const close = document.createElement('div')
-                            close.className = 'close close-my-btn-l'
+                        const whiteBgContent = document.createElement('div')
+                        whiteBgContent.className = 'white-bg-content'
+                        makeContent.appendChild(whiteBgContent)
 
-                            const closeImg = document.createElement('img')
-                            closeImg.src =
-                                'http://diy.cmygx.cn/public/close.jpg'
-                            close.appendChild(closeImg)
+                        const wrap = document.createElement('div')
+                        wrap.className = 'wrap'
+                        whiteBgContent.appendChild(wrap)
 
-                            const lf = document.createElement('span')
-                            lf.id = 'toleft1'
-                            lf.innerHTML = '&lt;'
+                        const wrapUl = document.createElement('ul')
+                        wrapUl.className = 'wrap-ul'
+                        wrapUl.id = 'wrap-ul'
+                        wrap.appendChild(wrapUl)
 
-                            const rg = document.createElement('span')
-                            rg.id = 'right-btn1'
-                            rg.innerHTML = '&gt;'
-
-                            wrap.appendChild(lf)
-                            wrap.appendChild(rg)
-                            whiteBgContent.appendChild(close)
+                        for (let i = 0; i < baseArr.length; i++) {
+                            const b1 = document.createElement('li')
+                            b1.className = 'b1'
+                            wrapUl.appendChild(b1)
+                            const img = document.createElement('img')
+                            img.src = baseArr[i]
+                            b1.appendChild(img)
                         }
 
-                        createEle(arr)
+                        const close = document.createElement('div')
+                        close.className = 'close close-my-btn-l'
 
-                        const rightBnt = document.querySelector('#right-btn1')
-                        const lfBnt = document.querySelector('#toleft1')
+                        const closeImg = document.createElement('img')
+                        closeImg.src = 'http://diy.cmygx.cn/public/close.jpg'
+                        close.appendChild(closeImg)
 
-                        const node = document.querySelectorAll('.b1')
-                        let cur = 0
+                        const lf = document.createElement('span')
+                        lf.id = 'toleft1'
+                        lf.innerHTML = '&lt;'
 
-                        function clearZindex() {
-                            const node = document.querySelectorAll('.b1')
-                            for (let i = 0; i < node.length; i++) {
-                                const ele = node[i]
-                                ele.style.display = 'none'
-                            }
-                        }
-                        function initZindex() {
-                            const node = document.querySelectorAll('.b1')
-                            node[0].style.display = 'block'
-                            console.log()
-                        }
-                        clearZindex()
-                        initZindex()
-                        function lfMove() {
-                            if (cur <= 0) return
-                            cur--
+                        const rg = document.createElement('span')
+                        rg.id = 'right-btn1'
+                        rg.innerHTML = '&gt;'
 
-                            clearZindex()
-                            node[cur].style.display = 'block'
-                        }
-                        function rgMove() {
-                            console.log(cur)
-                            if (cur >= node.length - 1) return
-                            cur++
-
-                            clearZindex()
-                            node[cur].style.display = 'block'
-                        }
-
-                        lfBnt.addEventListener('click', lfMove)
-                        rightBnt.addEventListener('click', rgMove)
-
-                        function closeMake() {
-                            document.querySelector(
-                                '.make-content'
-                            ).style.display = 'none'
-                            document.querySelector('.make').style.display =
-                                'none'
-
-                            document.querySelector('.make-content').remove()
-                            document.querySelector('.make').remove()
-                        }
-
-                        const closeBtn =
-                            document.querySelector('.close-my-btn-l')
-                        closeBtn.addEventListener('click', closeMake)
+                        wrap.appendChild(lf)
+                        wrap.appendChild(rg)
+                        whiteBgContent.appendChild(close)
                     }
+
+                    createEle(arr)
+
+                    const rightBnt = document.querySelector('#right-btn1')
+                    const lfBnt = document.querySelector('#toleft1')
+
+                    const node = document.querySelectorAll('.b1')
+                    let cur = 0
+
+                    function clearZindex() {
+                        const node = document.querySelectorAll('.b1')
+                        for (let i = 0; i < node.length; i++) {
+                            const ele = node[i]
+                            ele.style.display = 'none'
+                        }
+                    }
+                    function initZindex() {
+                        const node = document.querySelectorAll('.b1')
+                        node[0].style.display = 'block'
+                        console.log()
+                    }
+                    clearZindex()
+                    initZindex()
+                    function lfMove() {
+                        if (cur <= 0) return
+                        cur--
+
+                        clearZindex()
+                        node[cur].style.display = 'block'
+                    }
+                    function rgMove() {
+                        console.log(cur)
+                        if (cur >= node.length - 1) return
+                        cur++
+
+                        clearZindex()
+                        node[cur].style.display = 'block'
+                    }
+
+                    lfBnt.addEventListener('click', lfMove)
+                    rightBnt.addEventListener('click', rgMove)
+
+                    function closeMake() {
+                        document.querySelector('.make-content').style.display =
+                            'none'
+                        document.querySelector('.make').style.display = 'none'
+
+                        document.querySelector('.make-content').remove()
+                        document.querySelector('.make').remove()
+                    }
+
+                    const closeBtn = document.querySelector('.close-my-btn-l')
+                    closeBtn.addEventListener('click', closeMake)
+                }
+                // TODO 预览
+                $('#lumise-cart-action1').on('click', function (e) {
+                    let design = localStorage.getItem('design')
+                    let designInfo = localStorage.getItem('CANVAS-INFO')
+
+                    if (JSON.parse(design)) {
+                        design = JSON.parse(design)
+                        designInfo = JSON.parse(designInfo)
+                    }
+
+                    if (design.length <= 0) {
+                        alert('暂无预览图')
+                        return
+                    }
+
+                    const previewImg = []
+                    const baseImg = createBase64()
 
                     function createBaseImg(design) {
                         let arr = []
@@ -18145,7 +18191,6 @@ jQuery(document).ready(function ($) {
 
                     if (design) {
                         LoadShow()
-
                         const tpObj = createBaseImg(design)
                         const designLen = design.length
 
@@ -18197,7 +18242,6 @@ jQuery(document).ready(function ($) {
                             })
                         })
                     }
-                
                 })
                 lumise.render.cart_change()
             },
@@ -18424,9 +18468,9 @@ jQuery(document).ready(function ($) {
                                                 ]
                                             )
                                         } else {
-                                       
-                                            console.log(cart_design);
-                                            lumise.data._dataDesign = cart_design
+                                            console.log(cart_design)
+                                            lumise.data._dataDesign =
+                                                cart_design
                                             lumise.active_stage(current_stage)
                                             return lumise.cart.process_add_cart(
                                                 cart_design
@@ -20209,14 +20253,15 @@ jQuery(document).ready(function ($) {
 
             this.actions.add('save', lumise.fn.update_state)
 
-
             // TODO cart_edit
             this.actions.add('cart_edit', function (ops) {
                 $('.lumise-lightbox').remove()
                 lumise.indexed.get(ops.id, 'cart', function (res) {
-                    const layData = JSON.parse(localStorage.getItem('LUMISE-CART-DATA-LAY'))
-                    console.log(res);
-                    console.log(layData);
+                    const layData = JSON.parse(
+                        localStorage.getItem('LUMISE-CART-DATA-LAY')
+                    )
+                    console.log(res)
+                    console.log(layData)
                     lumise.fn.load_product({
                         id: ops.product,
                         cms: ops.product_cms,
@@ -20289,93 +20334,102 @@ jQuery(document).ready(function ($) {
                     })
             })
 
-          
             // TODO db-ready
             this.actions.add('db-ready', function () {
+                localStorage.setItem(
+                    'lumise_color_presets',
+                    '"#546e7a@#546e7a,#757575@#757575,#6d4c41@#6d4c41,#f4511e@#f4511e,#ffb300@#ffb300,#fdd835@#fdd835,#c0ca33@#c0cA33,#a0ce4e@#a0ce4e,#7cb342@#7cb342,#43a047@#43a047,#00acc1@#00acc1,#3fc7ba@#3fc7ba,#039be5@#039be5,#3949ab@#3949ab,#5e35b1@#5e35b1,#d81b60@#d81b60,#eeeeee@#eeeeee,#3a3a3a@#3a3a3a,#1e90ff@dodgerblue,#00ff7f@springgreen"'
+                )
+                lumise.fn.productInit((resp) => {})
 
-                localStorage.setItem('lumise_color_presets','"#546e7a@#546e7a,#757575@#757575,#6d4c41@#6d4c41,#f4511e@#f4511e,#ffb300@#ffb300,#fdd835@#fdd835,#c0ca33@#c0cA33,#a0ce4e@#a0ce4e,#7cb342@#7cb342,#43a047@#43a047,#00acc1@#00acc1,#3fc7ba@#3fc7ba,#039be5@#039be5,#3949ab@#3949ab,#5e35b1@#5e35b1,#d81b60@#d81b60,#eeeeee@#eeeeee,#3a3a3a@#3a3a3a,#1e90ff@dodgerblue,#00ff7f@springgreen"')
-                localStorage.setItem('LUMISE_FONTS','{"Oswald":["vietnamese%2Ccyrillic%2Clatin-ext%2Clatin","200%2C300%2Cregular%2C500%2C600%2C700"],"Anton":["vietnamese%2Clatin-ext%2Clatin","regular"],"Pacifico":["latin-ext%2Cvietnamese%2Clatin","regular"],"Quicksand":["latin-ext%2Cvietnamese%2Clatin","300%2Cregular%2C500%2C700"],"Righteous":["latin-ext%2Clatin","regular"],"Fredoka%20One":["latin","regular"],"Monoton":["latin","regular"],"Alex%20Brush":["latin-ext%2Clatin","regular"],"Petit%20Formal%20Script":["latin-ext%2Clatin","regular"],"Baloo%20Bhaina":["latin-ext%2Cvietnamese%2Coriya%2Clatin","regular"],"Oleo%20Script%20Swash%20Caps":["latin-ext%2Clatin","regular%2C700"],"Arizonia":["latin-ext%2Clatin","regular"],"Bungee%20Shade":["latin-ext%2Cvietnamese%2Clatin","regular"],"Pattaya":["latin-ext%2Cvietnamese%2Ccyrillic%2Cthai%2Clatin","regular"],"Spirax":["latin","regular"],"Flavors":["latin","regular"]}')
-                lumise.fn.productInit((resp)=>{})
-
-                if (JSON.parse(localStorage.getItem('LUMISE-CART-DATA-LAY')).id) {
-				    lumise.fn.set_url('cart', JSON.parse(localStorage.getItem('LUMISE-CART-DATA-LAY')).id);
-                }else{
-				    lumise.fn.set_url('cart', null);
+                if (
+                    JSON.parse(localStorage.getItem('LUMISE-CART-DATA-LAY')).id
+                ) {
+                    lumise.fn.set_url(
+                        'cart',
+                        JSON.parse(localStorage.getItem('LUMISE-CART-DATA-LAY'))
+                            .id
+                    )
+                } else {
+                    lumise.fn.set_url('cart', null)
                 }
 
-				try {
-					var cart_data = JSON.parse(localStorage.getItem('LUMISE-CART-DATA'));
-				}catch(ex){
-					var cart_data = null;
-				};
+                try {
+                    var cart_data = JSON.parse(
+                        localStorage.getItem('LUMISE-CART-DATA')
+                    )
+                } catch (ex) {
+                    var cart_data = null
+                }
 
-				var has_cart = false;
+                var has_cart = false
 
-				if (lumise.fn.url_var('cart', '') !== '') {
+                if (lumise.fn.url_var('cart', '') !== '') {
+                    if (
+                        cart_data !== null &&
+                        cart_data[lumise.fn.url_var('cart')] !== undefined
+                    )
+                        has_cart = true
+                    else lumise.fn.notice(lumise.i(120), 'error', 3500)
+                }
 
-					if (cart_data !== null && cart_data[lumise.fn.url_var('cart')] !== undefined)
-						has_cart = true;
-					else lumise.fn.notice(lumise.i(120), 'error', 3500);
+                if (has_cart === true) {
+                    lumise.cart.edit_item(lumise.fn.url_var('cart'))
+                } else if (lumise.data.onload) {
+                    lumise.f(lumise.i('importing') + '..1')
 
-				};
+                    lumise.fn.set_url('cart', null)
 
-				if (has_cart === true) {
+                    setTimeout(function () {
+                        if (lumise.data.share !== undefined) {
+                            Object.keys(lumise.data.onload.stages).map(
+                                function (s) {
+                                    delete lumise.data.onload.stages[s].template
+                                }
+                            )
+                        }
 
-					lumise.cart.edit_item(lumise.fn.url_var('cart'));
+                        lumise.render.product(lumise.data.onload)
 
-				} else if (lumise.data.onload) {
-					lumise.f(lumise.i('importing')+'..1');
+                        delete lumise.data.onload
+                    }, 100)
+                } else if (
+                    lumise.fn.url_var('reorder', '') === '' &&
+                    lumise.get.el('no-product').length > 0
+                ) {
+                    lumise.f(false)
+                    lumise.actions.do('noproduct')
+                }
 
-					lumise.fn.set_url('cart', null);
+                if (lumise.data.share_invalid !== undefined) {
+                    lumise.fn.confirm({
+                        title: lumise.data.share_invalid,
+                        primary: {},
+                        second: {
+                            text: 'Ok',
+                        },
+                        type: 'error',
+                    })
+                }
 
-					setTimeout(function(){
+                /* Clear unuse cart data in DB */
+                var carts = localStorage.getItem('LUMISE-CART-DATA')
 
-						if (lumise.data.share !== undefined) {
-							Object.keys(lumise.data.onload.stages).map(function(s){
-								delete lumise.data.onload.stages[s].template;
-							});
-						};
-
-						lumise.render.product(lumise.data.onload);
-
-						delete lumise.data.onload;
-
-					}, 100);
-
-				} else if (lumise.fn.url_var('reorder', '') === '' && lumise.get.el('no-product').length > 0) {
-
-					lumise.f(false);
-					lumise.actions.do('noproduct');
-
-				};
-
-				if (lumise.data.share_invalid !== undefined) {
-					lumise.fn.confirm({
-						title: lumise.data.share_invalid,
-						primary: {},
-						second: {
-							text: 'Ok'
-						},
-						type: 'error'
-					});
-				};
-
-				/* Clear unuse cart data in DB */
-				var carts = localStorage.getItem('LUMISE-CART-DATA');
-
-				if (carts && carts !== '') {
-					carts = Object.keys(JSON.parse(carts));
-					lumise.indexed.list(function(data){
-						if (carts.indexOf(data.id) === -1)
-							lumise.indexed.delete(data.id, 'cart');
-					}, 'cart', function(st){
-						if (st == 'done') {
-							lumise.ops.cart_cursor = null;
-						}
-					});
-				}
-
-			
+                if (carts && carts !== '') {
+                    carts = Object.keys(JSON.parse(carts))
+                    lumise.indexed.list(
+                        function (data) {
+                            if (carts.indexOf(data.id) === -1)
+                                lumise.indexed.delete(data.id, 'cart')
+                        },
+                        'cart',
+                        function (st) {
+                            if (st == 'done') {
+                                lumise.ops.cart_cursor = null
+                            }
+                        }
+                    )
+                }
             })
 
             this.actions.add('first-completed', function () {
@@ -20582,7 +20636,6 @@ jQuery(document).ready(function ($) {
                         )
                 }
             })
-
             ;[
                 ['ctrl-o', 'import'],
                 //['ctrl-s', 'save'],

@@ -9520,8 +9520,6 @@ jQuery(document).ready(function ($) {
                             const { data, design, width, height, data_design } =
                                 resp
 
-
-
                             localStorage.setItem(
                                 'LUMISE-CART-DATA',
                                 JSON.stringify({
@@ -9538,7 +9536,10 @@ jQuery(document).ready(function ($) {
                                 'statgeId',
                                 JSON.stringify(data.id)
                             )
-                            lumise.indexed.save([data],'stages')
+
+                            if (data !== '') {
+                                lumise.indexed.save([data], 'stages')
+                            }
                             localStorage.setItem(
                                 'CANVAS-INFO',
                                 JSON.stringify({ width, height })
@@ -16294,7 +16295,7 @@ jQuery(document).ready(function ($) {
                 dumb: null,
                 cart: null,
                 categories: null,
-                stages:''
+                stages: '',
             },
 
             init: function () {
@@ -18040,24 +18041,6 @@ jQuery(document).ready(function ($) {
                     })
                 }
 
-                // TODO 保存
-                $('#lumise-cart-action').on('click', function (e) {
-                    e.preventDefault()
-                    const main_img = []
-                    lumise.fn.getToken().then(({ data, url }) => {
-                        Object.values(createBase64()).forEach((i) => {
-                            putb64(data, i).then((res) => {
-                                main_img.push(`${url}/${res.key}`)
-                            })
-                        })
-                    })
-                    setTimeout(() => {
-                        sendSave(lumise.data._dataDesign, main_img)
-                    }, 1000)
-
-                    lumise.cart.add_cart('button add cart click')
-                })
-
                 function createPreviewNode(arr) {
                     function createEle(baseArr) {
                         const make = document.createElement('div')
@@ -18163,8 +18146,8 @@ jQuery(document).ready(function ($) {
                     const closeBtn = document.querySelector('.close-my-btn-l')
                     closeBtn.addEventListener('click', closeMake)
                 }
-                // TODO 预览
-                $('#lumise-cart-action1').on('click', function (e) {
+
+                function getSyntheticImg(type, callBack) {
                     let design = localStorage.getItem('design')
                     let designInfo = localStorage.getItem('CANVAS-INFO')
 
@@ -18236,9 +18219,14 @@ jQuery(document).ready(function ($) {
                                                 ? LoadHide()
                                                 : ''
                                             if (previewImg.length <= 0) return
-                                            createPreviewNode(
-                                                previewImg.reverse()
-                                            )
+
+                                            if (type === 'save') {
+                                                callBack(previewImg.reverse())
+                                            } else {
+                                                createPreviewNode(
+                                                    previewImg.reverse()
+                                                )
+                                            }
                                         }
                                     })
                                     .catch((err) => {
@@ -18248,6 +18236,29 @@ jQuery(document).ready(function ($) {
                             })
                         })
                     }
+                }
+                // TODO 保存
+                $('#lumise-cart-action').on('click', function (e) {
+                    e.preventDefault()
+                    const main_img = []
+                    getSyntheticImg('save', (res) => {
+                        lumise.fn.getToken().then(({ data, url }) => {
+                            res.forEach((i) => {
+                                putb64(data, i).then((res) => {
+                                    main_img.push(`${url}/${res.key}`)
+                                })
+                            })
+                        })
+
+                        setTimeout(() => {
+                            sendSave(lumise.data._dataDesign, main_img)
+                        }, 1000)
+                    })
+                    lumise.cart.add_cart('button add cart click')
+                })
+                // TODO 预览
+                $('#lumise-cart-action1').on('click', function (e) {
+                    getSyntheticImg('preview', () => {})
                 })
                 lumise.render.cart_change()
             },
@@ -20260,6 +20271,9 @@ jQuery(document).ready(function ($) {
             this.actions.add('save', lumise.fn.update_state)
 
             // TODO cart_edit
+
+            lumise.fn.productInit((resp) => {})
+
             this.actions.add('cart_edit', function (ops) {
                 $('.lumise-lightbox').remove()
                 var cart = lumise.fn.url_var('cart', '')
@@ -20285,18 +20299,18 @@ jQuery(document).ready(function ($) {
                                     .el('general-status')
                                     .html(
                                         '<span>\
-										<text>\
-											<i class="lumisex-android-alert"></i> ' +
+                        <text>\
+                            <i class="lumisex-android-alert"></i> ' +
                                             lumise.i(186) +
                                             ' <strong>#' +
                                             ops.id +
                                             '</strong></text>\
-										<a href="#cancel-design" data-btn="cancel" data-func="cancel-design">\
-											' +
+                        <a href="#cancel-design" data-btn="cancel" data-func="cancel-design">\
+                            ' +
                                             lumise.i(187) +
                                             '\
-										</a>\
-									</span>'
+                        </a>\
+                    </span>'
                                     )
                             }
                         },
@@ -20342,17 +20356,16 @@ jQuery(document).ready(function ($) {
                     'lumise_color_presets',
                     '"#546e7a@#546e7a,#757575@#757575,#6d4c41@#6d4c41,#f4511e@#f4511e,#ffb300@#ffb300,#fdd835@#fdd835,#c0ca33@#c0cA33,#a0ce4e@#a0ce4e,#7cb342@#7cb342,#43a047@#43a047,#00acc1@#00acc1,#3fc7ba@#3fc7ba,#039be5@#039be5,#3949ab@#3949ab,#5e35b1@#5e35b1,#d81b60@#d81b60,#eeeeee@#eeeeee,#3a3a3a@#3a3a3a,#1e90ff@dodgerblue,#00ff7f@springgreen"'
                 )
-                lumise.fn.productInit((resp) => {})
 
-                if (
-                    JSON.parse(localStorage.getItem('statgeId'))
-                ) {
-                    lumise.fn.set_url(
-                        'cart',
-                        JSON.parse(localStorage.getItem('statgeId'))
-                    )
-                } else {
-                    lumise.fn.set_url('cart', null)
+                if (localStorage.getItem('statgeId')) {
+                    if (JSON.parse(localStorage.getItem('statgeId'))) {
+                        lumise.fn.set_url(
+                            'cart',
+                            JSON.parse(localStorage.getItem('statgeId'))
+                        )
+                    } else {
+                        lumise.fn.set_url('cart', null)
+                    }
                 }
 
                 try {
@@ -20378,9 +20391,7 @@ jQuery(document).ready(function ($) {
                     lumise.cart.edit_item(lumise.fn.url_var('cart'))
                 } else if (lumise.data.onload) {
                     lumise.f(lumise.i('importing') + '..1')
-
                     lumise.fn.set_url('cart', null)
-
                     setTimeout(function () {
                         if (lumise.data.share !== undefined) {
                             Object.keys(lumise.data.onload.stages).map(

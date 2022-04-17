@@ -9519,6 +9519,9 @@ jQuery(document).ready(function ($) {
                         success: function (resp) {
                             const { data, design, width, height, data_design } =
                                 resp
+
+
+
                             localStorage.setItem(
                                 'LUMISE-CART-DATA',
                                 JSON.stringify({
@@ -9530,10 +9533,12 @@ jQuery(document).ready(function ($) {
                                 'design',
                                 JSON.stringify(design)
                             )
+
                             localStorage.setItem(
-                                'LUMISE-CART-DATA-LAY',
-                                JSON.stringify(data)
+                                'statgeId',
+                                JSON.stringify(data.id)
                             )
+                            lumise.indexed.save([data],'stages')
                             localStorage.setItem(
                                 'CANVAS-INFO',
                                 JSON.stringify({ width, height })
@@ -16289,6 +16294,7 @@ jQuery(document).ready(function ($) {
                 dumb: null,
                 cart: null,
                 categories: null,
+                stages:''
             },
 
             init: function () {
@@ -20256,19 +20262,15 @@ jQuery(document).ready(function ($) {
             // TODO cart_edit
             this.actions.add('cart_edit', function (ops) {
                 $('.lumise-lightbox').remove()
-                lumise.indexed.get(ops.id, 'cart', function (res) {
-                    const layData = JSON.parse(
-                        localStorage.getItem('LUMISE-CART-DATA-LAY')
-                    )
-                    console.log(res)
-                    console.log(layData)
+                var cart = lumise.fn.url_var('cart', '')
+                lumise.indexed.get(cart, 'stages', function (res) {
                     lumise.fn.load_product({
                         id: ops.product,
                         cms: ops.product_cms,
                         printing: ops.printing,
                         options: ops.options,
                         template: ops.template,
-                        stages: layData.stages,
+                        stages: res.stages,
                         callback: function (res) {
                             if (res.id === undefined) {
                                 lumise.f(false)
@@ -20343,12 +20345,11 @@ jQuery(document).ready(function ($) {
                 lumise.fn.productInit((resp) => {})
 
                 if (
-                    JSON.parse(localStorage.getItem('LUMISE-CART-DATA-LAY')).id
+                    JSON.parse(localStorage.getItem('statgeId'))
                 ) {
                     lumise.fn.set_url(
                         'cart',
-                        JSON.parse(localStorage.getItem('LUMISE-CART-DATA-LAY'))
-                            .id
+                        JSON.parse(localStorage.getItem('statgeId'))
                     )
                 } else {
                     lumise.fn.set_url('cart', null)

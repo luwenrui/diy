@@ -17874,6 +17874,9 @@ jQuery(document).ready(function ($) {
                         imgHeight = this.height
                         var canvas = document.createElement('canvas')
                         var ctx = canvas.getContext('2d')
+
+                       
+
                         if (Math.max(imgWidth, imgHeight) > w) {
                             if (imgWidth > imgHeight) {
                                 canvas.width = w
@@ -17888,6 +17891,9 @@ jQuery(document).ready(function ($) {
                             quality = 0.6
                         }
                         ctx.clearRect(0, 0, canvas.width, canvas.height)
+                        canvas.style.background = '#fff'
+                        ctx.fillStyle = '#fff'
+                        ctx.fillRect(0, 0, canvas.width, canvas.height)
                         ctx.drawImage(this, 0, 0, canvas.width, canvas.height)
                         var base64 = canvas.toDataURL('image/jpeg', quality) //压缩语句
                         // 如想确保图片压缩到自己想要的尺寸,如要求在50-150kb之间，请加以下语句，quality初始值根据情况自定
@@ -17938,8 +17944,10 @@ jQuery(document).ready(function ($) {
                             _canvas = document.createElement('canvas'),
                             ctx = _canvas.getContext('2d'),
                             img = new Image()
+                         _canvas.style.background ='#fff'
                         ctx.fillStyle = '#fff'
                         ctx.fillRect(0, 0, canvas.width, canvas.height)
+
                         if (multiplier > 33) multiplier = 33
                         if (typeof ops.callback != 'function') {
                             ops.callback = function (data) {

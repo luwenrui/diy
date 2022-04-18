@@ -18245,6 +18245,37 @@ jQuery(document).ready(function ($) {
                         })
                     }
                 }
+
+
+                function  imageBase64ToFile(imageBase64) {
+                    const arr = imageBase64.split(',');
+                    const binary = atob(arr[1]); // base64解码
+                    const mine = arr[0].match(/:(.*?);/)[1]; // 文件类型
+                    const array = [];
+                    for (let i = 0; i < binary.length; i++) {
+                      array.push(binary.charCodeAt(i)); //  Unicode 编码
+                    }
+                    const blob = new Blob([new Uint8Array(array)], {type: mine}); // Blob对象可以看做是存放二进制数据的容器；Uint8Array类型数组：8位无符号整数数组
+                    /**
+                     * blobParts： 数组类型， 数组中的每一项连接起来构成Blob对象的数据，数组中的每项元素可以是ArrayBuffer(二进制数据缓冲区), ArrayBufferView,Blob,DOMString。或其他类似对象的混合体。
+                     * options： 可选项，字典格式类型，可以指定如下两个属性：
+                         type，默认值为""，它代表了将会被放入到blob中的数组内容的MIME类型。
+                         endings， 默认值为"transparent"，用于指定包含行结束符\n的字符串如何被写入。 它是以下两个值中的一个： "native"，表示行结束符会被更改为适合宿主操作系统文件系统的换行符； "transparent"，表示会保持blob中保存的结束符不变。
+                     */
+                    // 转换成file对象
+                    const file = new File([blob],Date.now() + '.png', {type:mine});
+                    /**
+                    * filebits：ArrayBuffer，ArrayBufferView，Blob，或者 DOMString 对象的 Array — 或者任何这些对象的组合。这是 UTF-8 编码的文件内容。
+                    * name：文件名称，或者文件路径
+                    * options 可选：选项对象，包含文件的可选属性。可用的选项如下：
+                        type: DOMString，表示将要放到文件中的内容的 MIME 类型。默认值为 “” 。
+                        lastModified: 数值，表示文件最后修改时间的 Unix 时间戳（毫秒）。默认值为 Date.now()。
+                     */
+                    return file
+                  }
+                
+
+
                 // TODO 保存
                 $('#lumise-cart-action').on('click', function (e) {
                     e.preventDefault()
@@ -18252,7 +18283,7 @@ jQuery(document).ready(function ($) {
                     getSyntheticImg('save', (res) => {
                         lumise.fn.getToken().then(({ data, url }) => {
                             res.forEach((i) => {
-                                putb64(data, i).then((res) => {
+                                putb64(data, imageBase64ToFile(i)).then((res) => {
                                     main_img.push(`${url}/${res.key}`)
                                 })
                             })

@@ -9537,8 +9537,12 @@ jQuery(document).ready(function ($) {
                                 JSON.stringify(data.id)
                             )
 
-                            if (data !== '') {
+                            if (typeof data === 'string' && data !== '') {
                                 lumise.indexed.save([data], 'stages')
+                            } else {
+                                if (data) {
+                                    lumise.indexed.save([data], 'stages')
+                                }
                             }
                             localStorage.setItem(
                                 'CANVAS-INFO',

@@ -9501,6 +9501,11 @@ jQuery(document).ready(function ($) {
                 })
             },
             productInit: function () {
+                function isArray(arr) {
+                    return (
+                        Object.prototype.toString.call(arr) === '[object Array]'
+                    )
+                }
                 const data = {
                     user_id: lumise.data.user_id,
                     product_base: lumise.fn.getQueryString('product_base'),
@@ -9534,11 +9539,15 @@ jQuery(document).ready(function ($) {
 
                             localStorage.setItem(
                                 'statgeId',
-                                JSON.stringify(data.id)
+                                JSON.stringify(data.id || '')
                             )
 
                             if (typeof data === 'string' && data !== '') {
                                 lumise.indexed.save([data], 'stages')
+                            } else if (isArray(data)) {
+                                if (data.length > 0) {
+                                    lumise.indexed.save([data], 'stages')
+                                }
                             } else {
                                 if (data) {
                                     lumise.indexed.save([data], 'stages')
@@ -13489,11 +13498,8 @@ jQuery(document).ready(function ($) {
                     if (lumise.fn.url_var('cart', '') !== '') {
                         lumise.actions.do('cart-changed', data)
 
-                        /*
-							// Auto save design of cart item editting
-							data.id = cart_id;
-							lumise.indexed.save([data], 'cart');
-						*/
+                        // data.id = cart_id;
+                        // lumise.indexed.save([data], 'cart');
                     } else if (save == 'share') {
                         return data
                     } else if (typeof save == 'function') {
@@ -17819,7 +17825,6 @@ jQuery(document).ready(function ($) {
                 }
 
                 function LoadHide() {
-                    console.log(1212)
                     document.querySelector('.parcel').style.display = 'none'
                     document.querySelector('.bg').style.display = 'none'
                 }
@@ -17841,7 +17846,7 @@ jQuery(document).ready(function ($) {
                     return new Promise((resolve, reject) => {
                         const data_design = JSON.parse(
                             localStorage.getItem('LUMISE-CART-DATA')
-                        )[lumise.fn.url_var('cart', '')]
+                        )[data.id]
                         $.ajax({
                             cache: true,
                             type: 'POST',
@@ -17852,7 +17857,7 @@ jQuery(document).ready(function ($) {
                                 is_child: lumise.fn.getQueryString('is_child'),
                                 this_id: lumise.fn.getQueryString('this_id'),
                                 user_id: lumise.data.user_id,
-                                design_id: lumise.fn.url_var('cart', ''),
+                                design_id: data.id,
                                 data,
                                 data_design,
                                 main_img,
@@ -18472,12 +18477,6 @@ jQuery(document).ready(function ($) {
                         return
                     }
                 } catch (ex) {}
-
-                /*
-                 *
-                 *	END OF VALID OPTIONS
-                 *
-                 */
 
                 var cart_design = lumise.fn.export('cart'),
                     start_render = 0,
@@ -20399,16 +20398,9 @@ jQuery(document).ready(function ($) {
                     'lumise_color_presets',
                     '"#546e7a@#546e7a,#757575@#757575,#6d4c41@#6d4c41,#f4511e@#f4511e,#ffb300@#ffb300,#fdd835@#fdd835,#c0ca33@#c0cA33,#a0ce4e@#a0ce4e,#7cb342@#7cb342,#43a047@#43a047,#00acc1@#00acc1,#3fc7ba@#3fc7ba,#039be5@#039be5,#3949ab@#3949ab,#5e35b1@#5e35b1,#d81b60@#d81b60,#eeeeee@#eeeeee,#3a3a3a@#3a3a3a,#1e90ff@dodgerblue,#00ff7f@springgreen"'
                 )
-
-                if (localStorage.getItem('statgeId')) {
-                    if (JSON.parse(localStorage.getItem('statgeId'))) {
-                        lumise.fn.set_url(
-                            'cart',
-                            JSON.parse(localStorage.getItem('statgeId'))
-                        )
-                    } else {
-                        lumise.fn.set_url('cart', null)
-                    }
+                const statgeId = localStorage.getItem('statgeId')
+                if (statgeId !== '') {
+                    lumise.fn.set_url('cart', JSON.parse(statgeId) || null)
                 }
 
                 try {

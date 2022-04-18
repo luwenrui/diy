@@ -8266,7 +8266,7 @@ jQuery(document).ready(function ($) {
                                             data.objects[i].src
 
                                     var do_add = function () {
-                                        console.log(lumise.data.stages)
+                                        // console.log(lumise.data.stages)
                                         lumise.objects.lumise[
                                             data.objects[i].type
                                         ](data.objects[i], function (obj) {
@@ -9534,12 +9534,17 @@ jQuery(document).ready(function ($) {
 
                             localStorage.setItem(
                                 'statgeId',
-                                JSON.stringify(data.id)
+                                JSON.stringify(data.id || '')
                             )
 
-                            if (data !== '') {
+                            if (typeof data === 'string' && data !== '') {
                                 lumise.indexed.save([data], 'stages')
+                            } else {
+                                if (data) {
+                                    lumise.indexed.save([data], 'stages')
+                                }
                             }
+
                             localStorage.setItem(
                                 'CANVAS-INFO',
                                 JSON.stringify({ width, height })
@@ -10676,6 +10681,7 @@ jQuery(document).ready(function ($) {
             },
 
             download: function (data, name) {
+                console.log('down')
                 lumise.fn.dataURL2Blob(data, function (blob) {
                     var a = $(
                         '<a href="' +
@@ -12258,7 +12264,6 @@ jQuery(document).ready(function ($) {
                         bg = [],
                         colors = [],
                         c
-                    console.log(lumise.data.stages)
                     return
                     Object.keys(lumise.data.stages).map(function (s) {
                         var scolors = [],
@@ -17815,7 +17820,6 @@ jQuery(document).ready(function ($) {
                 }
 
                 function LoadHide() {
-                    console.log(1212)
                     document.querySelector('.parcel').style.display = 'none'
                     document.querySelector('.bg').style.display = 'none'
                 }
@@ -17833,36 +17837,6 @@ jQuery(document).ready(function ($) {
                 })
 
                 lumise.actions.add('checkout', lumise.cart.checkout)
-                function sendSave(data, main_img) {
-                    return new Promise((resolve, reject) => {
-                        const data_design = JSON.parse(
-                            localStorage.getItem('LUMISE-CART-DATA')
-                        )[data.id]
-                        $.ajax({
-                            cache: true,
-                            type: 'POST',
-                            url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax',
-                            data: JSON.stringify({
-                                product_base:
-                                    lumise.fn.getQueryString('product_base'),
-                                is_child: lumise.fn.getQueryString('is_child'),
-                                this_id: lumise.fn.getQueryString('this_id'),
-                                user_id: lumise.data.user_id,
-                                design_id: data.id,
-                                data,
-                                data_design,
-                                main_img,
-                            }),
-                            async: true,
-                            dataType: 'json',
-                            contentType: 'application/json',
-                            success: function (res, status) {
-                                resolve(res)
-                            },
-                        })
-                    })
-                }
-
                 function dealImage(base64, w, callback) {
                     var newImage = new Image()
                     var quality = 0.6 //压缩系数0-1之间
@@ -17874,8 +17848,6 @@ jQuery(document).ready(function ($) {
                         imgHeight = this.height
                         var canvas = document.createElement('canvas')
                         var ctx = canvas.getContext('2d')
-
-                       
 
                         if (Math.max(imgWidth, imgHeight) > w) {
                             if (imgWidth > imgHeight) {
@@ -17908,6 +17880,36 @@ jQuery(document).ready(function ($) {
                         // }
                         callback(base64) //必须通过回调函数返回，否则无法及时拿到该值
                     }
+                }
+                function sendSave(data, main_img) {
+                    return new Promise((resolve) => {
+                        const data_design = JSON.parse(
+                            localStorage.getItem('LUMISE-CART-DATA')
+                        )[data.id]
+
+                        $.ajax({
+                            cache: true,
+                            type: 'POST',
+                            url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/ajax',
+                            data: JSON.stringify({
+                                product_base:
+                                    lumise.fn.getQueryString('product_base'),
+                                is_child: lumise.fn.getQueryString('is_child'),
+                                this_id: lumise.fn.getQueryString('this_id'),
+                                user_id: lumise.data.user_id,
+                                design_id: data.id,
+                                data,
+                                data_design,
+                                main_img,
+                            }),
+                            async: true,
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            success: function (res) {
+                                resolve(res)
+                            },
+                        })
+                    })
                 }
 
                 function down(canvas, ops, stage, baseImg) {
@@ -17944,7 +17946,7 @@ jQuery(document).ready(function ($) {
                             _canvas = document.createElement('canvas'),
                             ctx = _canvas.getContext('2d'),
                             img = new Image()
-                         _canvas.style.background ='#fff'
+                        _canvas.style.background = '#fff'
                         ctx.fillStyle = '#fff'
                         ctx.fillRect(0, 0, canvas.width, canvas.height)
 
@@ -18005,7 +18007,7 @@ jQuery(document).ready(function ($) {
                         return
                     }
 
-                    let baseImg = []
+                    let baseImg = {}
                     const ops = {
                         height: designInfo.height,
                         include_base: false,
@@ -18038,7 +18040,7 @@ jQuery(document).ready(function ($) {
                             data: formData,
                             contentType: false,
                             processData: false,
-                            async: true,
+                            async: false,
                             success: function (res, status) {
                                 resolve(res)
                             },
@@ -18155,6 +18157,37 @@ jQuery(document).ready(function ($) {
                     closeBtn.addEventListener('click', closeMake)
                 }
 
+                function imageBase64ToFile(imageBase64) {
+                    const arr = imageBase64.split(',')
+                    const binary = atob(arr[1]) // base64解码
+                    const mine = arr[0].match(/:(.*?);/)[1] // 文件类型
+                    const array = []
+                    for (let i = 0; i < binary.length; i++) {
+                        array.push(binary.charCodeAt(i)) //  Unicode 编码
+                    }
+                    const blob = new Blob([new Uint8Array(array)], {
+                        type: mine,
+                    }) // Blob对象可以看做是存放二进制数据的容器；Uint8Array类型数组：8位无符号整数数组
+                    /**
+                     * blobParts： 数组类型， 数组中的每一项连接起来构成Blob对象的数据，数组中的每项元素可以是ArrayBuffer(二进制数据缓冲区), ArrayBufferView,Blob,DOMString。或其他类似对象的混合体。
+                     * options： 可选项，字典格式类型，可以指定如下两个属性：
+                         type，默认值为""，它代表了将会被放入到blob中的数组内容的MIME类型。
+                         endings， 默认值为"transparent"，用于指定包含行结束符\n的字符串如何被写入。 它是以下两个值中的一个： "native"，表示行结束符会被更改为适合宿主操作系统文件系统的换行符； "transparent"，表示会保持blob中保存的结束符不变。
+                     */
+                    // 转换成file对象
+                    const file = new File([blob], Date.now() + '.png', {
+                        type: mine,
+                    })
+                    /**
+                    * filebits：ArrayBuffer，ArrayBufferView，Blob，或者 DOMString 对象的 Array — 或者任何这些对象的组合。这是 UTF-8 编码的文件内容。
+                    * name：文件名称，或者文件路径
+                    * options 可选：选项对象，包含文件的可选属性。可用的选项如下：
+                        type: DOMString，表示将要放到文件中的内容的 MIME 类型。默认值为 “” 。
+                        lastModified: 数值，表示文件最后修改时间的 Unix 时间戳（毫秒）。默认值为 Date.now()。
+                     */
+                    return file
+                }
+
                 function getSyntheticImg(type, callBack) {
                     let design = localStorage.getItem('design')
                     let designInfo = localStorage.getItem('CANVAS-INFO')
@@ -18169,16 +18202,41 @@ jQuery(document).ready(function ($) {
                         return
                     }
 
-                    const previewImg = []
-                    const baseImg = createBase64()
+                    let baseObj = createBase64()
 
-                    function createBaseImg(design) {
+                    // base64压缩
+                    function compress(baseObj) {
+                        let o = baseObj
+                        return new Promise((resolve) => {
+                            const keys = Object.keys(baseObj)
+                            keys.map((i) => {
+                                dealImage(baseObj[i], 4000, (newBase64) => {
+                                    o[i] = newBase64
+                                })
+                            })
+                            resolve(o)
+                        })
+                    }
+
+                    function sendQiNiu(base64) {
+                        return new Promise((resolve) => {
+                            lumise.fn.getToken().then(({ data, url }) => {
+                                putb64(data, imageBase64ToFile(base64)).then(
+                                    (res) => {
+                                        resolve(`${url}/${res.key}`)
+                                    }
+                                )
+                            })
+                        })
+                    }
+
+                    function addPsdLayer(design, baseObj) {
                         let arr = []
                         design.forEach((i) => {
                             let tpObj = {}
                             i.stage.forEach((c, cid) => {
                                 tpObj[c] = {
-                                    [i['psdLayer'][cid]]: baseImg[c],
+                                    [i['psdLayer'][cid]]: baseObj[c],
                                 }
                             })
                             arr.push(tpObj)
@@ -18186,112 +18244,83 @@ jQuery(document).ready(function ($) {
                         return arr
                     }
 
-                    if (design) {
-                        LoadShow()
-                        const tpObj = createBaseImg(design)
-                        const designLen = design.length
+                    function getPsdLayer(tpObj) {
+                        const psdLayer = []
+                        const imageUrls = []
+                        Object.values(tpObj).forEach((c) => {
+                            for (const [key, value] of Object.entries(c)) {
+                                psdLayer.push(key)
+                                imageUrls.push(value)
+                            }
+                        })
+
+                        return {
+                            psdLayer,
+                            imageUrls,
+                        }
+                    }
+
+                    function sendReplace(baseObj, designLen) {
+                        const tpObj = addPsdLayer(design, baseObj)
+                        const previewImg = []
+                        const qnImg = []
 
                         design.forEach((c, cid) => {
-                            new Promise((resolve, reject) => {
-                                const tm = Object.values(tpObj[cid])
-                                const psdLayer = []
-                                const imageUrls = []
-                                tm.forEach((i) => {
-                                    for (const [key, value] of Object.entries(
-                                        i
-                                    )) {
-                                        dealImage(value, 4000, (newBase64) => {
-                                            psdLayer.push(key)
-                                            imageUrls.push(newBase64)
-                                            const resp = {
-                                                psdLayer,
-                                                imageUrls,
+                            const resp = getPsdLayer(tpObj[cid])
+                            lumise.fn
+                                .isDesign({
+                                    psdUrl: c.upload,
+                                    psdLayer: resp.psdLayer,
+                                    imageUrls: resp.imageUrls,
+                                    width: designInfo.width,
+                                    height: designInfo.height,
+                                })
+                                .then((resp) => {
+                                    previewImg.push(resp.data)
+
+                                    if (type === 'save') {
+                                        sendQiNiu(resp.data).then((r) => {
+                                            qnImg.push(r)
+                                            if (
+                                                previewImg.length === designLen
+                                            ) {
+                                                LoadHide()
+                                                if (previewImg.length <= 0)
+                                                    return
+                                                callBack(qnImg)
                                             }
-                                            resolve(resp)
                                         })
+                                    } else {
+                                        if (previewImg.length === designLen) {
+                                            LoadHide()
+                                            if (previewImg.length <= 0) return
+                                            createPreviewNode(
+                                                previewImg.reverse()
+                                            )
+                                        }
                                     }
                                 })
-                            }).then((resp) => {
-                                lumise.fn
-                                    .isDesign({
-                                        psdUrl: c.upload,
-                                        psdLayer: resp.psdLayer,
-                                        imageUrls: resp.imageUrls,
-                                        width: designInfo.width,
-                                        height: designInfo.height,
-                                    })
-                                    .then((resp) => {
-                                        previewImg.push(resp.data)
-                                        if (previewImg.length === designLen) {
-                                            previewImg.length > 0
-                                                ? LoadHide()
-                                                : ''
-                                            if (previewImg.length <= 0) return
+                                .catch((err) => {
+                                    LoadHide()
+                                    console.log(err)
+                                })
+                        })
+                    }
 
-                                            if (type === 'save') {
-                                                callBack(previewImg.reverse())
-                                            } else {
-                                                createPreviewNode(
-                                                    previewImg.reverse()
-                                                )
-                                            }
-                                        }
-                                    })
-                                    .catch((err) => {
-                                        LoadHide()
-                                        console.log(err)
-                                    })
-                            })
+                    if (design) {
+                        const designLen = design.length
+                        LoadShow()
+                        compress(baseObj).then((r) => {
+                            sendReplace(r, designLen)
                         })
                     }
                 }
 
-
-                function  imageBase64ToFile(imageBase64) {
-                    const arr = imageBase64.split(',');
-                    const binary = atob(arr[1]); // base64解码
-                    const mine = arr[0].match(/:(.*?);/)[1]; // 文件类型
-                    const array = [];
-                    for (let i = 0; i < binary.length; i++) {
-                      array.push(binary.charCodeAt(i)); //  Unicode 编码
-                    }
-                    const blob = new Blob([new Uint8Array(array)], {type: mine}); // Blob对象可以看做是存放二进制数据的容器；Uint8Array类型数组：8位无符号整数数组
-                    /**
-                     * blobParts： 数组类型， 数组中的每一项连接起来构成Blob对象的数据，数组中的每项元素可以是ArrayBuffer(二进制数据缓冲区), ArrayBufferView,Blob,DOMString。或其他类似对象的混合体。
-                     * options： 可选项，字典格式类型，可以指定如下两个属性：
-                         type，默认值为""，它代表了将会被放入到blob中的数组内容的MIME类型。
-                         endings， 默认值为"transparent"，用于指定包含行结束符\n的字符串如何被写入。 它是以下两个值中的一个： "native"，表示行结束符会被更改为适合宿主操作系统文件系统的换行符； "transparent"，表示会保持blob中保存的结束符不变。
-                     */
-                    // 转换成file对象
-                    const file = new File([blob],Date.now() + '.png', {type:mine});
-                    /**
-                    * filebits：ArrayBuffer，ArrayBufferView，Blob，或者 DOMString 对象的 Array — 或者任何这些对象的组合。这是 UTF-8 编码的文件内容。
-                    * name：文件名称，或者文件路径
-                    * options 可选：选项对象，包含文件的可选属性。可用的选项如下：
-                        type: DOMString，表示将要放到文件中的内容的 MIME 类型。默认值为 “” 。
-                        lastModified: 数值，表示文件最后修改时间的 Unix 时间戳（毫秒）。默认值为 Date.now()。
-                     */
-                    return file
-                  }
-                
-
-
                 // TODO 保存
                 $('#lumise-cart-action').on('click', function (e) {
                     e.preventDefault()
-                    const main_img = []
                     getSyntheticImg('save', (res) => {
-                        lumise.fn.getToken().then(({ data, url }) => {
-                            res.forEach((i) => {
-                                putb64(data, imageBase64ToFile(i)).then((res) => {
-                                    main_img.push(`${url}/${res.key}`)
-                                })
-                            })
-                        })
-
-                        setTimeout(() => {
-                            sendSave(lumise.data._dataDesign, main_img)
-                        }, 1000)
+                        sendSave(lumise.data._dataDesign, res)
                     })
                     lumise.cart.add_cart('button add cart click')
                 })
@@ -18474,7 +18503,6 @@ jQuery(document).ready(function ($) {
                  *	END OF VALID OPTIONS
                  *
                  */
-
                 var cart_design = lumise.fn.export('cart'),
                     start_render = 0,
                     current_stage = lumise.current_stage,
@@ -18524,7 +18552,6 @@ jQuery(document).ready(function ($) {
                                                 ]
                                             )
                                         } else {
-                                            console.log(cart_design)
                                             lumise.data._dataDesign =
                                                 cart_design
                                             lumise.active_stage(current_stage)
@@ -18612,7 +18639,6 @@ jQuery(document).ready(function ($) {
 
                 if (isNaN(lumise.cart.qty) || lumise.cart.qty == 0)
                     lumise.cart.qty = 1
-                console.log(4, cart_data)
                 cart_data = lumise.apply_filters('cart_data', cart_data)
                 // console.log(cart_data)
                 // console.log(3,cart_design);
@@ -20396,7 +20422,7 @@ jQuery(document).ready(function ($) {
                     '"#546e7a@#546e7a,#757575@#757575,#6d4c41@#6d4c41,#f4511e@#f4511e,#ffb300@#ffb300,#fdd835@#fdd835,#c0ca33@#c0cA33,#a0ce4e@#a0ce4e,#7cb342@#7cb342,#43a047@#43a047,#00acc1@#00acc1,#3fc7ba@#3fc7ba,#039be5@#039be5,#3949ab@#3949ab,#5e35b1@#5e35b1,#d81b60@#d81b60,#eeeeee@#eeeeee,#3a3a3a@#3a3a3a,#1e90ff@dodgerblue,#00ff7f@springgreen"'
                 )
 
-                if (localStorage.getItem('statgeId')) {
+                if (localStorage.getItem('statgeId') !== '') {
                     if (JSON.parse(localStorage.getItem('statgeId'))) {
                         lumise.fn.set_url(
                             'cart',

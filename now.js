@@ -17841,7 +17841,7 @@ jQuery(document).ready(function ($) {
                     return new Promise((resolve, reject) => {
                         const data_design = JSON.parse(
                             localStorage.getItem('LUMISE-CART-DATA')
-                        )[data.id]
+                        )[lumise.fn.url_var('cart', '')]
                         $.ajax({
                             cache: true,
                             type: 'POST',
@@ -17852,7 +17852,7 @@ jQuery(document).ready(function ($) {
                                 is_child: lumise.fn.getQueryString('is_child'),
                                 this_id: lumise.fn.getQueryString('this_id'),
                                 user_id: lumise.data.user_id,
-                                design_id: data.id,
+                                design_id: lumise.fn.url_var('cart', ''),
                                 data,
                                 data_design,
                                 main_img,
@@ -18040,7 +18040,7 @@ jQuery(document).ready(function ($) {
                             data: formData,
                             contentType: false,
                             processData: false,
-                            async: true,
+                            async: false,
                             success: function (res, status) {
                                 resolve(res)
                             },
@@ -18282,22 +18282,20 @@ jQuery(document).ready(function ($) {
                 // TODO 保存
                 $('#lumise-cart-action').on('click', function (e) {
                     e.preventDefault()
-                    const main_img = []
                     getSyntheticImg('save', (res) => {
-                        lumise.fn
-                            .getToken()
-                            .then(({ data, url }) => {
-                                res.forEach((i) => {
-                                    putb64(data, imageBase64ToFile(i)).then(
-                                        (res) => {
-                                            main_img.push(`${url}/${res.key}`)
-                                        }
-                                    )
-                                })
+                        const main_img = []
+                        lumise.fn.getToken().then(({ data, url }) => {
+                            res.forEach((i) => {
+                                putb64(data, imageBase64ToFile(i)).then(
+                                    (res) => {
+                                        main_img.push(`${url}/${res.key}`)
+                                    }
+                                )
                             })
-                            .then(() => {
+                            setTimeout(() => {
                                 sendSave(lumise.data._dataDesign, main_img)
                             })
+                        })
                     })
                     lumise.cart.add_cart('button add cart click')
                 })

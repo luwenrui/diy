@@ -17844,6 +17844,11 @@ jQuery(document).ready(function ($) {
                 lumise.actions.add('checkout', lumise.cart.checkout)
                 function sendSave(data, main_img) {
                     return new Promise((resolve, reject) => {
+                        if (!data) {
+                            alert('需要您切换设计')
+                            LoadHide()
+                            return
+                        }
                         const data_design = JSON.parse(
                             localStorage.getItem('LUMISE-CART-DATA')
                         )[data.id]
@@ -18230,14 +18235,15 @@ jQuery(document).ready(function ($) {
                                     .then((resp) => {
                                         previewImg.push(resp.data)
                                         if (previewImg.length === designLen) {
-                                            previewImg.length > 0
-                                                ? LoadHide()
-                                                : ''
-                                            if (previewImg.length <= 0) return
-
                                             if (type === 'save') {
                                                 callBack(previewImg.reverse())
                                             } else {
+                                                previewImg.length > 0
+                                                    ? LoadHide()
+                                                    : ''
+                                                if (previewImg.length <= 0)
+                                                    return
+
                                                 createPreviewNode(
                                                     previewImg.reverse()
                                                 )
@@ -18298,7 +18304,7 @@ jQuery(document).ready(function ($) {
                                 )
                             })
                             setTimeout(() => {
-                                sendSave(lumise.data._dataDesign, main_img)
+                                sendSave(lumise.data._dataDesign, main_img).then(()=>{LoadHide()})
                             })
                         })
                     })

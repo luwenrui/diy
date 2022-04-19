@@ -18304,7 +18304,13 @@ jQuery(document).ready(function ($) {
                                 )
                             })
                             setTimeout(() => {
-                                sendSave(lumise.data._dataDesign, main_img).then(()=>{LoadHide()})
+                                sendSave(
+                                    lumise.data._dataDesign,
+                                    main_img
+                                ).then(() => {
+                                    LoadHide()
+                                    lumise.render.cart_confirm()
+                                })
                             })
                         })
                     })
@@ -18349,7 +18355,9 @@ jQuery(document).ready(function ($) {
                             if (
                                 lumise.data.stages[s].data.objects.filter(
                                     function (o) {
-                                        return o.evented === true
+                                        if (o) {
+                                            return o.evented === true
+                                        }
                                     }
                                 ).length > 0
                             ) {
@@ -18533,7 +18541,6 @@ jQuery(document).ready(function ($) {
                                                 ]
                                             )
                                         } else {
-                                            console.log(cart_design)
                                             lumise.data._dataDesign =
                                                 cart_design
                                             lumise.active_stage(current_stage)
@@ -18641,7 +18648,7 @@ jQuery(document).ready(function ($) {
                 delete cart_design
                 delete cart_data
 
-                lumise.render.cart_confirm()
+                // lumise.render.cart_confirm()
                 lumise.render.cart_change()
                 lumise.actions.do('add-cart', id)
 

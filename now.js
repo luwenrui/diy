@@ -8266,7 +8266,6 @@ jQuery(document).ready(function ($) {
                                             data.objects[i].src
 
                                     var do_add = function () {
-                                        console.log(lumise.data.stages)
                                         lumise.objects.lumise[
                                             data.objects[i].type
                                         ](data.objects[i], function (obj) {
@@ -12064,6 +12063,7 @@ jQuery(document).ready(function ($) {
                 img.src = url
             },
 
+            // TODO 更新设计图
             update_state: function () {
                 clearTimeout(lumise.ops.preventDbl)
 
@@ -12073,7 +12073,6 @@ jQuery(document).ready(function ($) {
                         bg = [],
                         colors = [],
                         c
-                    console.log(lumise.data.stages)
                     return
                     Object.keys(lumise.data.stages).map(function (s) {
                         var scolors = [],
@@ -18109,9 +18108,13 @@ jQuery(document).ready(function ($) {
                                 sendSave(
                                     lumise.data._dataDesign,
                                     main_img
-                                ).then(() => {
+                                ).then(({ state }) => {
                                     LoadHide()
-                                    lumise.render.cart_confirm()
+                                    if (state === 1) {
+                                        lumise.render.cart_confirm()
+                                    } else {
+                                        alert('保存失败')
+                                    }
                                 })
                             })
                         })
@@ -18121,6 +18124,26 @@ jQuery(document).ready(function ($) {
                 // TODO 预览
                 $('#lumise-cart-action1').on('click', function (e) {
                     getSyntheticImg('preview', () => {})
+                })
+
+                $('#apply_to_all').on('click', function (e) {
+                    // const curr = lumise.current_stage
+                    // const keys = Object.keys(lumise.data.stages)
+                    // const currObj =
+                    //     lumise.data.stages[curr]?.data?.objects || []
+                    // keys.forEach((i) => {
+                    //     let obj
+                    //     if (
+                    //         lumise.data.stages[i].data &&
+                    //         lumise.data.stages[i].data.objects
+                    //     ) {
+                    //         obj = Array.from(lumise.data.stages[i].data.objects)
+                    //         console.log(obj)
+                    //     }
+                    //     if (i !== curr) {
+                    //         lumise.data.stages[i].data.objects.push()
+                    //     }
+                    // })
                 })
                 lumise.render.cart_change()
             },
@@ -18314,43 +18337,38 @@ jQuery(document).ready(function ($) {
                                 lumise.f(false)
                                 // console.log(psize.h,psize.w)
                                 //稿件
-                                lumise.fn.download_design(
-                                    {
-                                        type: 'png',
-                                        orien: psize.o,
-                                        height: psize.h,
-                                        width: psize.w,
-                                        include_base: true,
-                                        callback: function (data) {
-                                            lumise.fn.uncache_large_images(
-                                                null,
-                                                true
-                                            )
-                                            cart_design.stages[s].print_file =
-                                                data
-                                            if (
+                                lumise.fn.download_design({
+                                    type: 'png',
+                                    orien: psize.o,
+                                    height: psize.h,
+                                    width: psize.w,
+                                    include_base: true,
+                                    callback: function (data) {
+                                        lumise.fn.uncache_large_images(
+                                            null,
+                                            true
+                                        )
+                                        cart_design.stages[s].print_file = data
+                                        if (
+                                            Object.keys(lumise.data.stages)[
+                                                start_render
+                                            ] !== undefined
+                                        ) {
+                                            export_print_file(
                                                 Object.keys(lumise.data.stages)[
                                                     start_render
-                                                ] !== undefined
-                                            ) {
-                                                export_print_file(
-                                                    Object.keys(
-                                                        lumise.data.stages
-                                                    )[start_render]
-                                                )
-                                            } else {
-                                                lumise.data._dataDesign =
-                                                    cart_design
-                                                lumise.active_stage(
-                                                    current_stage
-                                                )
-                                                return lumise.cart.process_add_cart(
-                                                    cart_design
-                                                )
-                                            }
-                                        },
-                                    }
-                                )
+                                                ]
+                                            )
+                                        } else {
+                                            lumise.data._dataDesign =
+                                                cart_design
+                                            lumise.active_stage(current_stage)
+                                            return lumise.cart.process_add_cart(
+                                                cart_design
+                                            )
+                                        }
+                                    },
+                                })
                             }) /* End uncache */
                         })
                     }

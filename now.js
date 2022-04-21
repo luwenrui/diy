@@ -9510,6 +9510,7 @@ jQuery(document).ready(function ($) {
                     product_base: lumise.fn.getQueryString('product_base'),
                     is_child: lumise.fn.getQueryString('is_child'),
                     this_id: lumise.fn.getQueryString('this_id'),
+                    type: lumise.fn.url_var('type', '') === 2 ? 2 : 1,
                 }
                 return new Promise((resolve, reject) => {
                     $.ajax({
@@ -17667,6 +17668,9 @@ jQuery(document).ready(function ($) {
                                 data,
                                 data_design,
                                 main_img,
+
+                                isApplyAll: lumise.data.isApplyAll,
+                                currStage: lumise.data.currStageName,
                             }),
                             async: true,
                             dataType: 'json',
@@ -18092,7 +18096,7 @@ jQuery(document).ready(function ($) {
                 }
 
                 // TODO 保存
-                $('#lumise-cart-action').on('click', function (e) {
+                $('#lumise-cart-action').on('click', function (e, type) {
                     e.preventDefault()
                     getSyntheticImg('save', (res) => {
                         const main_img = []
@@ -18105,6 +18109,15 @@ jQuery(document).ready(function ($) {
                                 )
                             })
                             setTimeout(() => {
+                                if (sessionStorage.getItem('isApplyall')) {
+                                    lumise.data.isApplyAll = 1
+                                    lumise.data.currStageName =
+                                        lumise.current_stage
+                                } else {
+                                    lumise.data.isApplyAll = null
+                                    lumise.data.currStageName = null
+                                }
+
                                 sendSave(
                                     lumise.data._dataDesign,
                                     main_img
@@ -18114,6 +18127,12 @@ jQuery(document).ready(function ($) {
                                         lumise.render.cart_confirm()
                                     } else {
                                         alert('保存失败')
+                                    }
+                                    if (sessionStorage.getItem('isApplyall')) {
+                                        sessionStorage.removeItem('isApplyall')
+                                        location.href = `${location.href}&type=2`
+                                    } else {
+                                        sessionStorage.removeItem('isApplyall')
                                     }
                                 })
                             })
@@ -18127,23 +18146,13 @@ jQuery(document).ready(function ($) {
                 })
 
                 $('#apply_to_all').on('click', function (e) {
-                    // const curr = lumise.current_stage
-                    // const keys = Object.keys(lumise.data.stages)
-                    // const currObj =
-                    //     lumise.data.stages[curr]?.data?.objects || []
-                    // keys.forEach((i) => {
-                    //     let obj
-                    //     if (
-                    //         lumise.data.stages[i].data &&
-                    //         lumise.data.stages[i].data.objects
-                    //     ) {
-                    //         obj = Array.from(lumise.data.stages[i].data.objects)
-                    //         console.log(obj)
-                    //     }
-                    //     if (i !== curr) {
-                    //         lumise.data.stages[i].data.objects.push()
-                    //     }
-                    // })
+                    lumise.cart.add_cart('button add cart click')
+                    sessionStorage.setItem('isApplyall', true)
+                    var e = document.createEvent('MouseEvents')
+                    e.initEvent('click', true, true)
+                    document
+                        .getElementById('lumise-cart-action')
+                        .dispatchEvent(e)
                 })
                 lumise.render.cart_change()
             },
@@ -18447,7 +18456,6 @@ jQuery(document).ready(function ($) {
 
                 if (isNaN(lumise.cart.qty) || lumise.cart.qty == 0)
                     lumise.cart.qty = 1
-                console.log(4, cart_data)
                 cart_data = lumise.apply_filters('cart_data', cart_data)
                 // console.log(cart_data)
                 // console.log(3,cart_design);

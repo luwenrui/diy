@@ -9510,7 +9510,7 @@ jQuery(document).ready(function ($) {
                     product_base: lumise.fn.getQueryString('product_base'),
                     is_child: lumise.fn.getQueryString('is_child'),
                     this_id: lumise.fn.getQueryString('this_id'),
-                    type: lumise.fn.url_var('type', '') == 2 ? 2 : 1,
+                    type: lumise.fn.url_var('source', '') == 2 ? 2 : 1,
                 }
                 return new Promise((resolve, reject) => {
                     $.ajax({
@@ -10998,7 +10998,6 @@ jQuery(document).ready(function ($) {
                 callback(this.url2blob(dataURL))
             },
 
-            // TODO文件选择
             process_files: function (files, callback, saveas) {
                 var tmpl = '',
                     file,
@@ -18131,7 +18130,7 @@ jQuery(document).ready(function ($) {
                                     }
                                     if (sessionStorage.getItem('isApplyall')) {
                                         sessionStorage.removeItem('isApplyall')
-                                        location.href = `${location.href}&type=2`
+                                        location.href = `${location.href}&source=2`
                                     } else {
                                         sessionStorage.removeItem('isApplyall')
                                     }

@@ -18008,6 +18008,11 @@ jQuery(document).ready(function ($) {
                         const tpObj = createBaseImg(design)
                         const designLen = design.length
 
+                        if (sessionStorage.getItem('isApplyall') == 1) {
+                            callBack([])
+                            return
+                        }
+
                         design.forEach((c, cid) => {
                             new Promise((resolve, reject) => {
                                 const tm = Object.values(tpObj[cid])
@@ -18100,28 +18105,26 @@ jQuery(document).ready(function ($) {
                     e.preventDefault()
                     getSyntheticImg('save', (res) => {
                         const main_img = []
-                        lumise.fn.getToken().then(({ data, url }) => {
-                            res.forEach((i) => {
-                                putb64(data, imageBase64ToFile(i)).then(
-                                    (res) => {
-                                        main_img.push(`${url}/${res.key}`)
-                                    }
-                                )
+                        if (sessionStorage.getItem('isApplyall') == 1) {
+                            lumise.data.isApplyAll = 1
+                            lumise.data.currStageName = lumise.current_stage
+                        } else {
+                            lumise.fn.getToken().then(({ data, url }) => {
+                                lumise.data.isApplyAll = 2
+                                lumise.data.currStageName = null
+                                res.forEach((i) => {
+                                    putb64(data, imageBase64ToFile(i)).then(
+                                        (r) => {
+                                            main_img.push(`${url}/${r.key}`)
+                                        }
+                                    )
+                                })
                             })
-                            setTimeout(() => {
-                                if (sessionStorage.getItem('isApplyall')) {
-                                    lumise.data.isApplyAll = 1
-                                    lumise.data.currStageName =
-                                        lumise.current_stage
-                                } else {
-                                    lumise.data.isApplyAll = 2
-                                    lumise.data.currStageName = null
-                                }
+                        }
 
-                                sendSave(
-                                    lumise.data._dataDesign,
-                                    main_img
-                                ).then(({ state }) => {
+                        setTimeout(() => {
+                            sendSave(lumise.data._dataDesign, main_img).then(
+                                ({ state }) => {
                                     LoadHide()
                                     if (state === 1) {
                                         lumise.render.cart_confirm()
@@ -18134,9 +18137,9 @@ jQuery(document).ready(function ($) {
                                     } else {
                                         sessionStorage.removeItem('isApplyall')
                                     }
-                                })
-                            })
-                        })
+                                }
+                            )
+                        }, 2000)
                     })
                     lumise.cart.add_cart('button add cart click')
                 })
@@ -18147,7 +18150,7 @@ jQuery(document).ready(function ($) {
 
                 $('#apply_to_all').on('click', function (e) {
                     lumise.cart.add_cart('button add cart click')
-                    sessionStorage.setItem('isApplyall', true)
+                    sessionStorage.setItem('isApplyall', 1)
                     var e = document.createEvent('MouseEvents')
                     e.initEvent('click', true, true)
                     document

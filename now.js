@@ -18114,7 +18114,7 @@ jQuery(document).ready(function ($) {
                                     lumise.data.currStageName =
                                         lumise.current_stage
                                 } else {
-                                    lumise.data.isApplyAll = null
+                                    lumise.data.isApplyAll = 2
                                     lumise.data.currStageName = null
                                 }
 

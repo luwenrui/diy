@@ -9498,7 +9498,43 @@ jQuery(document).ready(function ($) {
         },
 
         fn: {
-            initUploadImg(){
+            batchImgList() {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        cache: true,
+                        type: 'POST',
+                        url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/get_imgs',
+                        data,
+                        async: false,
+                        success: function (res, status) {
+                            resolve(res)
+                        },
+                        error: function () {
+                            reject()
+                            console.log('batchImgList error')
+                        },
+                    })
+                })
+            },
+            batchSure() {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        cache: true,
+                        type: 'POST',
+                        url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/add_img_to_product',
+                        data,
+                        async: false,
+                        success: function (res, status) {
+                            resolve(res)
+                        },
+                        error: function () {
+                            reject()
+                            console.log('batchSure error')
+                        },
+                    })
+                })
+            },
+            initUploadImg() {
                 lumise.fn.getImgList().then(({ data, state }) => {
                     if (state === 1 && data.length > 0) {
                         data.forEach((c) => {

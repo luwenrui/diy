@@ -7316,6 +7316,9 @@ jQuery(document).ready(function ($) {
                                             .attr('src')
                                     )
                                     delete lumise.cliparts.uploads[del]
+                                    delImg({
+                                        id: del,
+                                    })
                                     return lumise.indexed.delete(del, 'uploads')
                                 }
                             }
@@ -9490,7 +9493,25 @@ jQuery(document).ready(function ($) {
         },
 
         fn: {
-            getImgList() {
+            delImg(data) {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        cache: true,
+                        type: 'POST',
+                        url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/del_img',
+                        data,
+                        async: false,
+                        success: function (res, status) {
+                            resolve(res)
+                        },
+                        error: function () {
+                            reject()
+                            console.log('addImg error')
+                        },
+                    })
+                })
+            },
+            getImgList(data) {
                 return new Promise((resolve, reject) => {
                     $.ajax({
                         cache: true,

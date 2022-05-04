@@ -3172,12 +3172,16 @@ jQuery(document).ready(function ($) {
                             lumise.ops.images_loading = true
                             lumise.indexed.list(
                                 function (data) {
-                                    lumise.cliparts.import(data.id, {
-                                        url: 'dumb-' + data.id,
-                                        thumbn: data.thumbn,
-                                        name: data.name,
-                                        save: false,
-                                    })
+                                    lumise.cliparts.import(
+                                        data.id,
+                                        {
+                                            url: 'dumb-' + data.id,
+                                            thumbn: data.thumbn,
+                                            name: data.name,
+                                            save: false,
+                                        },
+                                        'prepend'
+                                    )
                                     lumise.ops.uploads_cursor = data.id
                                     delete data
                                 },
@@ -7316,9 +7320,10 @@ jQuery(document).ready(function ($) {
                                             .attr('src')
                                     )
                                     delete lumise.cliparts.uploads[del]
-                                    delImg({
+                                    lumise.fn.delImg({
                                         id: del,
                                     })
+                                    lumise.fn.initUploadImg()
                                     return lumise.indexed.delete(del, 'uploads')
                                 }
                             }
@@ -9493,6 +9498,42 @@ jQuery(document).ready(function ($) {
         },
 
         fn: {
+            initUploadImg(){
+                lumise.fn.getImgList().then(({ data, state }) => {
+                    if (state === 1 && data.length > 0) {
+                        data.forEach((c) => {
+                            delete lumise.cliparts.uploads[c.id]
+                            lumise.indexed.delete(c.id, 'uploads')
+                            lumise.indexed.delete(c.id, 'dumb')
+                        })
+
+                        data.forEach((c) => {
+                            lumise.indexed.save(
+                                [
+                                    {
+                                        thumbn: c.img_base64,
+                                        name: c.name,
+                                        id: c.id,
+                                        imgBase64: c.img_base64,
+                                    },
+                                    [c.img_base64],
+                                ],
+                                'uploads'
+                            )
+
+                            lumise.indexed.save(
+                                [
+                                    {
+                                        id: c.id,
+                                        0: c.img_base64,
+                                    },
+                                ],
+                                'dumb'
+                            )
+                        })
+                    }
+                })
+            },
             delImg(data) {
                 return new Promise((resolve, reject) => {
                     $.ajax({
@@ -9532,11 +9573,11 @@ jQuery(document).ready(function ($) {
             addImg(data) {
                 return new Promise((resolve, reject) => {
                     $.ajax({
-                        cache: true,
                         type: 'POST',
                         url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/add_imgs',
                         data,
                         async: false,
+                        cache: false,
                         contentType: false,
                         processData: false,
                         success: function (res, status) {
@@ -20302,9 +20343,9 @@ jQuery(document).ready(function ($) {
                             'linear-gradient(to right, ' + bg.join(', ') + ')',
                     })
             })
-
             // TODO db-ready
             this.actions.add('db-ready', function () {
+                lumise.fn.initUploadImg()
                 localStorage.setItem(
                     'lumise_color_presets',
                     '"#546e7a@#546e7a,#757575@#757575,#6d4c41@#6d4c41,#f4511e@#f4511e,#ffb300@#ffb300,#fdd835@#fdd835,#c0ca33@#c0cA33,#a0ce4e@#a0ce4e,#7cb342@#7cb342,#43a047@#43a047,#00acc1@#00acc1,#3fc7ba@#3fc7ba,#039be5@#039be5,#3949ab@#3949ab,#5e35b1@#5e35b1,#d81b60@#d81b60,#eeeeee@#eeeeee,#3a3a3a@#3a3a3a,#1e90ff@dodgerblue,#00ff7f@springgreen"'

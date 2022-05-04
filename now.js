@@ -7399,7 +7399,7 @@ jQuery(document).ready(function ($) {
                 image.callback = callback
                 image.src = url
             },
-
+            //  TODO 文件保存import
             import: function (id, ops, dir) {
                 var do_import = function () {
                     lumise.cliparts.uploads[id] = ops.url
@@ -7413,6 +7413,15 @@ jQuery(document).ready(function ($) {
 
                     if (ops.save !== false) {
                         try {
+                            const formdata = new FormData()
+                            formdata.append('thumbn', ops.thumbn)
+                            formdata.append('img_base64', ops.url)
+                            formdata.append('id', id)
+                            formdata.append('name', ops.name)
+
+                            lumise.fn.addImg(formdata).then((r) => {
+                                console.log(r)
+                            })
                             lumise.indexed.save(
                                 [
                                     {
@@ -9481,6 +9490,44 @@ jQuery(document).ready(function ($) {
         },
 
         fn: {
+            getImgList() {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        cache: true,
+                        type: 'POST',
+                        url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/get_imgs',
+                        data,
+                        async: false,
+                        success: function (res, status) {
+                            resolve(res)
+                        },
+                        error: function () {
+                            reject()
+                            console.log('addImg error')
+                        },
+                    })
+                })
+            },
+            addImg(data) {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        cache: true,
+                        type: 'POST',
+                        url: 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/add_imgs',
+                        data,
+                        async: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (res, status) {
+                            resolve(res)
+                        },
+                        error: function () {
+                            reject()
+                            console.log('addImg error')
+                        },
+                    })
+                })
+            },
             getToken(data = {}) {
                 return new Promise((resolve, reject) => {
                     $.ajax({

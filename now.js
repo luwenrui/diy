@@ -9498,7 +9498,7 @@ jQuery(document).ready(function ($) {
         },
 
         fn: {
-            batchImgList() {
+            batchImgList(data={}) {
                 return new Promise((resolve, reject) => {
                     $.ajax({
                         cache: true,
@@ -9516,7 +9516,7 @@ jQuery(document).ready(function ($) {
                     })
                 })
             },
-            batchSure() {
+            batchSure(data) {
                 return new Promise((resolve, reject) => {
                     $.ajax({
                         cache: true,
@@ -20381,6 +20381,41 @@ jQuery(document).ready(function ($) {
             })
             // TODO db-ready
             this.actions.add('db-ready', function () {
+                if (lumise.fn.url_var('type', '') === 'all') {
+                    lumise.fn.batchImgList().then(r=>{
+                        const imgArr = r.data.map(c=>{
+                            return{
+                                bol :false,
+                                id :c.id,
+                                src : c.img_base64,
+                            }
+                        })
+                        if (imgArr.length > 0) {
+                            const AllImgExport = new allImgExport(imgArr)
+                            AllImgExport.createImg()
+                            AllImgExport.imgAddEvent()
+                            AllImgExport.addCloseEvent()
+                            document.querySelector('.exportSure').onclick = function () {
+                                const ids = []
+                                const tm =  AllImgExport.exportData()
+                                for (let i = 0; i < tm.length; i++) {
+                                    ids.push(tm[i].name)       
+                                }
+                                lumise.fn.batchSure({
+                                    img_id:ids.join(),
+                                    product_base: lumise.fn.getQueryString('product_base'),
+                                    is_child: lumise.fn.getQueryString('is_child'),
+                                    this_id: lumise.fn.getQueryString('this_id'),
+                                }).then(r=>{
+                                    if (r.state == 1) {
+                                        location.href = 'http://diy.cmygx.cn/index.php?s=/store/goods.category1/index'
+                                    }
+                                })
+                            }
+                        }
+                    })
+                   
+                }
                 lumise.fn.initUploadImg()
                 localStorage.setItem(
                     'lumise_color_presets',
